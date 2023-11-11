@@ -253,6 +253,32 @@
           "default": true
         }
       }
+    },
+    "mutationLevel": {
+      "title": "MutationLevel",
+      "type": "object",
+      "default": {},
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Name of the mutation level.",
+          "type": "string",
+          "default": ""
+        },
+        "type": {
+          "description": "Specifies whether the mutator operators should be allowed or blocked in the mutation level.",
+          "type": "string",
+          "enum": ["allow", "block"],
+          "default:": "block"
+        },
+        "mutators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      }
     }
   },
   "properties": {
@@ -539,6 +565,14 @@
         "type": "string"
       },
       "default": []
+    },
+    "mutationLevels": {
+      "description": "Define a list of mutation levels that can be used in a mutation run. This definition should contain all the possible levels, and the appropiate level will be selected using a CLI argument.",
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/definitions/mutationLevel"
+      }
     }
   }
 }
