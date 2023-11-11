@@ -15,7 +15,7 @@
     "lint:format": "prettier --check --ignore-path .gitignore .",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "start": "lite-server",
-    "test:mutation": "node ../core/bin/stryker.js run"
+    "test:mutation": "node ../packages/core/bin/stryker.js run"
   },
   "keywords": [],
   "author": "",

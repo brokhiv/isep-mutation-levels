@@ -1,5 +1,5 @@
 {
-  "$schema": "../core/schema/stryker-schema.json",
+  "$schema": "../packages/core/schema/stryker-schema.json",
   "packageManager": "npm",
   "reporters": [
     "html",
@@ -9,7 +9,7 @@
   "testRunner": "jest",
   "testRunnerNodeArgs": ["--experimental-vm-modules"],
   "plugins": [
-    "../jest-runner/dist/src/index.js"
+    "../packages/jest-runner/dist/src/index.js"
   ],
   "jest": {
     "configFile": "jest.config.cjs"
