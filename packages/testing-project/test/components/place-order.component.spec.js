@@ -1,9 +1,9 @@
 import { jest } from '@jest/globals';
 import { PlaceOrderComponent } from '../../src/components/place-order.component.js';
 import { router } from '../../src/router.js';
-import { DrinkService, drinkService } from '../../src/services/drink.service';
+import { DrinkService, drinkService } from '../../src/services/drink.service.js';
 import { orderService } from '../../src/services/order.service.js';
-import { createDrink, createOrderItem } from '../helpers';
+import { createDrink, createOrderItem } from '../helpers.js';
 
 describe(PlaceOrderComponent.name, () => {
   /** @type {PlaceOrderComponent} */

@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { ReviewOrderComponent } from '../../src/components/review-order.component.js';
-import { router } from '../../src/router';
+import { router } from '../../src/router.js';
 import { orderService } from '../../src/services/order.service.js';
 import { createOrderItem } from '../helpers.js';
 

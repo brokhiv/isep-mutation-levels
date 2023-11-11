@@ -17,19 +17,6 @@
         "--no-timeout"
       ],
       "env": {}
-    },
-    {
-      "type": "node-terminal",
-      "name": "(xavier) stryker debug",
-      "request": "launch",
-      "command": "cd ../../ && npm run clean && npm run build && cd ${workspaceFolder} && yarn run stryker --logLevel debug",
-      "cwd": "${workspaceFolder}",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/../*/dist/**/*.js",
-      ]
-    },
+    }
   ]
 }

@@ -50,8 +50,6 @@ export class MutantInstrumenterExecutor {
     // Instrument files in-memory
     const ignorers = this.options.ignorers.map((name) => this.pluginCreator.create(PluginKind.Ignore, name));
     //TODO: Initialize chosenMutationLevel with the appropiate level based on the CLI parameter
-    //TODO: Remove static mutationLevels specification
-    this.options.mutationLevels = [{ name: 'default', type: 'block', mutators: ['ArrayDeclaration'] }];
     const chosenMutationLevel = 'default';
     const instrumentResult = await instrumenter.instrument(await this.readFilesToMutate(), {
       ignorers,
