@@ -14,9 +14,7 @@ export class OrderService {
    */
   get currentOrder() {
     if (!this.#currentOrder && this.localStorage.getItem('currentOrder')) {
-      this.#currentOrder = JSON.parse(
-        this.localStorage.getItem('currentOrder')
-      );
+      this.#currentOrder = JSON.parse(this.localStorage.getItem('currentOrder'));
     }
     return this.#currentOrder;
   }

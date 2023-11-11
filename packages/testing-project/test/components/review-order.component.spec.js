@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+
 import { ReviewOrderComponent } from '../../src/components/review-order.component.js';
 import { router } from '../../src/router.js';
 import { orderService } from '../../src/services/order.service.js';
@@ -86,9 +87,7 @@ describe(ReviewOrderComponent.name, () => {
   });
 
   function createSut() {
-    sut = /** @type {ReviewOrderComponent} */ (
-      document.createElement('robo-review-order')
-    );
+    sut = /** @type {ReviewOrderComponent} */ (document.createElement('robo-review-order'));
     return document.body.appendChild(sut);
   }
 });

@@ -49,12 +49,10 @@ export class MutantInstrumenterExecutor {
 
     // Instrument files in-memory
     const ignorers = this.options.ignorers.map((name) => this.pluginCreator.create(PluginKind.Ignore, name));
-    //TODO: Initialize chosenMutationLevel with the appropiate level based on the CLI parameter
-    const chosenMutationLevel = 'default';
     const instrumentResult = await instrumenter.instrument(await this.readFilesToMutate(), {
       ignorers,
       ...this.options.mutator,
-      runLevel: this.options.mutationLevels.find((level) => level.name === chosenMutationLevel),
+      runLevel: this.options.mutationLevels.find((level) => level.name === this.options.useMutationLevel),
     });
 
     // Preprocess the project

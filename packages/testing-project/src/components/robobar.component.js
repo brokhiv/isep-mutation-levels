@@ -1,4 +1,5 @@
 import { router } from '../router.js';
+
 import { cloneTemplate, RoboComponent } from './robo.component.js';
 
 const template = document.createElement('template');
@@ -41,13 +42,13 @@ export class RobobarComponent extends RoboComponent {
     this.currentlyViewedRoute = this.route;
     switch (this.route) {
       case '/review':
-        this.view.innerHTML = `<robo-review-order></robo-review-order>`;
+        this.view.innerHTML = '<robo-review-order></robo-review-order>';
         break;
       case '/success':
-        this.view.innerHTML = `<robo-success></robo-success>`;
+        this.view.innerHTML = '<robo-success></robo-success>';
         break;
       default:
-        this.view.innerHTML = `<robo-place-order></robo-place-order>`;
+        this.view.innerHTML = '<robo-place-order></robo-place-order>';
         break;
     }
   }

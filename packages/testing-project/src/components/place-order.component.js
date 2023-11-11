@@ -1,11 +1,10 @@
 import { orderService } from '../services/order.service.js';
 import { drinkService } from '../services/drink.service.js';
 import { router } from '../router.js';
-import {
-  templatePlaceOrder,
-  templateOrderRow,
-} from './place-order.template.js';
+
 import { currency } from '../pipes/currency.pipe.js';
+
+import { templatePlaceOrder, templateOrderRow } from './place-order.template.js';
 import { cloneTemplate, RoboComponent, Selector } from './robo.component.js';
 
 export class PlaceOrderComponent extends RoboComponent {
@@ -27,10 +26,7 @@ export class PlaceOrderComponent extends RoboComponent {
   }
 
   get totalPrice() {
-    return this.orderItems.reduce(
-      (total, drink) => total + drink.amount * drink.price,
-      0
-    );
+    return this.orderItems.reduce((total, drink) => total + drink.amount * drink.price, 0);
   }
 
   get submitEnabled() {
@@ -53,12 +49,9 @@ export class PlaceOrderComponent extends RoboComponent {
   }
 
   #render() {
-    this.by.class.roboOrderTableBody.replaceChildren(
-      ...this.orderItems.map((orderItem) => this.#renderOrderRow(orderItem))
-    );
+    this.by.class.roboOrderTableBody.replaceChildren(...this.orderItems.map((orderItem) => this.#renderOrderRow(orderItem)));
     this.by.class.roboTotalPrice.innerText = currency(this.totalPrice);
-    /** @type {HTMLInputElement} */ (this.by.class.roboSubmit).disabled =
-      !this.submitEnabled;
+    /** @type {HTMLInputElement} */ (this.by.class.roboSubmit).disabled = !this.submitEnabled;
   }
 
   /**
@@ -69,16 +62,9 @@ export class PlaceOrderComponent extends RoboComponent {
     const selector = new Selector(row);
     selector.class.roboName.innerText = orderItem.name;
     selector.class.roboPrice.innerText = currency(orderItem.price);
-    /** @type {HTMLInputElement}*/ (selector.class.roboAmount).value =
-      orderItem.amount.toString();
-    selector.class.roboIncrement.addEventListener(
-      'click',
-      this.increment.bind(this, orderItem)
-    );
-    selector.class.roboDecrement.addEventListener(
-      'click',
-      this.decrement.bind(this, orderItem)
-    );
+    /** @type {HTMLInputElement}*/ (selector.class.roboAmount).value = orderItem.amount.toString();
+    selector.class.roboIncrement.addEventListener('click', this.increment.bind(this, orderItem));
+    selector.class.roboDecrement.addEventListener('click', this.decrement.bind(this, orderItem));
     return row;
   }
 }

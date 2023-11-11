@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+
 import { RobobarComponent } from '../../src/components/robobar.component.js';
 
 import { router } from '../../src/router.js';
@@ -15,9 +16,7 @@ describe(RobobarComponent.name, () => {
 
   beforeEach(() => {
     routerUnsubscribeStub = jest.fn();
-    routerOnNextStub = jest
-      .spyOn(router, 'onNext')
-      .mockImplementation(() => /** @type {any} */ (routerUnsubscribeStub));
+    routerOnNextStub = jest.spyOn(router, 'onNext').mockImplementation(() => /** @type {any} */ (routerUnsubscribeStub));
     sut = /** @type {RobobarComponent} */ (document.createElement('robo-bar'));
     document.body.appendChild(sut);
   });

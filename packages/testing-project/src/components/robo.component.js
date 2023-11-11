@@ -16,16 +16,14 @@ export class Selector {
     this.class = new Proxy(
       {},
       {
-        get: (_, property) =>
-          this.#element?.querySelector(`.${String(property)}`),
-      }
+        get: (_, property) => this.#element?.querySelector(`.${String(property)}`),
+      },
     );
     this.id = new Proxy(
       {},
       {
-        get: (_, property) =>
-          this.#element?.querySelector(`#${String(property)}`),
-      }
+        get: (_, property) => this.#element?.querySelector(`#${String(property)}`),
+      },
     );
   }
 }

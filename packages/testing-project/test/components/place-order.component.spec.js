@@ -1,6 +1,8 @@
 import { jest } from '@jest/globals';
+
 import { PlaceOrderComponent } from '../../src/components/place-order.component.js';
 import { router } from '../../src/router.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DrinkService, drinkService } from '../../src/services/drink.service.js';
 import { orderService } from '../../src/services/order.service.js';
 import { createDrink, createOrderItem } from '../helpers.js';
@@ -14,6 +16,7 @@ describe(PlaceOrderComponent.name, () => {
   /** @type {import('jest-mock').SpyInstance<DrinkService['getDrinks']>} */
   let getDrinksStub;
   /** @type {import('jest-mock').SpyInstance<(arg: OrderItem[]) => void>} */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let setOrderStub;
 
   beforeEach(() => {
@@ -62,9 +65,7 @@ describe(PlaceOrderComponent.name, () => {
   });
 
   function createSut() {
-    sut = /** @type {PlaceOrderComponent} */ (
-      document.createElement('robo-place-order')
-    );
+    sut = /** @type {PlaceOrderComponent} */ (document.createElement('robo-place-order'));
     return document.body.appendChild(sut);
   }
 

@@ -1,5 +1,6 @@
 import { drinksSummary } from '../pipes/drinks-summary.pipe.js';
 import { orderService } from '../services/order.service.js';
+
 import { cloneTemplate, RoboComponent } from './robo.component.js';
 
 const template = document.createElement('template');
@@ -18,9 +19,7 @@ template.innerHTML = `<div class="row">
 export class SuccessComponent extends RoboComponent {
   connectedCallback() {
     this.appendChild(cloneTemplate(template));
-    this.by.class.roboDrinks.innerText = drinksSummary(
-      orderService.currentOrder
-    );
+    this.by.class.roboDrinks.innerText = drinksSummary(orderService.currentOrder);
   }
 }
 

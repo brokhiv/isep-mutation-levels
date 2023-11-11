@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+
 import { Router } from '../src/router.js';
 
 describe(Router.name, () => {
@@ -32,9 +33,7 @@ describe(Router.name, () => {
     const callback = /** @type {RouteCallback} */ jest.fn();
     globalStub.location.hash = '#/foo';
     sut.onNext(callback);
-    const eventListener = /** @type {EventListener} */ (
-      globalStub.addEventListener.mock.lastCall[1]
-    );
+    const eventListener = /** @type {EventListener} */ (globalStub.addEventListener.mock.lastCall[1]);
 
     // Act
     sut.next('#/bar');

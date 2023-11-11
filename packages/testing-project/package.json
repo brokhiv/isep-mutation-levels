@@ -28,7 +28,10 @@
     "jest-environment-jsdom": "^29.5.0",
     "lite-server": "^2.6.1",
     "prettier": "^2.8.7",
-    "typescript": "^5.0.3",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "@jest/globals": "^29.7.0",
     "whatwg-fetch": "^3.6.2"
   }
 }
