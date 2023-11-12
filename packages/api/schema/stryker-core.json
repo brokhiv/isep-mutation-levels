@@ -265,19 +265,162 @@
           "type": "string",
           "default": ""
         },
-        "type": {
-          "description": "Specifies whether the mutator operators should be allowed or blocked in the mutation level.",
-          "type": "string",
-          "enum": ["allow", "block"],
-          "default:": "block"
+        "ArithmeticOperator": {
+          "$ref": "#/definitions/ArithmeticOperator"
         },
-        "mutators": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": []
+        "ArrayDeclaration": {
+          "$ref": "#/definitions/ArrayDeclaration"
+        },
+        "BlockStatement": {
+          "$ref": "#/definitions/BlockStatement"
+        },
+        "BooleanLiteral": {
+          "$ref": "#/definitions/BooleanLiteral"
+        },
+        "ConditionalExpression": {
+          "$ref": "#/definitions/ConditionalExpression"
+        },
+        "EqualityOperator": {
+          "$ref": "#/definitions/EqualityOperator"
+        },
+        "MethodExpression": {
+          "$ref": "#/definitions/MethodExpression"
+        },
+        "ObjectLiteral": {
+          "$ref": "#/definitions/ObjectLiteral"
+        },
+        "OptionalChaining": {
+          "$ref": "#/definitions/OptionalChaining"
+        },
+        "Regex": {
+          "$ref": "#/definitions/Regex"
+        },
+        "StringLiteral": {
+          "$ref": "#/definitions/StringLiteral"
+        },
+        "UnaryOperator": {
+          "$ref": "#/definitions/UnaryOperator"
+        },
+        "UpdateOperator": {
+          "$ref": "#/definitions/UpdateOperator"
         }
+      }
+    },
+    "ArithmeticOperator": {
+      "title": "ArithmeticOperator",
+      "type": "array",
+      "description": "+To- := a + b => a - b\n-To+ := a - b => a + b\n*To/ := a * b => a / b\n/To* := a / b => a * b\n%To* := a % b => a * b\n",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "enum": ["%To*", "*To/", "/To*", "+To-", "-To+"]
+      }
+    },
+    "ArrayDeclaration": {
+      "title": "ArrayDeclaration",
+      "type": "array",
+      "description": "EmptyArray := new Array(1, 2, 3, 4) => new Array()\nEmptyConstructor := [1, 2, 3, 4] => [ ]",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "enum": ["EmptyArray", "EmptyConstructor"]
+      }
+    },
+    "BlockStatement": {
+      "title": "BlockStatement",
+      "description": "Removes the content of every block statement.",
+      "type": "boolean",
+      "default": false
+    },
+    "BooleanLiteral": {
+      "title": "BooleanLiteral",
+      "type": "array",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "enum": ["FalseToTrue", "RemoveNegation", "TrueToFalse"]
+      }
+    },
+    "ConditionalExpression": {
+      "title": "ConditionalExpression",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["ForLoopToFalse", "WhileLoopToFalse", "DoWhileLoopToFalse", "IfToTrue", "IfToFalse", "BooleanExpressionToTrue", "BooleanExpressionToFalse"]
+      }
+    },
+    "EqualityOperator": {
+      "title": "EqualityOperator",
+      "type": "array",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "enum": ["!==To===", "!=To==", "<=To<", "<=To>", "<To<=", "<To>=", "===To!==", "==To!=", ">=To<", ">=To>", ">To<=", ">To>="]
+      }
+    },
+    "LogicalOperator": {
+      "title": "LogicalOperator",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["&&To||", "??To&&", "DoWhileLoopToFalse", "|To&&"]
+      }
+    },
+    "MethodExpression": {
+      "title": "MethodExpression",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["charAtToNull", "endsWithToStartsWith", "everyToSome", "filterToNull", "reverseToNull", "sliceToNull", "sortToNull", "substrToNull", "substringToNull", "toLocaleLowerCaseTotoLocaleUpperCase", "toLowerCaseTotoUpperCase", "trimToNull", "trimEndTotrimStart", "minToMax"]
+      }
+    },
+    "ObjectLiteral": {
+      "title": "ObjectLiteral",
+      "type": "boolean",
+      "default": false
+    },
+    "OptionalChaining": {
+      "title": "OptionalChaining",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["OptionalMemberExpression", "OptionalCallExpression"]
+      }
+    },
+    "Regex": {
+      "title": "Regex",
+      "type": "boolean",
+      "default": false
+    },
+    "StringLiteral": {
+      "title": "StringLiteral",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["EmptyString", "FillString", "Interpolation"]
+      }
+    },
+    "UnaryOperator": {
+      "title": "UnaryOperator",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["+To-", "-To+", "Remove∼"]
+      }
+    },
+    "UpdateOperator": {
+      "title": "UpdateOperator",
+      "type": "array",
+      "default": [],
+      "uniqueItems": true,
+      "items": {
+        "enum": ["Post++To--", "Post--To++", "Pre++To--", "Pre--To++"]
       }
     }
   },

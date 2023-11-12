@@ -18,8 +18,13 @@
   "mutationLevels": [
     { 
       "name": "default",
-      "type": "block", 
-      "mutators": ["ArrayDeclaration"] 
+      "ArithmeticOperator": ["%To*"],
+      "ArrayDeclaration": ["EmptyArray"]
+    },
+    {
+      "name": "fancy",
+      "BlockStatement": true,
+      "MethodExpression": ["minToMax"]
     }
   ]
 }
