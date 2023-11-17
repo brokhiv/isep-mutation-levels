@@ -39,7 +39,12 @@ export function expectJSMutation(sut: NodeMutator, originalCode: string, ...expe
   expectJSMutationWithLevel(sut, undefined, originalCode, ...expectedReplacements);
 }
 
-export function expectJSMutationWithLevel(sut: NodeMutator, level: string[] | undefined, originalCode: string, ...expectedReplacements: string[]): void {
+export function expectJSMutationWithLevel(
+  sut: NodeMutator,
+  level: string[] | undefined,
+  originalCode: string,
+  ...expectedReplacements: string[]
+): void {
   const sourceFileName = 'source.js';
   const ast = parse(originalCode, {
     sourceFilename: sourceFileName,
