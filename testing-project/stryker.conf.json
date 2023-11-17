@@ -19,6 +19,7 @@
     { 
       "name": "default",
       "ArithmeticOperator": ["+To-", "-To+", "*To/"],
+      "BooleanLiteral": ["FalseToTrue", "TrueToFalse", "RemoveNegation"],
       "ArrayDeclaration": ["EmptyArray"]
     },
     {
