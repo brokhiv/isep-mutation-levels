@@ -43,7 +43,7 @@ export function expectJSMutation(sut: NodeMutator, originalCode: string, ...expe
 
 export function expectJSMutationWithLevel(
   sut: NodeMutator,
-  level: MutationLevel | undefined,
+  level: string[],
   originalCode: string,
   ...expectedReplacements: string[]
 ): void {
@@ -55,7 +55,7 @@ export function expectJSMutationWithLevel(
   });
   const mutants: string[] = [];
   const originalNodeSet = nodeSet(ast);
-  const operations: string[] = [];
+  const operations: string[] = level;
 
   babel.traverse(ast, {
     enter(path) {
