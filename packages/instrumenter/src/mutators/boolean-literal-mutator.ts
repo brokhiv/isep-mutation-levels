@@ -37,8 +37,8 @@ function isInMutationLevel(node: any, level?: MutationLevel): boolean {
     //  FalseToTrue is included.
     const value: boolean = path.node.value;
     if (
-      (value && level.BooleanLiteral.some((lit) => lit == 'TrueToFalse')) ||
-      (level.BooleanLiteral.some((lit) => lit == 'FalseToTrue'))
+      (value && level.BooleanLiteral.some((lit) => lit === 'TrueToFalse')) ||
+      (level.BooleanLiteral.some((lit) => lit === 'FalseToTrue'))
     ) {
       return true;
     }
