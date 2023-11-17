@@ -15,8 +15,23 @@ import { DirectiveBookkeeper } from './directive-bookkeeper.js';
 import { IgnorerBookkeeper } from './ignorer-bookkeeper.js';
 
 import { AstTransformer } from './index.js';
+import { MutationLevel } from '@stryker-mutator/api/core';
 
 const { traverse } = babel;
+
+/**
+ * 
+ * @param obj Represents the tag --useMutatationLevels
+ * @param propertyName Indicates which property should be selected
+ * @returns Returns the property of the desired mutator
+ */
+export function getPropertyByName<T, K extends keyof T>(obj: T, propertyName: K | undefined): String[] | undefined {
+  if(propertyName !== undefined){
+    return obj[propertyName] as String[];
+  } else {
+    return undefined;
+  }
+}
 
 interface MutantsPlacement<TNode extends types.Node> {
   appliedMutants: Map<Mutant, TNode>;
@@ -156,15 +171,22 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
    */
   function* mutate(node: NodePath): Iterable<Mutable> {
     for (const mutator of mutators) {
-      for (const replacement of mutator.mutate(node)) {
-        yield {
-          replacement,
-          mutatorName: mutator.name,
-          ignoreReason:
-            directiveBookkeeper.findIgnoreReason(node.node.loc!.start.line, mutator.name) ??
-            findExcludedMutatorIgnoreReason(mutator.name) ??
-            ignorerBookkeeper.currentIgnoreMessage,
-        };
+      if (options.runLevel === undefined ||  mutator.name in options.runLevel){
+        var propertyName : any = undefined;
+        if(options.runLevel !== undefined){
+          propertyName = mutator.name
+        }
+        const propertyValue = getPropertyByName(options.runLevel, propertyName);
+        for (const replacement of mutator.mutate(node, propertyValue)) {
+          yield {
+            replacement,
+            mutatorName: mutator.name,
+            ignoreReason:
+              directiveBookkeeper.findIgnoreReason(node.node.loc!.start.line, mutator.name) ??
+              findExcludedMutatorIgnoreReason(mutator.name) ??
+              ignorerBookkeeper.currentIgnoreMessage,
+          };
+        }
       }
     }
 
