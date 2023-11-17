@@ -23,7 +23,7 @@ export const booleanLiteralMutator: NodeMutator = {
   },
 };
 
-function isInMutationLevel(node: any, level?: MutationLevel): boolean {
+function isInMutationLevel(path: any, level?: MutationLevel): boolean {
   // No mutation level selected, allow everything.
   if (level === undefined) {
     return true;
@@ -36,15 +36,10 @@ function isInMutationLevel(node: any, level?: MutationLevel): boolean {
     // Path is a boolean literal. If the value is true, check if TrueToFalse is included. Otherwise, check if
     //  FalseToTrue is included.
     const value: boolean = path.node.value;
-    if (
-      (value && level.BooleanLiteral.some((lit) => lit === 'TrueToFalse')) ||
-      (level.BooleanLiteral.some((lit) => lit === 'FalseToTrue'))
-    ) {
+    if ((value && level.BooleanLiteral.some((lit) => lit === 'TrueToFalse')) || level.BooleanLiteral.some((lit) => lit === 'FalseToTrue')) {
       return true;
     }
   }
   // Path is a unary expression, which would be negation (!) in our case. Check if RemoveNegation is included.
-  if (path.isUnaryExpression() && path.node.operator === '!' && path.node.prefix && level.BooleanLiteral.some((lit) => lit === 'RemoveNegation')) {
-    return true;
-  }
+  return path.isUnaryExpression() && path.node.operator === '!' && path.node.prefix && level.BooleanLiteral.some((lit) => lit === 'RemoveNegation');
 }
