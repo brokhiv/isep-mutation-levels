@@ -44,7 +44,7 @@ function isInMutationLevel(node: any, level?: MutationLevel): boolean {
     }
   }
   // Path is a unary expression, which would be negation (!) in our case. Check if RemoveNegation is included.
-  if (path.isUnaryExpression() && path.node.operator === '!' && path.node.prefix && level.BooleanLiteral.some((lit) => lit == 'RemoveNegation')) {
+  if (path.isUnaryExpression() && path.node.operator === '!' && path.node.prefix && level.BooleanLiteral.some((lit) => lit === 'RemoveNegation')) {
     return true;
   }
 }
