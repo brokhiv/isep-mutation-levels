@@ -3,8 +3,9 @@ import { parse, ParserPlugin } from '@babel/parser';
 import generator from '@babel/generator';
 import { expect } from 'chai';
 
-import { NodeMutator } from '../../src/mutators/node-mutator.js';
 import { MutationLevel } from '@stryker-mutator/api/core';
+
+import { NodeMutator } from '../../src/mutators/node-mutator.js';
 
 const generate = generator.default;
 
@@ -54,7 +55,7 @@ export function expectJSMutationWithLevel(
   });
   const mutants: string[] = [];
   const originalNodeSet = nodeSet(ast);
-  const operations: String[] = [];
+  const operations: string[] = [];
 
   babel.traverse(ast, {
     enter(path) {

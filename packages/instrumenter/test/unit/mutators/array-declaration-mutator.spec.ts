@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import { MutationLevel } from '@stryker-mutator/api/core';
+
 import { arrayDeclarationMutator as sut } from '../../../src/mutators/array-declaration-mutator.js';
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 
-const arrayDeclarationLevel: MutationLevel = { name: 'arrayDeclarationLevel', ArrayDeclaration: ['EmptyArray','EmptyConstructor'] };
+const arrayDeclarationLevel: MutationLevel = { name: 'arrayDeclarationLevel', ArrayDeclaration: ['EmptyArray', 'EmptyConstructor'] };
 
 describe(sut.name, () => {
   it('should have name "ArrayDeclaration"', () => {
