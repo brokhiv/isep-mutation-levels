@@ -5,9 +5,9 @@ import { MutationLevel } from '@stryker-mutator/api/core';
 import { equalityOperatorMutator as sut } from '../../../src/mutators/equality-operator-mutator.js';
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 
-const equalityLevelA: MutationLevel = { name: 'EqualityLevelA', EqualityOperator: ['<To<=', '<To>=', '>=To>', '>=To<', '==To!='] }
+const equalityLevelA: MutationLevel = { name: 'EqualityLevelA', EqualityOperator: ['<To<=', '<To>=', '>=To>', '>=To<', '==To!='] };
 
-const equalityLevelB: MutationLevel = { name: 'EqualityLevelB', EqualityOperator: ['<=To>', '>To<=', '===To!=='] }
+const equalityLevelB: MutationLevel = { name: 'EqualityLevelB', EqualityOperator: ['<=To>', '>To<=', '===To!=='] };
 
 describe(sut.name, () => {
   it('should have name "EqualityOperator"', () => {

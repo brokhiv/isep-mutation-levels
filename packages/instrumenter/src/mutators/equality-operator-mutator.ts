@@ -1,16 +1,28 @@
-import babel, {types} from '@babel/core';
-
-import { NodeMutator } from './node-mutator.js';
+import babel, { types } from '@babel/core';
 
 import { MutationLevel } from '@stryker-mutator/api/core';
+
+import { NodeMutator } from './node-mutator.js';
 
 const { types: t } = babel;
 
 const operators = {
-  '<': [{ replacement: '<=', mutatorName: '<To<=' }, { replacement: '>=', mutatorName: '<To>=' }],
-  '<=': [{ replacement: '<', mutatorName: '<=To<' }, { replacement: '>', mutatorName: '<=To>' }],
-  '>': [{ replacement: '>=', mutatorName: '>To>=' }, { replacement: '<=', mutatorName: '>To<=' }],
-  '>=': [{ replacement: '>', mutatorName: '>=To>' }, { replacement: '<', mutatorName: '>=To<' }],
+  '<': [
+    { replacement: '<=', mutatorName: '<To<=' },
+    { replacement: '>=', mutatorName: '<To>=' },
+  ],
+  '<=': [
+    { replacement: '<', mutatorName: '<=To<' },
+    { replacement: '>', mutatorName: '<=To>' },
+  ],
+  '>': [
+    { replacement: '>=', mutatorName: '>To>=' },
+    { replacement: '<=', mutatorName: '>To<=' },
+  ],
+  '>=': [
+    { replacement: '>', mutatorName: '>=To>' },
+    { replacement: '<', mutatorName: '>=To<' },
+  ],
   '==': [{ replacement: '!=', mutatorName: '==To!=' }],
   '!=': [{ replacement: '==', mutatorName: '!=To==' }],
   '===': [{ replacement: '!==', mutatorName: '===To!==' }],
