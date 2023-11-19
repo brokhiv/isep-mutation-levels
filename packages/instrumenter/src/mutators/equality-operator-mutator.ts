@@ -1,16 +1,28 @@
-import babel, {types} from '@babel/core';
-
-import { NodeMutator } from './node-mutator.js';
+import babel, { types } from '@babel/core';
 
 import { MutationLevel } from '@stryker-mutator/api/core';
+
+import { NodeMutator } from './node-mutator.js';
 
 const { types: t } = babel;
 
 const operators = {
-  '<': [{ replacement: '<=', mutatorName: '<To<=' }, { replacement: '>=', mutatorName: '<To>=' }],
-  '<=': [{ replacement: '<', mutatorName: '<=To<' }, { replacement: '>', mutatorName: '<=To>' }],
-  '>': [{ replacement: '>=', mutatorName: '>To>=' }, { replacement: '<=', mutatorName: '>To<=' }],
-  '>=': [{ replacement: '>', mutatorName: '>=To>' }, { replacement: '<', mutatorName: '>=To<' }],
+  '<': [
+    { replacement: '<=', mutatorName: '<To<=' },
+    { replacement: '>=', mutatorName: '<To>=' },
+  ],
+  '<=': [
+    { replacement: '<', mutatorName: '<=To<' },
+    { replacement: '>', mutatorName: '<=To>' },
+  ],
+  '>': [
+    { replacement: '>=', mutatorName: '>To>=' },
+    { replacement: '<=', mutatorName: '>To<=' },
+  ],
+  '>=': [
+    { replacement: '>', mutatorName: '>=To>' },
+    { replacement: '<', mutatorName: '>=To<' },
+  ],
   '==': [{ replacement: '!=', mutatorName: '==To!=' }],
   '!=': [{ replacement: '==', mutatorName: '!=To==' }],
   '===': [{ replacement: '!==', mutatorName: '===To!==' }],
@@ -50,17 +62,3 @@ function filterMutationLevel(node: types.BinaryExpression, level?: MutationLevel
 
   return allMutations.filter((mut) => level.EqualityOperator!.some((op) => op === mut.mutatorName));
 }
-
-// function isInMutationLevel(node: types.BinaryExpression, replacement, level?: MutationLevel): boolean {
-//   // No mutation level specified, so allow everything
-//   if (level === undefined) {
-//     return true;
-//   }
-//
-//   if (level.EqualityOperator === undefined) {
-//     return false;
-//   }
-//
-//   const mutatedOperators = operators[node.operator as keyof typeof operators];
-//   return level.EqualityOperator.some((op) => mutatedOperators.some((mut) => replacement === mut.replacement && op === mut.mutatorName)) ?? false;
-// }
