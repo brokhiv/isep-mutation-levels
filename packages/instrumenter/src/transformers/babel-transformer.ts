@@ -25,13 +25,9 @@ const { traverse } = babel;
  * @returns Returns the property of the desired mutator
  */
 export function getPropertyByName<T, K extends keyof T>(obj: T, propertyName: K | string | undefined): string[] | undefined {
-  if (typeof propertyName !== 'string')
-    if (propertyName !== undefined) {
-      return obj[propertyName] as string[];
-    } else {
-      return undefined;
-    }
-  return undefined;
+  if (typeof propertyName !== 'string' && propertyName !== undefined) {
+    return obj[propertyName] as string[];
+  } else return undefined;
 }
 
 interface MutantsPlacement<TNode extends types.Node> {
