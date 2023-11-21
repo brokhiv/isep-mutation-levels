@@ -5,6 +5,8 @@ import babel, { type NodePath, type types } from '@babel/core';
 import { File } from '@babel/core';
 /* eslint-enable import/no-duplicates */
 
+// import { MutationLevel } from '@stryker-mutator/api/core';
+
 import { isImportDeclaration, isTypeNode, locationIncluded, locationOverlaps, placeHeaderIfNeeded } from '../util/syntax-helpers.js';
 import { ScriptFormat } from '../syntax/index.js';
 import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-placers/index.js';
@@ -24,10 +26,11 @@ const { traverse } = babel;
  * @param propertyName Indicates which property should be selected
  * @returns Returns the property of the desired mutator
  */
-export function getPropertyByName<T, K extends keyof T>(obj: T, propertyName: K | string | undefined): string[] | undefined {
-  if (typeof propertyName !== 'string' && propertyName !== undefined) {
+export function getPropertyByName<T, K extends keyof T>(obj: T, propertyName: K | undefined = undefined): string[] | undefined {
+  if (propertyName !== undefined) {
     return obj[propertyName] as string[];
-  } else return undefined;
+  }
+  return undefined;
 }
 
 interface MutantsPlacement<TNode extends types.Node> {
@@ -169,11 +172,14 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
   function* mutate(node: NodePath): Iterable<Mutable> {
     for (const mutator of mutators) {
       if (options.runLevel === undefined || mutator.name in options.runLevel) {
-        let propertyName = undefined;
+        // console.log(options.runLevel?.ArrayDeclaration);
+        // let propertyName: any = undefined;
         let propertyValue = undefined;
         if (options.runLevel !== undefined) {
-          propertyName = mutator.name;
+          const propertyName: any = mutator.name;
+          // console.log(options.runLevel);
           propertyValue = getPropertyByName(options.runLevel, propertyName);
+          console.log(propertyValue);
         }
 
         for (const replacement of mutator.mutate(node, propertyValue)) {

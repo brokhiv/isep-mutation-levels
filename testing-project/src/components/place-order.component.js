@@ -6,10 +6,13 @@ import { currency } from '../pipes/currency.pipe.js';
 
 import { templatePlaceOrder, templateOrderRow } from './place-order.template.js';
 import { cloneTemplate, RoboComponent, Selector } from './robo.component.js';
+import { abort } from 'process';
 
 export class PlaceOrderComponent extends RoboComponent {
   /** @type {OrderItem[]} */
-  orderItems = [];
+  // orderItems = [{name: "yas", amount: 3, price:3, isAlcoholic:true}];
+  // orderItems = new Array()
+  orderItems = []
 
   /** @param {OrderItem} orderItem */
   increment(orderItem) {
