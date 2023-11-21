@@ -4,9 +4,6 @@ import babel, { type NodePath, type types } from '@babel/core';
 // @ts-expect-error The babel types don't define "File" yet
 import { File } from '@babel/core';
 /* eslint-enable import/no-duplicates */
-
-// import { MutationLevel } from '@stryker-mutator/api/core';
-
 import { MutationLevel } from '@stryker-mutator/api/core';
 
 import { isImportDeclaration, isTypeNode, locationIncluded, locationOverlaps, placeHeaderIfNeeded } from '../util/syntax-helpers.js';
