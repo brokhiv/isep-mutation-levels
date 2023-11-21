@@ -13,6 +13,8 @@ export class PlaceOrderComponent extends RoboComponent {
   // orderItems = [{name: "yas", amount: 3, price:3, isAlcoholic:true}];
   // orderItems = new Array()
   orderItems = []
+  // Party = [1, 2, 3]
+  // Party2 = new Array()
 
   /** @param {OrderItem} orderItem */
   increment(orderItem) {
