@@ -18,7 +18,8 @@
   "mutationLevels": [
     { 
       "name": "default",
-      "ArrayDeclaration": ["EmptyArray"]
+      "ArrayDeclaration": ["FilledArrayConstructor"]
+
     },
     {
       "name": "fancy",
