@@ -7,6 +7,8 @@ import { File } from '@babel/core';
 
 // import { MutationLevel } from '@stryker-mutator/api/core';
 
+import { MutationLevel } from '@stryker-mutator/api/core';
+
 import { isImportDeclaration, isTypeNode, locationIncluded, locationOverlaps, placeHeaderIfNeeded } from '../util/syntax-helpers.js';
 import { ScriptFormat } from '../syntax/index.js';
 import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-placers/index.js';
@@ -172,14 +174,10 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
   function* mutate(node: NodePath): Iterable<Mutable> {
     for (const mutator of mutators) {
       if (options.runLevel === undefined || mutator.name in options.runLevel) {
-        // console.log(options.runLevel?.ArrayDeclaration);
-        // let propertyName: any = undefined;
         let propertyValue = undefined;
         if (options.runLevel !== undefined) {
-          const propertyName: any = mutator.name;
-          // console.log(options.runLevel);
+          const propertyName = mutator.name as keyof MutationLevel;
           propertyValue = getPropertyByName(options.runLevel, propertyName);
-          console.log(propertyValue);
         }
 
         for (const replacement of mutator.mutate(node, propertyValue)) {
