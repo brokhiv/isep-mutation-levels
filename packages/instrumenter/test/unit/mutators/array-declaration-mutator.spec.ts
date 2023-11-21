@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 
 import { arrayDeclarationMutator as sut } from '../../../src/mutators/array-declaration-mutator.js';
-// import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
-import { expectJSMutation } from '../../helpers/expect-mutation.js';
+import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 
-// const arrayDeclarationLevel: string[] = ['EmptyArray', 'EmptyConstructor'];
+const arrayDeclarationLevel: string[] = ['EmptyArray', 'EmptyArrayConstructor', 'FilledArray', 'FilledArrayConstructor'];
 
 describe(sut.name, () => {
   it('should have name "ArrayDeclaration"', () => {
@@ -42,14 +41,15 @@ describe(sut.name, () => {
     expectJSMutation(sut, 'window["Array"](21, 2)');
   });
 
-  // // it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
-  // //   expectJSMutationWithLevel(
-  // //     sut,
-  // //     arrayDeclarationLevel,
-  // //     '[]; new Array({x:"", y:""}); [{x:"", y:""}]',
-  // //     // '["Stryker was here"]; new Array({x:"", y:""}); [{x:"", y:""}]', // mutates []
-  // //     // '[]; new Array(); [{x:"", y:""}]', // mutates new Array(x,y)
-  // //     // '[]; new Array({x:"", y:""}); []', // mutates [x,y]
-  // //   );
-  // });
+  it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
+    expectJSMutationWithLevel(
+      sut,
+      arrayDeclarationLevel,
+      '[]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]',
+      '["Stryker was here"]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]', // mutates []
+      '[]; new Array("Stryker was here"); new Array({x:"", y:""}); [{x:"", y:""}]', // mutates new Array()
+      '[]; new Array(); new Array(); [{x:"", y:""}]', // mutates new Array(x,y)
+      '[]; new Array(); new Array({x:"", y:""}); []', // mutates [x,y]
+    );
+  });
 });
