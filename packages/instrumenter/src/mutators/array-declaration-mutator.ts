@@ -23,12 +23,7 @@ export const arrayDeclarationMutator: NodeMutator = {
 
   *mutate(path: NodePath, operations: string[] | undefined): Iterable<babel.types.Node> {
     // The check of the [] construct in code
-    if (
-      path.isArrayExpression() &&
-      (operations == undefined ||
-        operations.includes(arrayDeclarationReplacements.EmptyArray.mutatorName as string) ||
-        operations.includes(arrayDeclarationReplacements.FilledArray.mutatorName as string))
-    ) {
+    if (path.isArrayExpression()) {
       if (
         operations == undefined ||
         (operations.includes(arrayDeclarationReplacements.FilledArray.mutatorName as string) && path.node.elements.length) ||
