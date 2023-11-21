@@ -6,7 +6,6 @@ import { currency } from '../pipes/currency.pipe.js';
 
 import { templatePlaceOrder, templateOrderRow } from './place-order.template.js';
 import { cloneTemplate, RoboComponent, Selector } from './robo.component.js';
-import { abort } from 'process';
 
 export class PlaceOrderComponent extends RoboComponent {
   /** @type {OrderItem[]} */

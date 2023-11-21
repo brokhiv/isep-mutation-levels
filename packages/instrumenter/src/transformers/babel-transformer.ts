@@ -18,20 +18,6 @@ import { IgnorerBookkeeper } from './ignorer-bookkeeper.js';
 import { AstTransformer } from './index.js';
 
 const { traverse } = babel;
-
-/**
- *
- * @param obj Represents the tag --useMutatationLevels
- * @param propertyName Indicates which property should be selected
- * @returns Returns the property of the desired mutator
- */
-export function getPropertyByName<T, K extends keyof T>(obj: T, propertyName: K | undefined = undefined): string[] | undefined {
-  if (propertyName !== undefined) {
-    return obj[propertyName] as string[];
-  }
-  return undefined;
-}
-
 interface MutantsPlacement<TNode extends types.Node> {
   appliedMutants: Map<Mutant, TNode>;
   placer: MutantPlacer<TNode>;
@@ -173,8 +159,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
       if (options.runLevel === undefined || mutator.name in options.runLevel) {
         let propertyValue = undefined;
         if (options.runLevel !== undefined) {
-          const propertyName = mutator.name as keyof MutationLevel;
-          propertyValue = getPropertyByName(options.runLevel, propertyName);
+          propertyValue = options.runLevel?.[mutator.name as keyof MutationLevel] as string[];
         }
 
         for (const replacement of mutator.mutate(node, propertyValue)) {

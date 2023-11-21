@@ -16,6 +16,8 @@ const arrayDeclarationReplacements = Object.assign({
   FilledArrayConstructor: { replacementOperator: [], mutatorName: 'FilledArrayConstructor' },
 } as const);
 
+type arrayDeclarationT = Array<ArgumentPlaceholder | Expression | JSXNamespacedName | SpreadElement>;
+
 export const arrayDeclarationMutator: NodeMutator = {
   name: 'ArrayDeclaration',
 
@@ -27,16 +29,14 @@ export const arrayDeclarationMutator: NodeMutator = {
         operations.includes(arrayDeclarationReplacements.EmptyArray.mutatorName as string) ||
         operations.includes(arrayDeclarationReplacements.FilledArray.mutatorName as string))
     ) {
-      if (operations == undefined) {
+      if (
+        operations == undefined ||
+        (operations.includes(arrayDeclarationReplacements.FilledArray.mutatorName as string) && path.node.elements.length) ||
+        (operations.includes(arrayDeclarationReplacements.EmptyArray.mutatorName as string) && !path.node.elements.length)
+      ) {
         const replacement = path.node.elements.length
           ? arrayDeclarationReplacements.FilledArray.replacementOperator
           : arrayDeclarationReplacements.EmptyArray.replacementOperator;
-        yield replacement;
-      } else if (operations.includes(arrayDeclarationReplacements.FilledArray.mutatorName as string) && path.node.elements.length) {
-        const replacement = arrayDeclarationReplacements.FilledArray.replacementOperator;
-        yield replacement;
-      } else if (operations.includes(arrayDeclarationReplacements.EmptyArray.mutatorName as string) && !path.node.elements.length) {
-        const replacement = arrayDeclarationReplacements.EmptyArray.replacementOperator;
         yield replacement;
       }
     }
@@ -49,23 +49,15 @@ export const arrayDeclarationMutator: NodeMutator = {
         operations.includes(arrayDeclarationReplacements.EmptyArrayConstructor.mutatorName as string) ||
         operations.includes(arrayDeclarationReplacements.FilledArrayConstructor.mutatorName as string))
     ) {
-      const emptyArrayReplacement: Array<ArgumentPlaceholder | Expression | JSXNamespacedName | SpreadElement> =
-        arrayDeclarationReplacements.EmptyArrayConstructor.replacementOperator;
-      const FilledArrayReplacement: Array<ArgumentPlaceholder | Expression | JSXNamespacedName | SpreadElement> =
-        arrayDeclarationReplacements.FilledArrayConstructor.replacementOperator;
+      const emptyArrayReplacement: arrayDeclarationT = arrayDeclarationReplacements.EmptyArrayConstructor.replacementOperator;
+      const FilledArrayReplacement: arrayDeclarationT = arrayDeclarationReplacements.FilledArrayConstructor.replacementOperator;
       const mutatedCallArgs = path.node.arguments.length ? FilledArrayReplacement : emptyArrayReplacement;
 
-      if (operations == undefined) {
-        const replacement = types.isNewExpression(path.node)
-          ? types.newExpression(deepCloneNode(path.node.callee), mutatedCallArgs)
-          : types.callExpression(deepCloneNode(path.node.callee), mutatedCallArgs);
-        yield replacement;
-      } else if (operations.includes(arrayDeclarationReplacements.FilledArrayConstructor.mutatorName as string) && path.node.arguments.length) {
-        const replacement = types.isNewExpression(path.node)
-          ? types.newExpression(deepCloneNode(path.node.callee), mutatedCallArgs)
-          : types.callExpression(deepCloneNode(path.node.callee), mutatedCallArgs);
-        yield replacement;
-      } else if (operations.includes(arrayDeclarationReplacements.EmptyArrayConstructor.mutatorName as string) && !path.node.arguments.length) {
+      if (
+        operations == undefined ||
+        (operations.includes(arrayDeclarationReplacements.FilledArrayConstructor.mutatorName as string) && path.node.arguments.length) ||
+        (operations.includes(arrayDeclarationReplacements.EmptyArrayConstructor.mutatorName as string) && !path.node.arguments.length)
+      ) {
         const replacement = types.isNewExpression(path.node)
           ? types.newExpression(deepCloneNode(path.node.callee), mutatedCallArgs)
           : types.callExpression(deepCloneNode(path.node.callee), mutatedCallArgs);
