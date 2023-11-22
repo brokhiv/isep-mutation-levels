@@ -19,7 +19,8 @@
     { 
       "name": "default",
       "ArithmeticOperator": ["+To-", "-To+", "*To/"],
-      "ArrayDeclaration": ["EmptyArray"]
+      "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"]
+
     },
     {
       "name": "fancy",

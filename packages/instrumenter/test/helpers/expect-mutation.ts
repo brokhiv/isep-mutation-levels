@@ -3,8 +3,6 @@ import { parse, ParserPlugin } from '@babel/parser';
 import generator from '@babel/generator';
 import { expect } from 'chai';
 
-import { MutationLevel } from '@stryker-mutator/api/core';
-
 import { NodeMutator } from '../../src/mutators/node-mutator.js';
 
 const generate = generator.default;
@@ -43,7 +41,7 @@ export function expectJSMutation(sut: NodeMutator, originalCode: string, ...expe
 
 export function expectJSMutationWithLevel(
   sut: NodeMutator,
-  level: MutationLevel | undefined,
+  level: string[] | undefined,
   originalCode: string,
   ...expectedReplacements: string[]
 ): void {
@@ -55,10 +53,11 @@ export function expectJSMutationWithLevel(
   });
   const mutants: string[] = [];
   const originalNodeSet = nodeSet(ast);
+  const operations: string[] | undefined = level;
 
   babel.traverse(ast, {
     enter(path) {
-      for (const replacement of sut.mutate(path, level)) {
+      for (const replacement of sut.mutate(path, operations)) {
         const mutatedCode = generate(replacement).code;
         const beforeMutatedCode = originalCode.substring(0, path.node.start ?? 0);
         const afterMutatedCode = originalCode.substring(path.node.end ?? 0);
