@@ -1,7 +1,5 @@
 import type { types } from '@babel/core';
 
-import { MutationLevel } from '@stryker-mutator/api/core';
-
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutator } from './node-mutator.js';
@@ -27,18 +25,14 @@ export const arithmeticOperatorMutator: NodeMutator = {
   },
 };
 
-function isInMutationLevel(node: types.BinaryExpression, level?: MutationLevel): boolean {
+function isInMutationLevel(node: types.BinaryExpression, operations: string[] | undefined): boolean {
   // No mutation level specified, so allow everything
-  if (level === undefined) {
+  if (operations === undefined) {
     return true;
   }
 
-  if (level.ArithmeticOperator === undefined) {
-    return false;
-  }
-
   const mutatedOperator = arithmeticOperatorReplacements[node.operator as keyof typeof arithmeticOperatorReplacements].mutatorName;
-  return level.ArithmeticOperator.some((op) => op === mutatedOperator) ?? false;
+  return operations.some((op) => op === mutatedOperator) ?? false;
 }
 
 function isSupported(operator: string, node: types.BinaryExpression): operator is keyof typeof arithmeticOperatorReplacements {

@@ -37,7 +37,7 @@ describe(sut.name, () => {
   it('should only mutate <, >=, == from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
-      equalityLevelA,
+      equalityLevelA.EqualityOperator,
       'a < b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b',
       'a <= b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <
       'a >= b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <
@@ -50,7 +50,7 @@ describe(sut.name, () => {
   it('should only mutate <= to >, > to <=, and === to !== from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
-      equalityLevelB,
+      equalityLevelB.EqualityOperator,
       'a < b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b',
       'a < b; a > b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <= to >
       'a < b; a <= b; a <= b; a >= b; a == b; a != b; a === b; a !== b', // mutates > to <=

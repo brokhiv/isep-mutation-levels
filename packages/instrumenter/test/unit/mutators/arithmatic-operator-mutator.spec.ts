@@ -38,7 +38,7 @@ describe(sut.name, () => {
   it('should only mutate +, - and * from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
-      arithmeticLevel,
+      arithmeticLevel.ArithmeticOperator,
       'a + b; a - b; a * b; a % b; a / b; a % b',
       'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
       'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
