@@ -7,7 +7,7 @@ import { NodeMutator } from './index.js';
 const assignmentOperatorReplacements = Object.freeze({
   '+=': { replacement: '-=', mutatorName: '+=To-=' },
   '-=': { replacement: '+=', mutatorName: '-=To+=' },
-  '*=': { replacement: '/=', mutatorName: '*-To/=' },
+  '*=': { replacement: '/=', mutatorName: '*=To/=' },
   '/=': { replacement: '*=', mutatorName: '/=To*=' },
   '%=': { replacement: '*=', mutatorName: '%=To*=' },
   '<<=': { replacement: '>>=', mutatorName: '<<=To>>=' },

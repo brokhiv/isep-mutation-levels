@@ -6,6 +6,24 @@ import { assignmentOperatorMutator as sut } from '../../../src/mutators/assignme
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 
 const assignmentOperatorLevel: MutationLevel = { name: 'AssignmentOperatorLevel', AssignmentOperator: ['-=To+=', '<<=To>>=', '&&=To||='] };
+const assignmentOperatorAllLevel: MutationLevel = {
+  name: 'AssignmentOperatorLevel',
+  AssignmentOperator: [
+    '+=To-=',
+    '-=To+=',
+    '*=To/=',
+    '/=To*=',
+    '%=To*=',
+    '<<=To>>=',
+    '>>=To<<=',
+    '&=To|=',
+    '|=To&=',
+    '&&=To||=',
+    '||=To&&=',
+    '??=To&&=',
+  ],
+};
+const assignmentOperatorUndefinedLevel: MutationLevel = { name: 'AssignmentOperatorLevel' };
 
 describe(sut.name, () => {
   it('should have name "AssignmentOperator"', () => {
@@ -83,6 +101,38 @@ describe(sut.name, () => {
       assignmentOperatorLevel.AssignmentOperator,
       'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
       'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;',
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;',
+    );
+  });
+
+  it('should not mutate anything if there are no values in the mutation level', () => {
+    expectJSMutationWithLevel(sut, [], 'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;');
+  });
+
+  it('should mutate everything if everything is in the mutation level', () => {
+    expectJSMutationWithLevel(
+      sut,
+      assignmentOperatorAllLevel.BooleanLiteral,
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;',
+      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;',
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;',
+    );
+  });
+
+  it('should mutate everything if the mutation level is undefined', () => {
+    expectJSMutationWithLevel(
+      sut,
+      assignmentOperatorUndefinedLevel.BooleanLiteral,
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;',
+      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;',
       'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;',
       'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;',
     );
