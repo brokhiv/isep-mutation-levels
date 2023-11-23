@@ -7,7 +7,7 @@ import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expec
 
 const booleanLiteralLevel: MutationLevel = {
   name: 'BooleanLiteralLevel',
-  BooleanLiteral: ['FalseToTrue', 'RemoveNegation'],
+  BooleanLiteral: ['TrueToFalse', 'RemoveNegation'],
 };
 
 describe(sut.name, () => {
@@ -34,7 +34,6 @@ describe(sut.name, () => {
       'if (true) {}; if (false) {}; if (!value) {}',
       'if (false) {}; if (false) {}; if (!value) {}',
       'if (true) {}; if (false) {}; if (value) {}',
-      'if (false) {}; if (false) {}; if (value) {}',
     );
   });
 });
