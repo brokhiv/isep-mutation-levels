@@ -271,6 +271,9 @@
         "ArrayDeclaration": {
           "$ref": "#/definitions/ArrayDeclaration"
         },
+        "ArrowFunction": {
+          "$ref": "#/definitions/ArrowFunction"
+        },
         "BlockStatement": {
           "$ref": "#/definitions/BlockStatement"
         },
@@ -370,6 +373,23 @@
             "const": "FilledArrayConstructor",
             "title": "FilledArrayConstructorMutator",
             "description": "Replace ```new Array([1, 2, 3, 4])``` with ```new Array()```."
+          }
+        ]
+      }
+    },
+    "ArrowFunction": {
+      "title": "ArrowFunction",
+      "type": "array",
+      "description": "Mutates bodies of arrow functions to undefined",
+      "uniqueItems": true,
+      "default": [],
+      "minItems": 1,
+      "items": {
+        "anyOf": [
+          {
+            "const": "BodyToUndefined",
+            "title": "BodyToUndefinedMutator",
+            "description": "Replace body to ```undefined```."
           }
         ]
       }
