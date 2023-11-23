@@ -271,6 +271,9 @@
         "ArrayDeclaration": {
           "$ref": "#/definitions/ArrayDeclaration"
         },
+        "AssignmentOperator": {
+          "$ref": "#/definitions/AssignmentOperator"
+        },
         "BlockStatement": {
           "$ref": "#/definitions/BlockStatement"
         },
