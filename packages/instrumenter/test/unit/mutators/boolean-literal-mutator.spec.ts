@@ -1,7 +1,14 @@
 import { expect } from 'chai';
 
 import { booleanLiteralMutator as sut } from '../../../src/mutators/boolean-literal-mutator.js';
-import { expectJSMutation } from '../../helpers/expect-mutation.js';
+import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
+
+import { MutationLevel } from '@stryker-mutator/api/core';
+
+const booleanLiteralLevel: MutationLevel = {
+  name: 'BooleanLiteralLevel',
+  BooleanLiteral: ['FalseToTrue', 'RemoveNegation'],
+};
 
 describe(sut.name, () => {
   it('should have name "BooleanLiteral"', () => {
@@ -18,5 +25,16 @@ describe(sut.name, () => {
 
   it('should mutate !a to a', () => {
     expectJSMutation(sut, '!a', 'a');
+  });
+
+  it('should only mutate what is defined in the mutation level', () => {
+    expectJSMutationWithLevel(
+      sut,
+      booleanLiteralLevel.BooleanLiteral,
+      'if (true) {}; if (false) {}; if (!value) {}',
+      'if (false) {}; if (false) {}; if (!value) {}',
+      'if (true) {}; if (false) {}; if (value) {}',
+      'if (false) {}; if (false) {}; if (value) {}',
+    );
   });
 });
