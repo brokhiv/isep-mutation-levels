@@ -19,8 +19,8 @@
     { 
       "name": "default",
       "ArithmeticOperator": ["+To-", "-To+", "*To/"],
-      "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"]
-
+      "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"],
+      "StringLiteral": ["EmptyString", "FillString", "EmptyInterpolation", "FillInterpolation"]
     },
     {
       "name": "fancy",
