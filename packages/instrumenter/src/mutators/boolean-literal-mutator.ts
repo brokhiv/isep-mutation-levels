@@ -34,8 +34,7 @@ function isInMutationLevel(path: any, mutators: string[] | undefined): boolean {
     return true;
   }
   if (path.isBooleanLiteral()) {
-    // prettier-ignore
-    const mutatorName = booleanLiteralReplacements[path.node.value as keyof typeof booleanLiteralReplacements].mutatorName;
+    const { mutatorName } = booleanLiteralReplacements[path.node.value as keyof typeof booleanLiteralReplacements];
     return mutators.some((lit) => lit === mutatorName);
   }
   return (
