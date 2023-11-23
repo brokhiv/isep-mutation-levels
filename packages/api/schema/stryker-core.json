@@ -374,6 +374,76 @@
         ]
       }
     },
+    "AssignmentOperator": {
+      "title": "AssignmentOperator",
+      "type": "array",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "anyOf": [
+          {
+            "const" : "+=To-=",
+            "title": "PlusAssignmentToMinusAssignmentMutator",
+            "description": "Replace ```a += b``` with ```a -= b```."
+          },
+          {
+            "const" : "-=To+=",
+            "title": "MinusAssignmentToPlusAssignmentMutator",
+            "description": "Replace ```a -= b``` with ```a += b```."
+          },
+          {
+            "const" : "*=To/=",
+            "title": "MultiplyAssignmentToDivideAssignmentMutator",
+            "description": "Replace ```a *= b``` with ```a /= b```."
+          },
+          {
+            "const" : "/=To*=",
+            "title": "DivideAssignmentToMultiplyAssignmentMutator",
+            "description": "Replace ```a /= b``` with ```a *= b```."
+          },
+          {
+            "const" : "%=To*=",
+            "title": "ModuloAssignmentToMultiplyAssignmentMutator",
+            "description": "Replace ```a %= b``` with ```a *= b```."
+          },
+          {
+            "const" : "<<=To>>=",
+            "title": "LeftShiftAssignmentToRightShiftAssignmentMutator",
+            "description": "Replace ```a <<= b``` with ```a >>= b```."
+          },
+          {
+            "const" : ">>=To<<=",
+            "title": "RightShiftAssignmentToLeftShiftAssignmentMutator",
+            "description": "Replace ```a >>= b``` with ```a <<= b```."
+          },
+          {
+            "const" : "&=To|=",
+            "title": "BitAndAssignmentToBitOrAssignmentMutator",
+            "description": "Replace ```a &= b``` with ```a |= b```."
+          },
+          {
+            "const" : "|=To&=",
+            "title": "BitOrAssignmentToBitAndAssignmentMutator",
+            "description": "Replace ```a |= b``` with ```a &= b```."
+          },
+          {
+            "const" : "&&=To||=",
+            "title": "LogicalAndAssignmentToLogicalOrAssignmentMutator",
+            "description": "Replace ```a &&= b``` with ```a ||= b```."
+          },
+          {
+            "const" : "||=To&&=",
+            "title": "LogicalOrAssignmentToLogicalAndAssignmentMutator",
+            "description": "Replace ```a ||= b``` with ```a &&= b```."
+          },
+          {
+            "const" : "??=To&&=",
+            "title": "NullishCoalescingAssignmentToLogicalAndAssignmentMutator",
+            "description": "Replace ```a ??= b``` with ```a &&= b```."
+          }
+        ]
+      }
+    },
     "BlockStatement": {
       "title": "BlockStatementMutator",
       "description": "Removes the content of every block statement.",
