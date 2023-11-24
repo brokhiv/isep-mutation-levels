@@ -18,9 +18,7 @@
   "mutationLevels": [
     { 
       "name": "default",
-      "ArithmeticOperator": ["+To-", "-To+", "*To/"],
-      "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"]
-
+      "UpdateOperator": ["Pre--To++", "Pre++To--", "Post++To--", "Post--To++"]
     },
     {
       "name": "fancy",
