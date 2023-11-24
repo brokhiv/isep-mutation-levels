@@ -100,9 +100,9 @@ describe(sut.name, () => {
       sut,
       assignmentOperatorLevel.AssignmentOperator,
       'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;',
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;',
+      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
+      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutated <<= to >>=
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutated &&= to ||=
     );
   });
 
@@ -115,12 +115,12 @@ describe(sut.name, () => {
       sut,
       assignmentOperatorAllLevel.BooleanLiteral,
       'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;',
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;',
+      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;', // mutated += to -=
+      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
+      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;', // mutated *= to /=
+      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;', // mutated /= to *=
+      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutated <<= to >>=
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutated &&= to ||=
     );
   });
 
@@ -129,12 +129,12 @@ describe(sut.name, () => {
       sut,
       assignmentOperatorUndefinedLevel.BooleanLiteral,
       'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;',
-      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;',
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;',
+      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;', // mutated += to -=
+      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
+      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;', // mutated *= to /=
+      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;', // mutated /= to *=
+      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutated <<= to >>=
+      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutated &&= to ||=
     );
   });
 });
