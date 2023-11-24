@@ -21,6 +21,7 @@
       "ArithmeticOperator": ["+To-", "-To+", "*To/"],
       "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"],
       "OptionalChaining": ["OptionalCallExpression", "OptionalMemberExpression"]
+      "BooleanLiteral": ["TrueToFalse", "RemoveNegation"]
     },
     {
       "name": "fancy",
