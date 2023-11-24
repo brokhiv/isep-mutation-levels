@@ -22,7 +22,6 @@
       "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"],
       "AssignmentOperator": ["-=To+=", "<<=To>>=", "&&=To||="],
       "BooleanLiteral": ["TrueToFalse", "RemoveNegation"]
-
     },
     {
       "name": "fancy",
