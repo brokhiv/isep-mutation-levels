@@ -6,6 +6,7 @@ import { NodeMutator } from './node-mutator.js';
 
 const { types } = babel;
 
+// prettier-ignore
 const operators = Object.freeze({
   'charAt': { replacement: null, mutatorName: 'removeCharAt' },
   'endsWith': { replacement: 'startsWith', mutatorName: 'endsWithToStartsWith' },
@@ -27,7 +28,7 @@ const operators = Object.freeze({
   'trimStart': { replacement: 'trimEnd', mutatorName: 'trimStartToTrimEnd' },
   'min': { replacement: 'max', mutatorName: 'minToMax' },
   'max': { replacement: 'min', mutatorName: 'maxToMin' },
-})
+});
 
 export const methodExpressionMutator: NodeMutator = {
   name: 'MethodExpression',

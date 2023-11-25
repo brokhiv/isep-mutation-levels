@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { methodExpressionMutator as sut } from '../../../src/mutators/method-expression-mutator.js';
-import {expectJSMutation, expectJSMutationWithLevel} from '../../helpers/expect-mutation.js';
+import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 
 describe(sut.name, () => {
   it('should have name "MethodExpression"', () => {
@@ -149,7 +149,10 @@ describe(sut.name, () => {
   });
 
   it('should only mutate methods that are allowed by a MutationLevel and ignore others', () => {
-    const methodExpressionLevel = { name: 'methodExpressionLevel', MethodExpression: ['endsWithToStartsWith', 'startsWithToEndsWith', 'removeSubstring', 'toLowerCaseToToUpperCase'] };
+    const methodExpressionLevel = {
+      name: 'methodExpressionLevel',
+      MethodExpression: ['endsWithToStartsWith', 'startsWithToEndsWith', 'removeSubstring', 'toLowerCaseToToUpperCase'],
+    };
     // The below should be swapped
     expectJSMutationWithLevel(sut, methodExpressionLevel.MethodExpression, 'text.startsWith();', 'text.endsWith();');
     expectJSMutationWithLevel(sut, methodExpressionLevel.MethodExpression, 'text.endsWith();', 'text.startsWith();');
