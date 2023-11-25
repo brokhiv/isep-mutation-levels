@@ -626,7 +626,7 @@
       "title": "MethodExpression",
       "type": "array",
       "default": [],
-      "minItems": 1,
+      "minItems": 0,
       "uniqueItems": true,
       "items": {
         "anyOf": [
@@ -641,8 +641,18 @@
             "description": "Replace ```endsWith()``` with ```startsWith()```."
           },
           {
+            "const": "startsWithToEndsWith",
+            "title": "startsWithToEndsWithMutator",
+            "description": "Replace ```endsWith()``` with ```startsWith()```."
+          },
+          {
             "const": "everyToSome",
             "title": "everyToSomeMutator",
+            "description": "Replace ```every()``` with ```some()```."
+          },
+          {
+            "const": "someToEvery",
+            "title": "someToEveryMutator",
             "description": "Replace ```every()``` with ```some()```."
           },
           {
@@ -681,8 +691,18 @@
             "description": "Replace ```toLocalLowerCase()``` with ```toLocalUpperCase()```."
           },
           {
+            "const": "toLocaleUpperCaseToToLocaleLowerCase",
+            "title": "toLocaleUpperCaseToToLocaleLowerCaseMutator",
+            "description": "Replace ```toLocalLowerCase()``` with ```toLocalUpperCase()```."
+          },
+          {
             "const": "toLowerCaseTotoUpperCase",
             "title": "toLowerCaseTotoUpperCaseMutator",
+            "description": "Replace ```toLocalLowerCase()``` with ```toLocalUpperCase()```."
+          },
+          {
+            "const": "toUpperCaseToToLowerCase",
+            "title": "toUpperCaseToToLowerCaseMutator",
             "description": "Replace ```toLocalLowerCase()``` with ```toLocalUpperCase()```."
           },
           {
@@ -696,8 +716,18 @@
             "description": "Replace ```trimEnd()``` with ```trimStart()```."
           },
           {
+            "const": "trimStartToTrimEnd",
+            "title": "trimStartToTrimEndMutator",
+            "description": "Replace ```trimEnd()``` with ```trimStart()```."
+          },
+          {
             "const": "minToMax",
             "title": "minToMaxMutator",
+            "description": "Replace ```min()``` with ```max()```."
+          },
+          {
+            "const": "maxToMin",
+            "title": "maxToMinMutator",
             "description": "Replace ```min()``` with ```max()```."
           }
         ]

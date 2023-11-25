@@ -1,38 +1,40 @@
 import babel from '@babel/core';
 
-import { deepCloneNode } from '../util/syntax-helpers.js';
+import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutator } from './node-mutator.js';
 
 const { types } = babel;
 
-const replacements = new Map([
-  ['charAt', null],
-  ['endsWith', 'startsWith'],
-  ['every', 'some'],
-  ['filter', null],
-  ['reverse', null],
-  ['slice', null],
-  ['sort', null],
-  ['substr', null],
-  ['substring', null],
-  ['toLocaleLowerCase', 'toLocaleUpperCase'],
-  ['toLowerCase', 'toUpperCase'],
-  ['trim', null],
-  ['trimEnd', 'trimStart'],
-  ['min', 'max'],
-]);
-
-for (const [key, value] of Array.from(replacements)) {
-  if (value) {
-    replacements.set(value, key);
-  }
-}
+const operators = Object.freeze({
+  'charAt': { replacement: null, mutatorName: 'removeCharAt' },
+  'endsWith': { replacement: 'startsWith', mutatorName: 'endsWithToStartsWith' },
+  'startsWith': { replacement: 'endsWith', mutatorName: 'startsWithToEndsWith' },
+  'every': { replacement: 'some', mutatorName: 'everyToSome' },
+  'some': { replacement: 'every', mutatorName: 'someToEvery' },
+  'filter': { replacement: null, mutatorName: 'removeFilter' },
+  'reverse': { replacement: null, mutatorName: 'removeReverse' },
+  'slice': { replacement: null, mutatorName: 'removeSlice' },
+  'sort': { replacement: null, mutatorName: 'removeSort' },
+  'substr': { replacement: null, mutatorName: 'removeSubstr' },
+  'substring': { replacement: null, mutatorName: 'removeSubstring' },
+  'toLocaleLowerCase': { replacement: 'toLocaleUpperCase', mutatorName: 'toLocaleLowerCaseToToLocaleUpperCase' },
+  'toLocaleUpperCase': { replacement: 'toLocaleLowerCase', mutatorName: 'toLocaleUpperCaseToToLocaleLowerCase' },
+  'toLowerCase': { replacement: 'toUpperCase', mutatorName: 'toLowerCaseToToUpperCase' },
+  'toUpperCase': { replacement: 'toLowerCase', mutatorName: 'toUpperCaseToToLowerCase' },
+  'trim': { replacement: null, mutatorName: 'removeTrim' },
+  'trimEnd': { replacement: 'trimStart', mutatorName: 'trimEndToTrimStart' },
+  'trimStart': { replacement: 'trimEnd', mutatorName: 'trimStartToTrimEnd' },
+  'min': { replacement: 'max', mutatorName: 'minToMax' },
+  'max': { replacement: 'min', mutatorName: 'maxToMin' },
+})
 
 export const methodExpressionMutator: NodeMutator = {
   name: 'MethodExpression',
 
-  *mutate(path) {
+  *mutate(path, operations) {
+    // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
+
     if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
       return;
     }
@@ -42,12 +44,18 @@ export const methodExpressionMutator: NodeMutator = {
       return;
     }
 
-    const newName = replacements.get(callee.property.name);
-    if (newName === undefined) {
+    const mutation = operators[callee.property.name as keyof typeof operators];
+    if (mutation === undefined) {
+      // Function is not known in `operators`, so no mutations
       return;
     }
 
-    if (newName === null) {
+    if (operations !== undefined && !operations.includes(mutation.mutatorName)) {
+      // Mutator is blocked by mutation level, so no replacement
+      return;
+    }
+
+    if (mutation.replacement === null) {
       // Remove the method expression. I.e. `foo.trim()` => `foo`
       yield deepCloneNode(callee.object);
       return;
@@ -57,8 +65,8 @@ export const methodExpressionMutator: NodeMutator = {
     const nodeArguments = path.node.arguments.map((argumentNode) => deepCloneNode(argumentNode));
 
     const mutatedCallee = types.isMemberExpression(callee)
-      ? types.memberExpression(deepCloneNode(callee.object), types.identifier(newName), false, callee.optional)
-      : types.optionalMemberExpression(deepCloneNode(callee.object), types.identifier(newName), false, callee.optional);
+      ? types.memberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement), false, callee.optional)
+      : types.optionalMemberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement), false, callee.optional);
 
     yield types.isCallExpression(path.node)
       ? types.callExpression(mutatedCallee, nodeArguments)
