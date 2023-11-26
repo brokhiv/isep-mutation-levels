@@ -18,7 +18,12 @@
   "mutationLevels": [
     { 
       "name": "default",
-      "UpdateOperator": ["Pre--To++", "Pre++To--", "Post++To--", "Post--To++"]
+      "ArithmeticOperator": ["+To-", "-To+", "*To/"],
+      "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"],
+      "StringLiteral": ["EmptyString", "FillString", "EmptyInterpolation", "FillInterpolation"],
+      "AssignmentOperator": ["-=To+=", "<<=To>>=", "&&=To||="],
+      "BooleanLiteral": ["TrueToFalse", "RemoveNegation"]
+
     },
     {
       "name": "fancy",
