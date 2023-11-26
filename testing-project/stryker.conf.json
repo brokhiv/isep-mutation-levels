@@ -21,6 +21,7 @@
       "ArithmeticOperator": ["+To-", "-To+", "*To/"],
       "ArrayDeclaration": ["EmptyArray", "FilledArray", "FilledArrayConstructor"],
       "StringLiteral": ["EmptyString", "FillString", "EmptyInterpolation", "FillInterpolation"]
+      "AssignmentOperator": ["-=To+=", "<<=To>>=", "&&=To||="],
       "BooleanLiteral": ["TrueToFalse", "RemoveNegation"]
     },
     {
