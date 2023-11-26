@@ -68,11 +68,11 @@ export const conditionalExpressionMutator: NodeMutator = {
           return;
         }
       }
-      if (operations === undefined || operations.includes(conditionalReplacements.BooleanExpressionToFalse.mutatorName as string)) {
-        yield conditionalReplacements.BooleanExpressionToFalse.replacementOperator;
-      }
       if (operations === undefined || operations.includes(conditionalReplacements.BooleanExpressionToTrue.mutatorName as string)) {
         yield conditionalReplacements.BooleanExpressionToTrue.replacementOperator;
+      }
+      if (operations === undefined || operations.includes(conditionalReplacements.BooleanExpressionToFalse.mutatorName as string)) {
+        yield conditionalReplacements.BooleanExpressionToFalse.replacementOperator;
       }
     } else if (path.isForStatement() && !path.node.test) {
       if (operations === undefined || operations.includes(conditionalReplacements.ForLoopToFalse.mutatorName as string)) {
