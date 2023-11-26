@@ -1,7 +1,18 @@
 import { expect } from 'chai';
 
-import { expectJSMutation } from '../../helpers/expect-mutation.js';
+import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 import { conditionalExpressionMutator as sut } from '../../../src/mutators/conditional-expression-mutator.js';
+
+const conditionLevel: string[] = [
+  'WhileLoopToFalse',
+  'BooleanExpressionToFalse',
+  'DoWhileLoopToFalse',
+  'BooleanExpressionToTrue',
+  'ForLoopToFalse',
+  'IfToFalse',
+  'IfToTrue',
+  'SwitchToEmpty',
+];
 
 describe(sut.name, () => {
   it('should have name "ConditionalExpression"', () => {
@@ -139,5 +150,37 @@ describe(sut.name, () => {
 
   it('should mutate the expression of a while statement', () => {
     expectJSMutation(sut, 'while(a < b) { console.log(); }', 'while(false) { console.log(); }');
+  });
+
+  it('should only mutate --a and ++a', () => {
+    expectJSMutationWithLevel(
+      sut,
+      conditionLevel,
+      '--a; ++a; a--; a++',
+      '++a; ++a; a--; a++', //mutates --a
+      '--a; --a; a--; a++', //mutates ++a
+    );
+  });
+
+  it('should only mutate a-- and a++', () => {
+    expectJSMutationWithLevel(
+      sut,
+      updateLevel,
+      '--a; ++a; a--; a++',
+      '--a; ++a; a--; a--', //mutates a++
+      '--a; ++a; a++; a++', //mutates a--
+    );
+  });
+
+  it('should mutate all', () => {
+    expectJSMutationWithLevel(
+      sut,
+      updateLevel,
+      '--a; ++a; a--; a++',
+      '++a; ++a; a--; a++', //mutates --a
+      '--a; --a; a--; a++', //mutates ++a
+      '--a; ++a; a--; a--', //mutates a++
+      '--a; ++a; a++; a++', //mutates a--
+    );
   });
 });

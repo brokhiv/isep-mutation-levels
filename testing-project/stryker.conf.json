@@ -18,7 +18,7 @@
   "mutationLevels": [
     { 
       "name": "default",
-      "UpdateOperator": ["Pre--To++", "Pre++To--", "Post++To--", "Post--To++"]
+      "ConditionalExpression": ["WhileLoopToFalse", "BooleanExpressionToFalse", "DoWhileLoopToFalse", "BooleanExpressionToTrue", "ForLoopToFalse","IfToFalse","IfToTrue", "SwitchToEmpty"]
     },
     {
       "name": "fancy",
