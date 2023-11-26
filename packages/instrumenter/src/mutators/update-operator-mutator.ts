@@ -21,6 +21,7 @@ export const updateOperatorMutator: NodeMutator = {
   *mutate(path, operations) {
     if (path.isUpdateExpression() && operations === undefined) {
       yield types.updateExpression(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         UpdateReplacements[path.node.operator as keyof string].replacementOperator,
         deepCloneNode(path.node.argument),
         path.node.prefix,
@@ -37,6 +38,7 @@ export const updateOperatorMutator: NodeMutator = {
         replacement = UpdateReplacements['Post--To++'].replacementOperator;
       }
       if (replacement !== undefined) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);
       }
     }
