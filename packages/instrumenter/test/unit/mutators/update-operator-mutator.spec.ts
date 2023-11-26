@@ -41,7 +41,7 @@ describe(sut.name, () => {
   it('should only mutate a-- and a++', () => {
     expectJSMutationWithLevel(
       sut,
-      updateLevel,
+      updateLevel2,
       '--a; ++a; a--; a++',
       '--a; ++a; a--; a--', //mutates a++
       '--a; ++a; a++; a++', //mutates a--
@@ -51,7 +51,7 @@ describe(sut.name, () => {
   it('should mutate all', () => {
     expectJSMutationWithLevel(
       sut,
-      updateLevel,
+      updateLevel3,
       '--a; ++a; a--; a++',
       '++a; ++a; a--; a++', //mutates --a
       '--a; --a; a--; a++', //mutates ++a
