@@ -26,7 +26,7 @@ describe(sut.name, () => {
   });
 
   it('should only mutate || and &&', () => {
-    let level = ['||To&&', '&&To||'];
+    const level = ['||To&&', '&&To||'];
     expectJSMutationWithLevel(sut, level, 'a || b; a && b; a ?? b', 'a && b; a && b; a ?? b', 'a || b; a || b; a ?? b');
   });
 
