@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { StrykerOptions, PartialStrykerOptions, strykerCoreSchema } from '@stryker-mutator/api/core';
 import { BaseContext, commonTokens, Injector, tokens } from '@stryker-mutator/api/plugin';
 import { deepFreeze } from '@stryker-mutator/util';
@@ -36,6 +38,7 @@ export class PrepareExecutor {
       .provideClass(coreTokens.optionsValidator, OptionsValidator);
     const configReader = configReaderInjector.injectClass(ConfigReader);
     const options: StrykerOptions = await configReader.readConfig(cliOptions);
+    const predefinedLevel: any = await configReader.readJsonConfig(path.resolve('../packages/core/src/mock.json'));
 
     // Load plugins
     const pluginLoader = configReaderInjector.injectClass(PluginLoader);

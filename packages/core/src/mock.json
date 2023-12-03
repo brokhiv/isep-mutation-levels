@@ -1,0 +1,13 @@
+{
+    "mutationLevels": [
+      { 
+        "name": "level1"
+      },
+      {
+        "name": "level2",
+        "BlockStatement": true,
+        "MethodExpression": ["minToMax"]
+      }
+    ]
+  }
+  
