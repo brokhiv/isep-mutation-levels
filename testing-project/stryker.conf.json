@@ -17,7 +17,7 @@
   "coverageAnalysis": "perTest",
   "mutationLevels": [
     { 
-      "name": "default"
+      "name": "default"      
     },
     {
       "name": "fancy",

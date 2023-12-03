@@ -38,7 +38,7 @@ export class PrepareExecutor {
       .provideClass(coreTokens.optionsValidator, OptionsValidator);
     const configReader = configReaderInjector.injectClass(ConfigReader);
     const options: StrykerOptions = await configReader.readConfig(cliOptions);
-    const predefinedLevel: any = await configReader.readJsonConfig(path.resolve('../packages/core/src/mock.json'));
+    const preDefinedLevel: PartialStrykerOptions = await configReader.readJsonConfig(path.resolve('../packages/core/src/predefinedMLevels.json'));
 
     // Load plugins
     const pluginLoader = configReaderInjector.injectClass(PluginLoader);
