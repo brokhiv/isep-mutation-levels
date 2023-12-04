@@ -15,14 +15,8 @@
     "configFile": "jest.config.cjs"
   },
   "coverageAnalysis": "perTest",
-  "mutationLevels": [
-    { 
-      "name": "default"      
-    },
-    {
-      "name": "fancy",
-      "BlockStatement": true,
-      "MethodExpression": ["minToMax"]
-    }
-  ]
+  "mutator": {
+    "includedMutations": ["@Level1", "@ArithmeticOperator", "removeCharAt", "BlockStatement"],
+    "excludedMutations": ["@Regex", "Remove~"]
+  }
 }
