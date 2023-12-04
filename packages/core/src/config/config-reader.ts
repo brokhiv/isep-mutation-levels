@@ -84,7 +84,7 @@ export class ConfigReader {
     return undefined;
   }
 
-  public async readJsonConfig(configFile: string): Promise<PartialStrykerOptions> {
+  private async readJsonConfig(configFile: string): Promise<PartialStrykerOptions> {
     const fileContent = await fs.promises.readFile(configFile, 'utf-8');
     try {
       return JSON.parse(fileContent);
