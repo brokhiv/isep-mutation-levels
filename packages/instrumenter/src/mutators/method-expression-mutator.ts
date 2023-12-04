@@ -56,21 +56,24 @@ export const methodExpressionMutator: NodeMutator = {
       return;
     }
 
-    if (mutation.replacement === null) {
-      // Remove the method expression. I.e. `foo.trim()` => `foo`
+    // Replace the method expression. I.e. `foo.toLowerCase()` => `foo.toUpperCase`
+    const nodeArguments = path.node.arguments.map((argumentNode) => deepCloneNode(argumentNode));
+
+    let mutatedCallee = undefined;
+
+    if (mutation.replacement != null) {
+      mutatedCallee = types.isMemberExpression(callee)
+        ? types.memberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement), false, callee.optional)
+        : types.optionalMemberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement), false, callee.optional);
+    } else if (typeof mutation.replacement == 'object' && mutation.replacement == null) {
       yield deepCloneNode(callee.object);
       return;
     }
 
-    // Replace the method expression. I.e. `foo.toLowerCase()` => `foo.toUpperCase`
-    const nodeArguments = path.node.arguments.map((argumentNode) => deepCloneNode(argumentNode));
-
-    const mutatedCallee = types.isMemberExpression(callee)
-      ? types.memberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement), false, callee.optional)
-      : types.optionalMemberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement), false, callee.optional);
-
-    yield types.isCallExpression(path.node)
-      ? types.callExpression(mutatedCallee, nodeArguments)
-      : types.optionalCallExpression(mutatedCallee, nodeArguments, path.node.optional);
+    if (mutatedCallee != undefined) {
+      yield types.isCallExpression(path.node)
+        ? types.callExpression(mutatedCallee, nodeArguments)
+        : types.optionalCallExpression(mutatedCallee, nodeArguments, path.node.optional);
+    }
   },
 };
