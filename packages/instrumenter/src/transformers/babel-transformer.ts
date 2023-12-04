@@ -11,9 +11,7 @@ import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-p
 import { Mutable, Mutant } from '../mutant.js';
 import { allMutators } from '../mutators/index.js';
 
-import { MutationLevel } from '../mutators/mutation-level-options.js';
-
-import { defaultMutationLevels } from '../default-mutation-levels.js';
+import { MutationLevel, defaultMutationLevels } from '../mutation-level/mutation-level.js';
 
 import { DirectiveBookkeeper } from './directive-bookkeeper.js';
 import { IgnorerBookkeeper } from './ignorer-bookkeeper.js';

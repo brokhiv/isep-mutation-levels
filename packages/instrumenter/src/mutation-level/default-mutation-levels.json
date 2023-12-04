@@ -38,10 +38,7 @@
         "StringLiteral": ["FillString", "FillInterpolation"],
         "Regex": true,
         "BooleanLiteral": ["TrueToFalse", "FalseToTrue", "RemoveNegation"]
-        
-
       }
-
     ]
   }
   
