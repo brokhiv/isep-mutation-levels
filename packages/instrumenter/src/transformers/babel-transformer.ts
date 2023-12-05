@@ -4,13 +4,14 @@ import babel, { type NodePath, type types } from '@babel/core';
 // @ts-expect-error The babel types don't define "File" yet
 import { File } from '@babel/core';
 /* eslint-enable import/no-duplicates */
-import { MutationLevel } from '@stryker-mutator/api/core';
 
 import { isImportDeclaration, isTypeNode, locationIncluded, locationOverlaps, placeHeaderIfNeeded } from '../util/syntax-helpers.js';
 import { ScriptFormat } from '../syntax/index.js';
 import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-placers/index.js';
 import { Mutable, Mutant } from '../mutant.js';
 import { allMutators } from '../mutators/index.js';
+
+import { MutationLevel, defaultMutationLevels } from '../mutation-level/mutation-level.js';
 
 import { DirectiveBookkeeper } from './directive-bookkeeper.js';
 import { IgnorerBookkeeper } from './ignorer-bookkeeper.js';
@@ -155,11 +156,18 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
    * Generate mutants for the current node.
    */
   function* mutate(node: NodePath): Iterable<Mutable> {
+    //TODO: Create runLevel here
+    const runLevel: MutationLevel | undefined = undefined;
+    for (const defaultLevel of defaultMutationLevels) {
+      if ('@' + defaultLevel.name in options.includedMutations) {
+        //For each key in defaultLevel, ADD it to the runLevel
+      }
+    }
     for (const mutator of mutators) {
-      if (options.runLevel === undefined || mutator.name in options.runLevel) {
+      if (runLevel === undefined || mutator.name in runLevel) {
         let propertyValue = undefined;
-        if (options.runLevel !== undefined) {
-          propertyValue = options.runLevel?.[mutator.name as keyof MutationLevel] as string[];
+        if (runLevel !== undefined) {
+          propertyValue = runLevel?.[mutator.name as keyof MutationLevel] as string[];
         }
 
         for (const replacement of mutator.mutate(node, propertyValue)) {
