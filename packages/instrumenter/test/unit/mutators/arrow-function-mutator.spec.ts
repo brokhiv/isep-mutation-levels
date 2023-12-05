@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 
-import { MutationLevel } from '@stryker-mutator/api/core';
-
 import { arrowFunctionMutator as sut } from '../../../src/mutators/arrow-function-mutator.js';
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
+import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
-const arrowFunctionLevel: MutationLevel = { name: 'ArrowFunctionLevel', ArrowFunction: ['BodyToUndefined'] };
+const arrowFunctionLevel: MutationLevel = { name: 'ArrowFunctionLevel', ArrowFunction: ['ArrowFunction'] };
 const arrowFunctionUndefinedLevel: MutationLevel = { name: 'ArrowFunctionLevel' };
 
 describe(sut.name, () => {
