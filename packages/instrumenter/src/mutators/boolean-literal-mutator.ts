@@ -4,21 +4,23 @@ import { deepCloneNode } from '../util/index.js';
 
 const { types } = babel;
 
+import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
+
 import { NodeMutator } from './index.js';
 
-const booleanLiteralReplacements = Object.freeze({
+const operators: NodeMutatorConfiguration = {
   // prettier-ignore
-  'true': {replacement: 'false', mutatorName: 'TrueToFalse'},
+  'true': {replacement: 'false', mutationName: 'TrueToFalse'},
   // prettier-ignore
-  'false': {replacement: 'true', mutatorName: 'FalseToTrue'},
-  '!': { replacement: '', mutatorName: 'RemoveNegation' },
-} as const);
+  'false': {replacement: 'true', mutationName: 'FalseToTrue'},
+  '!': { replacement: '', mutationName: 'RemoveNegation' },
+};
 
 export const booleanLiteralMutator: NodeMutator = {
   name: 'BooleanLiteral',
 
-  *mutate(path, options: string[] | undefined) {
-    if (isInMutationLevel(path, options)) {
+  *mutate(path, levelMutations) {
+    if (isInMutationLevel(path, levelMutations)) {
       if (path.isBooleanLiteral()) {
         yield types.booleanLiteral(!path.node.value);
       }
@@ -29,18 +31,18 @@ export const booleanLiteralMutator: NodeMutator = {
   },
 };
 
-function isInMutationLevel(path: any, mutators: string[] | undefined): boolean {
-  if (mutators === undefined) {
+function isInMutationLevel(path: any, levelMutations: string[] | undefined): boolean {
+  if (levelMutations === undefined) {
     return true;
   }
   if (path.isBooleanLiteral()) {
-    const { mutatorName } = booleanLiteralReplacements[path.node.value as keyof typeof booleanLiteralReplacements];
-    return mutators.some((lit) => lit === mutatorName);
+    const { mutationName: mutatorName } = operators[path.node.value as keyof typeof operators];
+    return levelMutations.some((lit) => lit === mutatorName);
   }
   return (
     path.isUnaryExpression() &&
     path.node.operator === '!' &&
     path.node.prefix &&
-    mutators.some((lit: string) => lit === booleanLiteralReplacements['!'].mutatorName)
+    levelMutations.some((lit: string) => lit === operators['!'].mutationName)
   );
 }
