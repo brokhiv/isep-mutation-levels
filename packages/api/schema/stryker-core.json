@@ -267,6 +267,7 @@
         { "$ref": "#/definitions/ArrayDeclaration" },
         { "$ref": "#/definitions/AssignmentOperator" },
         { "$ref": "#/definitions/BlockStatement" },
+        { "$ref": "#/definitions/ArrowFunction"},
         { "$ref": "#/definitions/BooleanLiteral" },
         { "$ref": "#/definitions/ConditionalExpression" },
         { "$ref": "#/definitions/EqualityOperator" },
@@ -418,21 +419,8 @@
       ]
     },
     "ArrowFunction": {
-      "title": "ArrowFunction",
-      "type": "array",
-      "description": "Mutates bodies of arrow functions to undefined",
-      "uniqueItems": true,
-      "default": [],
-      "minItems": 1,
-      "items": {
-        "anyOf": [
-          {
-            "const": "BodyToUndefined",
-            "title": "BodyToUndefinedMutator",
-            "description": "Replace body to ```undefined```."
-          }
-        ]
-      }
+      "const": "ArrowFunction",
+      "description": "Mutates bodies of arrow functions to undefined"
     },
     "BlockStatement": {
       "const": "BlockStatement",
