@@ -9,10 +9,8 @@ import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 import { NodeMutator } from './index.js';
 
 const operators: NodeMutatorConfiguration = {
-  // prettier-ignore
-  'true': {replacement: 'false', mutationName: 'TrueToFalse'},
-  // prettier-ignore
-  'false': {replacement: 'true', mutationName: 'FalseToTrue'},
+  true: { replacement: false, mutationName: 'TrueToFalse' },
+  false: { replacement: true, mutationName: 'FalseToTrue' },
   '!': { replacement: '', mutationName: 'RemoveNegation' },
 };
 

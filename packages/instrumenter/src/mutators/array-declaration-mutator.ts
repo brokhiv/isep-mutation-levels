@@ -20,7 +20,7 @@ export const arrayDeclarationMutator: NodeMutator = {
   *mutate(path, levelMutations) {
     // The check of the [] construct in code
     if (path.isArrayExpression() && isArrayInLevel(path.node, levelMutations)) {
-      const replacement = path.node.elements.length ? operators.FilledArray.replacement : operators.EmptyArray.replacement;
+      const replacement = path.node.elements.length > 0 ? operators.FilledArray.replacement : operators.EmptyArray.replacement;
       yield replacement;
     }
     // Check for the new Array() construct in code

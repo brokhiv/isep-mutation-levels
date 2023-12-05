@@ -46,8 +46,8 @@ function isInMutationLevel(node: types.AssignmentExpression, operations: string[
   if (operations === undefined) {
     return true;
   }
-  const { mutationName: mutatorName } = operators[node.operator];
-  return operations.some((op) => op === mutatorName);
+  const { mutationName } = operators[node.operator];
+  return operations.some((op) => op === mutationName);
 }
 
 function isSupportedAssignmentOperator(operator: string): operator is keyof typeof operators {
