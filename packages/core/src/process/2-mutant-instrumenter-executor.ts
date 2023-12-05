@@ -54,6 +54,8 @@ export class MutantInstrumenterExecutor {
       ...this.options.mutator,
     });
 
+    console.log(defaultMutationLevels);
+
     // Preprocess the project
     const preprocess = this.injector.injectFunction(createPreprocessor);
     this.writeInstrumentedFiles(instrumentResult);

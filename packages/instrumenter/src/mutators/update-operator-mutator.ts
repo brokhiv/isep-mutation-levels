@@ -6,7 +6,7 @@ import { NodeMutator } from './index.js';
 
 const { types } = babel;
 
-const UpdateReplacements = Object.assign({
+const operators = Object.assign({
   'Post++To--': { replacementOperator: '--', mutatorName: 'Post++To--' },
   'Post--To++': { replacementOperator: '++', mutatorName: 'Post--To++' },
   'Pre++To--': { replacementOperator: '--', mutatorName: 'Pre++To--' },
@@ -19,27 +19,25 @@ export const updateOperatorMutator: NodeMutator = {
   name: 'UpdateOperator',
 
   *mutate(path, operations) {
-    if (path.isUpdateExpression() && operations === undefined) {
-      yield types.updateExpression(
+    if (path.isUpdateExpression()) {
+      if (operations === undefined) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        UpdateReplacements[path.node.operator as keyof string].replacementOperator,
-        deepCloneNode(path.node.argument),
-        path.node.prefix,
-      );
-    } else if (path.isUpdateExpression() && operations !== undefined) {
-      let replacement = undefined;
-      if (path.node.prefix && path.node.operator == '++' && operations.includes(UpdateReplacements['Pre++To--'].mutatorName as string)) {
-        replacement = UpdateReplacements['Pre++To--'].replacementOperator;
-      } else if (path.node.prefix && path.node.operator == '--' && operations.includes(UpdateReplacements['Pre--To++'].mutatorName as string)) {
-        replacement = UpdateReplacements['Pre--To++'].replacementOperator;
-      } else if (!path.node.prefix && path.node.operator == '++' && operations.includes(UpdateReplacements['Post++To--'].mutatorName as string)) {
-        replacement = UpdateReplacements['Post++To--'].replacementOperator;
-      } else if (!path.node.prefix && path.node.operator == '--' && operations.includes(UpdateReplacements['Post--To++'].mutatorName as string)) {
-        replacement = UpdateReplacements['Post--To++'].replacementOperator;
-      }
-      if (replacement !== undefined) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);
+        yield types.updateExpression(operators[path.node.operator].replacementOperator, deepCloneNode(path.node.argument), path.node.prefix);
+      } else {
+        let replacement = undefined;
+        if (path.node.prefix && path.node.operator == '++' && operations.includes(operators['Pre++To--'].mutatorName as string)) {
+          replacement = operators['Pre++To--'].replacementOperator;
+        } else if (path.node.prefix && path.node.operator == '--' && operations.includes(operators['Pre--To++'].mutatorName as string)) {
+          replacement = operators['Pre--To++'].replacementOperator;
+        } else if (!path.node.prefix && path.node.operator == '++' && operations.includes(operators['Post++To--'].mutatorName as string)) {
+          replacement = operators['Post++To--'].replacementOperator;
+        } else if (!path.node.prefix && path.node.operator == '--' && operations.includes(operators['Post--To++'].mutatorName as string)) {
+          replacement = operators['Post--To++'].replacementOperator;
+        }
+        if (replacement !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);
+        }
       }
     }
   },
