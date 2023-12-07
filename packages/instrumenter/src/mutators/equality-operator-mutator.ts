@@ -2,33 +2,29 @@ import babel, { types } from '@babel/core';
 
 import { EqualityOperator } from '@stryker-mutator/api/core';
 
-import { NodeMutatorMultiConfiguration } from '../mutation-level/mutation-level.js';
+import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './node-mutator.js';
 
 const { types: t } = babel;
 
-const operators: NodeMutatorMultiConfiguration<EqualityOperator> = {
-  '<': [
-    { replacement: '<=', mutationName: 'EqualityOperator_LessThanOperator_Boundary' },
-    { replacement: '>=', mutationName: 'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator' },
-  ],
-  '<=': [
-    { replacement: '<', mutationName: 'EqualityOperator_LessThanEqualOperator_Boundary' },
-    { replacement: '>', mutationName: 'EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator' },
-  ],
-  '>': [
-    { replacement: '>=', mutationName: 'EqualityOperator_GreaterThanOperator_Boundary' },
-    { replacement: '<=', mutationName: 'EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator' },
-  ],
-  '>=': [
-    { replacement: '>', mutationName: 'EqualityOperator_GreatherThanEqualOperator_Boundary' },
-    { replacement: '<', mutationName: 'EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator' },
-  ],
-  '==': [{ replacement: '!=', mutationName: 'EqualityOperator_EqualityOperator_ToInequalityOperator' }],
-  '!=': [{ replacement: '==', mutationName: 'EqualityOperator_InequalityOperator_ToEqualityOperator' }],
-  '===': [{ replacement: '!==', mutationName: 'EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator' }],
-  '!==': [{ replacement: '===', mutationName: 'EqualityOperator_StrictInequalityOperator_ToStrictEqualityOperator' }],
+const operators: NodeMutatorConfiguration<EqualityOperator> = {
+  '<To<=': { replacement: '<=', mutationName: 'EqualityOperator_LessThanOperator_Boundary' },
+  '<To>=': { replacement: '>=', mutationName: 'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator' },
+
+  '<=To<': { replacement: '<', mutationName: 'EqualityOperator_LessThanEqualOperator_Boundary' },
+  '<=To>': { replacement: '>', mutationName: 'EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator' },
+
+  '>To>=': { replacement: '>=', mutationName: 'EqualityOperator_GreaterThanOperator_Boundary' },
+  '>To<=': { replacement: '<=', mutationName: 'EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator' },
+
+  '>=To>': { replacement: '>', mutationName: 'EqualityOperator_GreatherThanEqualOperator_Boundary' },
+  '>=To<': { replacement: '<', mutationName: 'EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator' },
+
+  '==': { replacement: '!=', mutationName: 'EqualityOperator_EqualityOperator_ToInequalityOperator' },
+  '!=': { replacement: '==', mutationName: 'EqualityOperator_InequalityOperator_ToEqualityOperator' },
+  '===': { replacement: '!==', mutationName: 'EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator' },
+  '!==': { replacement: '===', mutationName: 'EqualityOperator_StrictInequalityOperator_ToStrictEqualityOperator' },
 };
 
 function isEqualityOperator(operator: string): operator is keyof typeof operators {
@@ -51,12 +47,14 @@ export const equalityOperatorMutator: NodeMutator = {
 };
 
 function filterMutationLevel(node: types.BinaryExpression, levelMutations: string[] | undefined) {
-  const allMutations = operators[node.operator as keyof typeof operators];
-
   // Nothing allowed, so return an empty array
   if (levelMutations === undefined) {
-    return allMutations;
+    return [];
   }
+
+  const allMutations = Object.keys(operators)
+    .filter((k) => k.startsWith(node.operator))
+    .map((k) => operators[k]);
 
   return allMutations.filter((mut) => levelMutations.some((op) => op === mut.mutationName));
 }

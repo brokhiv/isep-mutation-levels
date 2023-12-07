@@ -21,7 +21,6 @@ import {
 
 export type NodeMutatorConfiguration<T> = Record<string, ReplacementConfiguration<T>>;
 
-export type NodeMutatorMultiConfiguration<T> = Record<string, Array<ReplacementConfiguration<T>>>;
 interface ReplacementConfiguration<T> {
   replacement?: any;
   mutationName: T;
