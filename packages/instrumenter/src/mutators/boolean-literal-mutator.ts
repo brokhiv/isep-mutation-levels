@@ -1,5 +1,7 @@
 import babel from '@babel/core';
 
+import { BooleanLiteral } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 const { types } = babel;
@@ -8,7 +10,7 @@ import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './index.js';
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<BooleanLiteral> = {
   true: { replacement: false, mutationName: 'BooleanLiteral_TrueLiteral_ToFalseLiteral' },
   false: { replacement: true, mutationName: 'BooleanLiteral_FalseLiteral_ToTrueLiteral' },
   '!': { replacement: '', mutationName: 'BooleanLiteral_LogicalNot_Removal' },

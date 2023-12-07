@@ -1,5 +1,7 @@
 import babel from '@babel/core';
 
+import { UnaryOperator } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
@@ -8,7 +10,7 @@ import { NodeMutator } from './index.js';
 
 const { types } = babel;
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<UnaryOperator> = {
   '+': { replacement: '-', mutationName: 'UnaryOperator_UnaryPlusOperator_ToUnaryMinusOperator' },
   '-': { replacement: '+', mutationName: 'UnaryOperator_UnaryMinusOperator_ToUnaryPlusOperator' },
   '~': { replacement: '', mutationName: 'UnaryOperator_BitwiseOrOperator_Removal' },

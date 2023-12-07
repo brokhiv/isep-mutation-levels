@@ -19,12 +19,12 @@ import {
   UpdateOperator,
 } from '@stryker-mutator/api/core';
 
-export type NodeMutatorConfiguration = Record<string, ReplacementConfiguration>;
+export type NodeMutatorConfiguration<T> = Record<string, ReplacementConfiguration<T>>;
 
-export type NodeMutatorMultiConfiguration = Record<string, ReplacementConfiguration[]>;
-interface ReplacementConfiguration {
+export type NodeMutatorMultiConfiguration<T> = Record<string, Array<ReplacementConfiguration<T>>>;
+interface ReplacementConfiguration<T> {
   replacement?: any;
-  mutationName: string;
+  mutationName: T;
 }
 
 export interface MutationLevel {

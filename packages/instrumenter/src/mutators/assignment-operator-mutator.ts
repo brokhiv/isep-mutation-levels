@@ -1,12 +1,14 @@
 import type { types } from '@babel/core';
 
+import { AssignmentOperator } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './index.js';
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<AssignmentOperator> = {
   '+=': { replacement: '-=', mutationName: 'AssignmentOperator_AdditionAssignment_ToSubstractionAssignment' },
   '-=': { replacement: '+=', mutationName: 'AssignmentOperator_SubstractionAssignment_ToAdditionAssignment' },
   '*=': { replacement: '/=', mutationName: 'AssignmentOperator_MultiplicationAssignment_ToDivisionAssignment' },

@@ -1,5 +1,7 @@
 import babel from '@babel/core';
 
+import { MethodExpression } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
@@ -9,7 +11,7 @@ import { NodeMutator } from './node-mutator.js';
 const { types } = babel;
 
 // prettier-ignore
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<MethodExpression> = {
   'charAt': { replacement: null, mutationName: 'MethodExpression_charAtMethodCall_Removal' },
   'endsWith': { replacement: 'startsWith', mutationName: 'MethodExpression_endsWithMethodCall_TostartsWithMethodCall' },
   'startsWith': { replacement: 'endsWith', mutationName: 'MethodExpression_startsWithMethodCall_ToendsWithMethodCall' },

@@ -1,9 +1,17 @@
 import babel, { NodePath, type types as t } from '@babel/core';
 import * as weaponRegex from 'weapon-regex';
 
+import { Regex } from '@stryker-mutator/api/core';
+
+import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
+
 import { NodeMutator } from './index.js';
 
 const { types } = babel;
+
+const operators: NodeMutatorConfiguration<Regex> = {
+  Regex: { mutationName: 'Regex_Removal' },
+};
 
 /**
  * Checks that a string literal is an obvious regex string literal
@@ -60,6 +68,6 @@ function mutatePattern(pattern: string, flags: string | undefined): string[] {
   return [];
 }
 
-function isInMutationLevel(operations: string[] | undefined): boolean {
-  return operations === undefined || operations.includes('Regex_Removal');
+function isInMutationLevel(levelMutations: string[] | undefined): boolean {
+  return levelMutations === undefined || levelMutations.includes(operators.Regex.mutationName);
 }

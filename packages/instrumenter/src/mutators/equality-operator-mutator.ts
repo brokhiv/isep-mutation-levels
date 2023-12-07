@@ -1,12 +1,14 @@
 import babel, { types } from '@babel/core';
 
+import { EqualityOperator } from '@stryker-mutator/api/core';
+
 import { NodeMutatorMultiConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './node-mutator.js';
 
 const { types: t } = babel;
 
-const operators: NodeMutatorMultiConfiguration = {
+const operators: NodeMutatorMultiConfiguration<EqualityOperator> = {
   '<': [
     { replacement: '<=', mutationName: 'EqualityOperator_LessThanOperator_Boundary' },
     { replacement: '>=', mutationName: 'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator' },

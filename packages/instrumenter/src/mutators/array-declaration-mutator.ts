@@ -1,5 +1,7 @@
 import babel from '@babel/core';
 
+import { ArrayDeclaration } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
@@ -7,7 +9,7 @@ import { NodeMutator } from './node-mutator.js';
 
 const { types } = babel;
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<ArrayDeclaration> = {
   FilledArray: {
     replacement: types.arrayExpression([types.stringLiteral('Stryker was here')]),
     mutationName: 'ArrayDeclaration_ArrayLiteral_Fill',

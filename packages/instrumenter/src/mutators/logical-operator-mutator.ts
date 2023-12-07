@@ -1,9 +1,11 @@
+import { LogicalOperator } from '@stryker-mutator/api/core';
+
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutator } from './index.js';
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<LogicalOperator> = {
   '&&': { replacement: '||', mutationName: 'LogicalOperator_LogicalAndOperator_ToLogicalOrOperator' },
   '||': { replacement: '&&', mutationName: 'LogicalOperator_LogicalOrOperator_ToLogicalAndOperator' },
   '??': { replacement: '&&', mutationName: 'LogicalOperator_NullishCoalescingOperator_ToLogicalAnd' },
@@ -28,5 +30,5 @@ function isSupported(operator: string): operator is keyof typeof operators {
 }
 
 function isInMutationLevel(operator: string, levelMutations: string[] | undefined): operator is keyof typeof operators {
-  return levelMutations === undefined || levelMutations.includes(operators[operator].mutationName);
+  return levelMutations === undefined || levelMutations.includes(operators[operator].mutationName as string);
 }

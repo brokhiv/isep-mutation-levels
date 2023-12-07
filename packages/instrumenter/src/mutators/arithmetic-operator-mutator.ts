@@ -1,12 +1,14 @@
 import type { types } from '@babel/core';
 
+import { ArithmeticOperator } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './node-mutator.js';
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<ArithmeticOperator> = {
   '+': { replacement: '-', mutationName: 'ArithmeticOperator_AdditionOperator_ToSubtractionOperator' },
   '-': { replacement: '+', mutationName: 'ArithmeticOperator_SubtractionOperator_ToAdditionOperator' },
   '*': { replacement: '/', mutationName: 'ArithmeticOperator_MultiplicationOperator_ToDivisionOperator' },

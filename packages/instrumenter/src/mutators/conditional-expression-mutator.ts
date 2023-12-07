@@ -1,5 +1,7 @@
 import babel, { type NodePath } from '@babel/core';
 
+import { ConditionalExpression } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
@@ -10,7 +12,7 @@ const booleanOperators = Object.freeze(['!=', '!==', '&&', '<', '<=', '==', '===
 
 const { types } = babel;
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<ConditionalExpression> = {
   BooleanExpressionToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_BooleanExpression_ToFalseLiteral' },
   BooleanExpressionToTrue: { replacement: types.booleanLiteral(true), mutationName: 'ConditionalExpression_BooleanExpression_ToTrueLiteral' },
   DoWhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_DoWhileLoopCondition_ToFalseLiteral' },

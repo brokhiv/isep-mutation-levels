@@ -1,5 +1,7 @@
 import babel from '@babel/core';
 
+import { UpdateOperator } from '@stryker-mutator/api/core';
+
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
@@ -8,7 +10,7 @@ import { NodeMutator } from './index.js';
 
 const { types } = babel;
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<UpdateOperator> = {
   UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator: {
     replacement: '--',
     mutationName: 'UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator',
@@ -25,8 +27,6 @@ const operators: NodeMutatorConfiguration = {
     replacement: '++',
     mutationName: 'UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator',
   },
-  '++': { replacement: '--', mutationName: '++all' },
-  '--': { replacement: '++', mutationName: '--all' },
 };
 
 export const updateOperatorMutator: NodeMutator = {
@@ -35,8 +35,8 @@ export const updateOperatorMutator: NodeMutator = {
   *mutate(path, levelMutations) {
     if (path.isUpdateExpression()) {
       if (levelMutations === undefined) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        yield types.updateExpression(operators[path.node.operator].replacement, deepCloneNode(path.node.argument), path.node.prefix);
+        const replacement = path.node.operator === '++' ? '--' : '++';
+        yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);
       } else {
         let replacement = undefined;
         if (path.node.prefix && path.node.operator == '++') {

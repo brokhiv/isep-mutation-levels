@@ -1,12 +1,14 @@
 import babel, { type NodePath } from '@babel/core';
 
+import { StringLiteral } from '@stryker-mutator/api/core';
+
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './node-mutator.js';
 
 const { types } = babel;
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<StringLiteral> = {
   FillString: { replacement: types.stringLiteral('Stryker was here!'), mutationName: 'StringLiteral_EmptyStringLiteral_ToFilledStringLiteral' },
   EmptyString: { replacement: types.stringLiteral(''), mutationName: 'StringLiteral_FilledStringLiteral_ToEmptyStringLiteral' },
   EmptyInterpolation: {

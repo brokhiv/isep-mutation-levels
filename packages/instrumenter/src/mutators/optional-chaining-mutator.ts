@@ -1,5 +1,7 @@
 import babel from '@babel/core';
 
+import { OptionalChaining } from '@stryker-mutator/api/core';
+
 import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 
 import { NodeMutator } from './index.js';
@@ -19,7 +21,7 @@ const { types: t } = babel;
  * foo?.() -> foo()
  */
 
-const operators: NodeMutatorConfiguration = {
+const operators: NodeMutatorConfiguration<OptionalChaining> = {
   OptionalCallExpression: { mutationName: 'OptionalChaining_OptionalCallExpression_OptionRemoval' },
   OptionalMemberExpression: { mutationName: 'OptionalChaining_OptionalMemberExpression_OptionRemoval' },
 };
