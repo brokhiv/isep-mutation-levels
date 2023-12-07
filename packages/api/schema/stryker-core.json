@@ -317,13 +317,13 @@
           "description": "Replace ```a / b``` with ```a * b```."
         },
         {
-          "const" : "ArithmeticOperator_AdditionOperator_ToNegationOperator",
-          "title": "AdditionOperatorToNegationOperator",
+          "const" : "ArithmeticOperator_AdditionOperator_ToSubtractionOperator",
+          "title": "AdditionOperatorToSubtractionOperator",
           "description": "Replace ```a + b``` with ```a - b```."
         },
         {
-          "const" : "ArithmeticOperator_NegationOperator_ToAdditionOperator",
-          "title": "NegationOperatorToAdditionOperator",
+          "const" : "ArithmeticOperator_SubtractionOperator_ToAdditionOperator",
+          "title": "SubtractionOperatorToAdditionOperator",
           "description": "Replace ```a - b``` with ```a + b```."
         }
       ]
