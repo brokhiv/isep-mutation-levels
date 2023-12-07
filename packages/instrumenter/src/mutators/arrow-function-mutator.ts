@@ -4,16 +4,14 @@ const { types } = babel;
 
 import { ArrowFunction } from '@stryker-mutator/api/core';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './index.js';
 
-const operators: NodeMutatorConfiguration<ArrowFunction> = {
-  ArrowFunction: { mutationName: 'ArrowFunction_Removal' },
-};
-
-export const arrowFunctionMutator: NodeMutator = {
+export const arrowFunctionMutator: NodeMutator<ArrowFunction> = {
   name: 'ArrowFunction',
+
+  operators: {
+    ArrowFunction: { mutationName: 'ArrowFunction_Removal' },
+  },
 
   *mutate(path, levelMutations) {
     if (
@@ -28,5 +26,5 @@ export const arrowFunctionMutator: NodeMutator = {
 };
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(operators.ArrowFunction.mutationName);
+  return levelMutations === undefined || levelMutations.includes(arrowFunctionMutator.operators.ArrowFunction.mutationName);
 }

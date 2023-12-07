@@ -4,24 +4,22 @@ import { ArithmeticOperator } from '@stryker-mutator/api/core';
 
 import { deepCloneNode } from '../util/index.js';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './node-mutator.js';
 
-const operators: NodeMutatorConfiguration<ArithmeticOperator> = {
-  '+': { replacement: '-', mutationName: 'ArithmeticOperator_AdditionOperator_ToSubtractionOperator' },
-  '-': { replacement: '+', mutationName: 'ArithmeticOperator_SubtractionOperator_ToAdditionOperator' },
-  '*': { replacement: '/', mutationName: 'ArithmeticOperator_MultiplicationOperator_ToDivisionOperator' },
-  '/': { replacement: '*', mutationName: 'ArithmeticOperator_DivisionOperator_ToMultiplicationOperator' },
-  '%': { replacement: '*', mutationName: 'ArithmeticOperator_RemainderOperator_ToMultiplicationOperator' },
-};
-
-export const arithmeticOperatorMutator: NodeMutator = {
+export const arithmeticOperatorMutator: NodeMutator<ArithmeticOperator> = {
   name: 'ArithmeticOperator',
+
+  operators: {
+    '+': { replacement: '-', mutationName: 'ArithmeticOperator_AdditionOperator_ToSubtractionOperator' },
+    '-': { replacement: '+', mutationName: 'ArithmeticOperator_SubtractionOperator_ToAdditionOperator' },
+    '*': { replacement: '/', mutationName: 'ArithmeticOperator_MultiplicationOperator_ToDivisionOperator' },
+    '/': { replacement: '*', mutationName: 'ArithmeticOperator_DivisionOperator_ToMultiplicationOperator' },
+    '%': { replacement: '*', mutationName: 'ArithmeticOperator_RemainderOperator_ToMultiplicationOperator' },
+  },
 
   *mutate(path, levelMutations) {
     if (path.isBinaryExpression() && isSupported(path.node.operator, path.node) && isInMutationLevel(path.node, levelMutations)) {
-      const mutatedOperator = operators[path.node.operator].replacement;
+      const mutatedOperator = this.operators[path.node.operator].replacement;
       const replacement = deepCloneNode(path.node);
       replacement.operator = mutatedOperator;
       yield replacement;
@@ -35,12 +33,12 @@ function isInMutationLevel(node: types.BinaryExpression, operations: string[] | 
     return true;
   }
 
-  const mutatedOperator = operators[node.operator as keyof typeof operators].mutationName;
+  const mutatedOperator = arithmeticOperatorMutator.operators[node.operator].mutationName;
   return operations.some((op) => op === mutatedOperator) ?? false;
 }
 
-function isSupported(operator: string, node: types.BinaryExpression): operator is keyof typeof operators {
-  if (!Object.keys(operators).includes(operator)) {
+function isSupported(operator: string, node: types.BinaryExpression): boolean {
+  if (!Object.keys(arithmeticOperatorMutator.operators).includes(operator)) {
     return false;
   }
 

@@ -2,18 +2,16 @@ import babel, { type NodePath } from '@babel/core';
 
 import { BlockStatement } from '@stryker-mutator/api/core';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './node-mutator.js';
 
 const { types } = babel;
 
-const operators: NodeMutatorConfiguration<BlockStatement> = {
-  BlockStatement: { mutationName: 'BlockStatement_Removal' },
-};
-
-export const blockStatementMutator: NodeMutator = {
+export const blockStatementMutator: NodeMutator<BlockStatement> = {
   name: 'BlockStatement',
+
+  operators: {
+    BlockStatement: { mutationName: 'BlockStatement_Removal' },
+  },
 
   *mutate(path, levelMutations) {
     if (path.isBlockStatement() && isValid(path) && isInMutationLevel(levelMutations)) {
@@ -79,5 +77,5 @@ function hasSuperExpressionOnFirstLine(constructor: NodePath<babel.types.BlockSt
 }
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(operators.BlockStatement.mutationName);
+  return levelMutations === undefined || levelMutations.includes(blockStatementMutator.operators.BlockStatement.mutationName);
 }

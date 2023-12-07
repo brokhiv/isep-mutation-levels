@@ -1,22 +1,21 @@
 import { LogicalOperator } from '@stryker-mutator/api/core';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 import { deepCloneNode } from '../util/index.js';
 
 import { NodeMutator } from './index.js';
 
-const operators: NodeMutatorConfiguration<LogicalOperator> = {
-  '&&': { replacement: '||', mutationName: 'LogicalOperator_LogicalAndOperator_ToLogicalOrOperator' },
-  '||': { replacement: '&&', mutationName: 'LogicalOperator_LogicalOrOperator_ToLogicalAndOperator' },
-  '??': { replacement: '&&', mutationName: 'LogicalOperator_NullishCoalescingOperator_ToLogicalAnd' },
-};
-
-export const logicalOperatorMutator: NodeMutator = {
+export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
   name: 'LogicalOperator',
+
+  operators: {
+    '&&': { replacement: '||', mutationName: 'LogicalOperator_LogicalAndOperator_ToLogicalOrOperator' },
+    '||': { replacement: '&&', mutationName: 'LogicalOperator_LogicalOrOperator_ToLogicalAndOperator' },
+    '??': { replacement: '&&', mutationName: 'LogicalOperator_NullishCoalescingOperator_ToLogicalAnd' },
+  },
 
   *mutate(path, levelMutations) {
     if (path.isLogicalExpression() && isSupported(path.node.operator) && isInMutationLevel(path.node.operator, levelMutations)) {
-      const mutatedOperator = operators[path.node.operator].replacement;
+      const mutatedOperator = this.operators[path.node.operator].replacement;
 
       const replacementOperator = deepCloneNode(path.node);
       replacementOperator.operator = mutatedOperator;
@@ -25,10 +24,10 @@ export const logicalOperatorMutator: NodeMutator = {
   },
 };
 
-function isSupported(operator: string): operator is keyof typeof operators {
-  return Object.keys(operators).includes(operator);
+function isSupported(operator: string): operator is keyof typeof logicalOperatorMutator.operators {
+  return Object.keys(logicalOperatorMutator.operators).includes(operator);
 }
 
-function isInMutationLevel(operator: string, levelMutations: string[] | undefined): operator is keyof typeof operators {
-  return levelMutations === undefined || levelMutations.includes(operators[operator].mutationName as string);
+function isInMutationLevel(operator: string, levelMutations: string[] | undefined): boolean {
+  return levelMutations === undefined || levelMutations.includes(logicalOperatorMutator.operators[operator].mutationName as string);
 }

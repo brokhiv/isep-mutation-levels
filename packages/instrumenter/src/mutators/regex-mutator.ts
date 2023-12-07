@@ -3,15 +3,9 @@ import * as weaponRegex from 'weapon-regex';
 
 import { Regex } from '@stryker-mutator/api/core';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './index.js';
 
 const { types } = babel;
-
-const operators: NodeMutatorConfiguration<Regex> = {
-  Regex: { mutationName: 'Regex_Removal' },
-};
 
 /**
  * Checks that a string literal is an obvious regex string literal
@@ -37,8 +31,12 @@ function getFlags(path: NodePath<t.NewExpression>): string | undefined {
 
 const weaponRegexOptions: weaponRegex.MutationOptions = { mutationLevels: [1] };
 
-export const regexMutator: NodeMutator = {
+export const regexMutator: NodeMutator<Regex> = {
   name: 'Regex',
+
+  operators: {
+    Regex: { mutationName: 'Regex_Removal' },
+  },
 
   *mutate(path, options) {
     if (path.isRegExpLiteral() && isInMutationLevel(options)) {
@@ -69,5 +67,5 @@ function mutatePattern(pattern: string, flags: string | undefined): string[] {
 }
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(operators.Regex.mutationName);
+  return levelMutations === undefined || levelMutations.includes(regexMutator.operators.Regex.mutationName);
 }

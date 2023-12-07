@@ -2,8 +2,6 @@ import babel from '@babel/core';
 
 import { OptionalChaining } from '@stryker-mutator/api/core';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './index.js';
 
 const { types: t } = babel;
@@ -21,19 +19,19 @@ const { types: t } = babel;
  * foo?.() -> foo()
  */
 
-const operators: NodeMutatorConfiguration<OptionalChaining> = {
-  OptionalCallExpression: { mutationName: 'OptionalChaining_OptionalCallExpression_OptionRemoval' },
-  OptionalMemberExpression: { mutationName: 'OptionalChaining_OptionalMemberExpression_OptionRemoval' },
-};
-
-export const optionalChainingMutator: NodeMutator = {
+export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
   name: 'OptionalChaining',
+
+  operators: {
+    OptionalCallExpression: { mutationName: 'OptionalChaining_OptionalCallExpression_OptionRemoval' },
+    OptionalMemberExpression: { mutationName: 'OptionalChaining_OptionalMemberExpression_OptionRemoval' },
+  },
 
   *mutate(path, levelMutations) {
     if (
       path.isOptionalMemberExpression() &&
       path.node.optional &&
-      (levelMutations === undefined || levelMutations.includes(operators.OptionalMemberExpression.mutationName))
+      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalMemberExpression.mutationName))
     ) {
       yield t.optionalMemberExpression(
         t.cloneNode(path.node.object, true),
@@ -45,7 +43,7 @@ export const optionalChainingMutator: NodeMutator = {
     if (
       path.isOptionalCallExpression() &&
       path.node.optional &&
-      (levelMutations === undefined || levelMutations.includes(operators.OptionalCallExpression.mutationName))
+      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalCallExpression.mutationName))
     ) {
       yield t.optionalCallExpression(
         t.cloneNode(path.node.callee, true),

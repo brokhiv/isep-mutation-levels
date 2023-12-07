@@ -6,18 +6,16 @@ import { deepCloneNode } from '../util/index.js';
 
 const { types } = babel;
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './index.js';
 
-const operators: NodeMutatorConfiguration<BooleanLiteral> = {
-  true: { replacement: false, mutationName: 'BooleanLiteral_TrueLiteral_ToFalseLiteral' },
-  false: { replacement: true, mutationName: 'BooleanLiteral_FalseLiteral_ToTrueLiteral' },
-  '!': { replacement: '', mutationName: 'BooleanLiteral_LogicalNot_Removal' },
-};
-
-export const booleanLiteralMutator: NodeMutator = {
+export const booleanLiteralMutator: NodeMutator<BooleanLiteral> = {
   name: 'BooleanLiteral',
+
+  operators: {
+    true: { replacement: false, mutationName: 'BooleanLiteral_TrueLiteral_ToFalseLiteral' },
+    false: { replacement: true, mutationName: 'BooleanLiteral_FalseLiteral_ToTrueLiteral' },
+    '!': { replacement: '', mutationName: 'BooleanLiteral_LogicalNot_Removal' },
+  },
 
   *mutate(path, levelMutations) {
     if (isInMutationLevel(path, levelMutations)) {
@@ -36,13 +34,13 @@ function isInMutationLevel(path: any, levelMutations: string[] | undefined): boo
     return true;
   }
   if (path.isBooleanLiteral()) {
-    const { mutationName: mutatorName } = operators[path.node.value as keyof typeof operators];
+    const { mutationName: mutatorName } = booleanLiteralMutator.operators[path.node.value];
     return levelMutations.some((lit) => lit === mutatorName);
   }
   return (
     path.isUnaryExpression() &&
     path.node.operator === '!' &&
     path.node.prefix &&
-    levelMutations.some((lit: string) => lit === operators['!'].mutationName)
+    levelMutations.some((lit: string) => lit === booleanLiteralMutator.operators['!'].mutationName)
   );
 }

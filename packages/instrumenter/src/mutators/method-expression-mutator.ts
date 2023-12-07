@@ -4,38 +4,41 @@ import { MethodExpression } from '@stryker-mutator/api/core';
 
 import { deepCloneNode } from '../util/index.js';
 
-import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
-
 import { NodeMutator } from './node-mutator.js';
 
 const { types } = babel;
 
-// prettier-ignore
-const operators: NodeMutatorConfiguration<MethodExpression> = {
-  'charAt': { replacement: null, mutationName: 'MethodExpression_charAtMethodCall_Removal' },
-  'endsWith': { replacement: 'startsWith', mutationName: 'MethodExpression_endsWithMethodCall_TostartsWithMethodCall' },
-  'startsWith': { replacement: 'endsWith', mutationName: 'MethodExpression_startsWithMethodCall_ToendsWithMethodCall' },
-  'every': { replacement: 'some', mutationName: 'MethodExpression_everyMethodCall_TosomeMethodCall' },
-  'some': { replacement: 'every', mutationName: 'MethodExpression_someMethodCall_ToeveryMethodCall' },
-  'filter': { replacement: null, mutationName: 'MethodExpression_filterMethodCall_Removal' },
-  'reverse': { replacement: null, mutationName: 'MethodExpression_reverseMethodCall_Removal' },
-  'slice': { replacement: null, mutationName: 'MethodExpression_sliceMethodCall_Removal' },
-  'sort': { replacement: null, mutationName: 'MethodExpression_sortMethodCall_Removal' },
-  'substr': { replacement: null, mutationName: 'MethodExpression_substrMethodCall_Removal' },
-  'substring': { replacement: null, mutationName: 'MethodExpression_substringMethodCall_Removal' },
-  'toLocaleLowerCase': { replacement: 'toLocaleUpperCase', mutationName: 'MethodExpression_toLocaleLowerCaseMethodCall_TotoLocaleUpperCaseMethodCall' },
-  'toLocaleUpperCase': { replacement: 'toLocaleLowerCase', mutationName: 'MethodExpression_toLocaleUpperCaseMethodCall_TotoLocaleLowerCaseMethodCall' },
-  'toLowerCase': { replacement: 'toUpperCase', mutationName: 'MethodExpression_toLowerCaseMethodCall_TotoUpperCaseMethodCall' },
-  'toUpperCase': { replacement: 'toLowerCase', mutationName: 'MethodExpression_toUpperCaseMethodCall_TotoLowerCaseMethodCall' },
-  'trim': { replacement: null, mutationName: 'MethodExpression_trimMethodCall_Removal' },
-  'trimEnd': { replacement: 'trimStart', mutationName: 'MethodExpression_trimEndMethodCall_TotrimStartMethodCall' },
-  'trimStart': { replacement: 'trimEnd', mutationName: 'MethodExpression_trimStartMethodCall_TotrimEndMutator' },
-  'min': { replacement: 'max', mutationName: 'MethodExpression_minMethodCall_TomaxMethodCall' },
-  'max': { replacement: 'min', mutationName: 'MethodExpression_maxMethodCall_toMinMethodCall' },
-};
-
-export const methodExpressionMutator: NodeMutator = {
+export const methodExpressionMutator: NodeMutator<MethodExpression> = {
   name: 'MethodExpression',
+
+  operators: {
+    charAt: { replacement: null, mutationName: 'MethodExpression_charAtMethodCall_Removal' },
+    endsWith: { replacement: 'startsWith', mutationName: 'MethodExpression_endsWithMethodCall_TostartsWithMethodCall' },
+    startsWith: { replacement: 'endsWith', mutationName: 'MethodExpression_startsWithMethodCall_ToendsWithMethodCall' },
+    every: { replacement: 'some', mutationName: 'MethodExpression_everyMethodCall_TosomeMethodCall' },
+    some: { replacement: 'every', mutationName: 'MethodExpression_someMethodCall_ToeveryMethodCall' },
+    filter: { replacement: null, mutationName: 'MethodExpression_filterMethodCall_Removal' },
+    reverse: { replacement: null, mutationName: 'MethodExpression_reverseMethodCall_Removal' },
+    slice: { replacement: null, mutationName: 'MethodExpression_sliceMethodCall_Removal' },
+    sort: { replacement: null, mutationName: 'MethodExpression_sortMethodCall_Removal' },
+    substr: { replacement: null, mutationName: 'MethodExpression_substrMethodCall_Removal' },
+    substring: { replacement: null, mutationName: 'MethodExpression_substringMethodCall_Removal' },
+    toLocaleLowerCase: {
+      replacement: 'toLocaleUpperCase',
+      mutationName: 'MethodExpression_toLocaleLowerCaseMethodCall_TotoLocaleUpperCaseMethodCall',
+    },
+    toLocaleUpperCase: {
+      replacement: 'toLocaleLowerCase',
+      mutationName: 'MethodExpression_toLocaleUpperCaseMethodCall_TotoLocaleLowerCaseMethodCall',
+    },
+    toLowerCase: { replacement: 'toUpperCase', mutationName: 'MethodExpression_toLowerCaseMethodCall_TotoUpperCaseMethodCall' },
+    toUpperCase: { replacement: 'toLowerCase', mutationName: 'MethodExpression_toUpperCaseMethodCall_TotoLowerCaseMethodCall' },
+    trim: { replacement: null, mutationName: 'MethodExpression_trimMethodCall_Removal' },
+    trimEnd: { replacement: 'trimStart', mutationName: 'MethodExpression_trimEndMethodCall_TotrimStartMethodCall' },
+    trimStart: { replacement: 'trimEnd', mutationName: 'MethodExpression_trimStartMethodCall_TotrimEndMutator' },
+    min: { replacement: 'max', mutationName: 'MethodExpression_minMethodCall_TomaxMethodCall' },
+    max: { replacement: 'min', mutationName: 'MethodExpression_maxMethodCall_toMinMethodCall' },
+  },
 
   *mutate(path, levelMutations) {
     // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
@@ -49,7 +52,7 @@ export const methodExpressionMutator: NodeMutator = {
       return;
     }
 
-    const mutation = operators[callee.property.name];
+    const mutation = this.operators[callee.property.name];
     if (mutation === undefined) {
       // Function is not known in `operators`, so no mutations
       return;
