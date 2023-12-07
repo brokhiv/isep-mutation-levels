@@ -9,9 +9,9 @@ import { NodeMutator } from './index.js';
 const { types } = babel;
 
 const operators: NodeMutatorConfiguration = {
-  '+': { replacement: '-', mutationName: '+To-' },
-  '-': { replacement: '+', mutationName: '-To+' },
-  '~': { replacement: '', mutationName: 'remove~' },
+  '+': { replacement: '-', mutationName: 'UnaryOperator_UnaryPlusOperator_ToUnaryMinusOperator' },
+  '-': { replacement: '+', mutationName: 'UnaryOperator_UnaryMinusOperator_ToUnaryPlusOperator' },
+  '~': { replacement: '', mutationName: 'UnaryOperator_BitwiseOrOperator_Removal' },
 };
 
 export const unaryOperatorMutator: NodeMutator = {

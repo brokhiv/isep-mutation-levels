@@ -7,18 +7,18 @@ import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 import { NodeMutator } from './index.js';
 
 const operators: NodeMutatorConfiguration = {
-  '+=': { replacement: '-=', mutationName: '+=To-=' },
-  '-=': { replacement: '+=', mutationName: '-=To+=' },
-  '*=': { replacement: '/=', mutationName: '*=To/=' },
-  '/=': { replacement: '*=', mutationName: '/=To*=' },
-  '%=': { replacement: '*=', mutationName: '%=To*=' },
-  '<<=': { replacement: '>>=', mutationName: '<<=To>>=' },
-  '>>=': { replacement: '<<=', mutationName: '>>=To<<=' },
-  '&=': { replacement: '|=', mutationName: '&=To|=' },
-  '|=': { replacement: '&=', mutationName: '|=To&=' },
-  '&&=': { replacement: '||=', mutationName: '&&=To||=' },
-  '||=': { replacement: '&&=', mutationName: '||=To&&=' },
-  '??=': { replacement: '&&=', mutationName: '??=To&&=' },
+  '+=': { replacement: '-=', mutationName: 'AssignmentOperator_AdditionAssignment_ToSubstractionAssignment' },
+  '-=': { replacement: '+=', mutationName: 'AssignmentOperator_SubstractionAssignment_ToAdditionAssignment' },
+  '*=': { replacement: '/=', mutationName: 'AssignmentOperator_MultiplicationAssignment_ToDivisionAssignment' },
+  '/=': { replacement: '*=', mutationName: 'AssignmentOperator_DivisionAssignment_ToMultiplicationAssignment' },
+  '%=': { replacement: '*=', mutationName: 'AssignmentOperator_RemainderAssignment_ToMultiplicationAssignment' },
+  '<<=': { replacement: '>>=', mutationName: 'AssignmentOperator_LeftShiftAssignment_ToRightShiftAssignment' },
+  '>>=': { replacement: '<<=', mutationName: 'AssignmentOperator_RightShiftAssignment_ToLeftShiftAssignment' },
+  '&=': { replacement: '|=', mutationName: 'AssignmentOperator_BitwiseAndAssignment_ToBitwiseOrAssignment' },
+  '|=': { replacement: '&=', mutationName: 'AssignmentOperator_BitwiseOrAssignment_ToBitwiseAndAssignment' },
+  '&&=': { replacement: '||=', mutationName: 'AssignmentOperator_LogicalAndAssignment_ToLogicalOrAssignment' },
+  '||=': { replacement: '&&=', mutationName: 'AssignmentOperator_LogicalOrAssignment_ToLogicalAndAssignment' },
+  '??=': { replacement: '&&=', mutationName: 'AssignmentOperator_NullishCoalescingAssignment_ToLogicalAndAssignment' },
 };
 
 const stringTypes = Object.freeze(['StringLiteral', 'TemplateLiteral']);

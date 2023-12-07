@@ -4,22 +4,29 @@ import { assignmentOperatorMutator as sut } from '../../../src/mutators/assignme
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
-const assignmentOperatorLevel: MutationLevel = { name: 'AssignmentOperatorLevel', AssignmentOperator: ['-=To+=', '<<=To>>=', '&&=To||='] };
+const assignmentOperatorLevel: MutationLevel = {
+  name: 'AssignmentOperatorLevel',
+  AssignmentOperator: [
+    'AssignmentOperator_SubstractionAssignment_ToAdditionAssignment',
+    'AssignmentOperator_LeftShiftAssignment_ToRightShiftAssignment',
+    'AssignmentOperator_LogicalAndAssignment_ToLogicalOrAssignment',
+  ],
+};
 const assignmentOperatorAllLevel: MutationLevel = {
   name: 'AssignmentOperatorLevel',
   AssignmentOperator: [
-    '+=To-=',
-    '-=To+=',
-    '*=To/=',
-    '/=To*=',
-    '%=To*=',
-    '<<=To>>=',
-    '>>=To<<=',
-    '&=To|=',
-    '|=To&=',
-    '&&=To||=',
-    '||=To&&=',
-    '??=To&&=',
+    'AssignmentOperator_AdditionAssignment_ToSubstractionAssignment',
+    'AssignmentOperator_SubstractionAssignment_ToAdditionAssignment',
+    'AssignmentOperator_MultiplicationAssignment_ToDivisionAssignment',
+    'AssignmentOperator_DivisionAssignment_ToMultiplicationAssignment',
+    'AssignmentOperator_RemainderAssignment_ToMultiplicationAssignment',
+    'AssignmentOperator_LeftShiftAssignment_ToRightShiftAssignment',
+    'AssignmentOperator_RightShiftAssignment_ToLeftShiftAssignment',
+    'AssignmentOperator_BitwiseAndAssignment_ToBitwiseOrAssignment',
+    'AssignmentOperator_BitwiseOrAssignment_ToBitwiseAndAssignment',
+    'AssignmentOperator_LogicalAndAssignment_ToLogicalOrAssignment',
+    'AssignmentOperator_LogicalOrAssignment_ToLogicalAndAssignment',
+    'AssignmentOperator_NullishCoalescingAssignment_ToLogicalAndAssignment',
   ],
 };
 const assignmentOperatorUndefinedLevel: MutationLevel = { name: 'AssignmentOperatorLevel' };

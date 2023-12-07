@@ -7,11 +7,11 @@ import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 import { NodeMutator } from './node-mutator.js';
 
 const operators: NodeMutatorConfiguration = {
-  '+': { replacement: '-', mutationName: '+To-' },
-  '-': { replacement: '+', mutationName: '-To+' },
-  '*': { replacement: '/', mutationName: '*To/' },
-  '/': { replacement: '*', mutationName: '/To*' },
-  '%': { replacement: '*', mutationName: '%To*' },
+  '+': { replacement: '-', mutationName: 'ArithmeticOperator_AdditionOperator_ToSubtractionOperator' },
+  '-': { replacement: '+', mutationName: 'ArithmeticOperator_SubtractionOperator_ToAdditionOperator' },
+  '*': { replacement: '/', mutationName: 'ArithmeticOperator_MultiplicationOperator_ToDivisionOperator' },
+  '/': { replacement: '*', mutationName: 'ArithmeticOperator_DivisionOperator_ToMultiplicationOperator' },
+  '%': { replacement: '*', mutationName: 'ArithmeticOperator_RemainderOperator_ToMultiplicationOperator' },
 };
 
 export const arithmeticOperatorMutator: NodeMutator = {

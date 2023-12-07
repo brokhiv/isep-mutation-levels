@@ -20,5 +20,5 @@ export const arrowFunctionMutator: NodeMutator = {
 };
 
 function isInMutationLevel(operations: string[] | undefined): boolean {
-  return operations === undefined || operations.length > 0;
+  return operations === undefined || operations.includes('ArrowFunction_Removal');
 }

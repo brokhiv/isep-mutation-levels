@@ -15,5 +15,5 @@ export const objectLiteralMutator: NodeMutator = {
 };
 
 function isInMutationLevel(operations: string[] | undefined): boolean {
-  return operations === undefined || operations.length > 0;
+  return operations === undefined || operations.includes('ObjectLiteral_PropertiesRemoval');
 }

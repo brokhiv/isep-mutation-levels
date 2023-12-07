@@ -4,9 +4,25 @@ import { equalityOperatorMutator as sut } from '../../../src/mutators/equality-o
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
-const equalityLevelA: MutationLevel = { name: 'EqualityLevelA', EqualityOperator: ['<To<=', '<To>=', '>=To>', '>=To<', '==To!='] };
+const equalityLevelA: MutationLevel = {
+  name: 'EqualityLevelA',
+  EqualityOperator: [
+    'EqualityOperator_LessThanOperator_Boundary',
+    'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator',
+    'EqualityOperator_GreatherThanEqualOperator_Boundary',
+    'EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator',
+    'EqualityOperator_EqualityOperator_ToInequalityOperator',
+  ],
+};
 
-const equalityLevelB: MutationLevel = { name: 'EqualityLevelB', EqualityOperator: ['<=To>', '>To<=', '===To!=='] };
+const equalityLevelB: MutationLevel = {
+  name: 'EqualityLevelB',
+  EqualityOperator: [
+    'EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator',
+    'EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator',
+    'EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator',
+  ],
+};
 
 describe(sut.name, () => {
   it('should have name "EqualityOperator"', () => {

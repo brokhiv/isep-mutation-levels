@@ -7,12 +7,15 @@ import { NodeMutator } from './node-mutator.js';
 const { types } = babel;
 
 const operators: NodeMutatorConfiguration = {
-  FillString: { replacement: types.stringLiteral('Stryker was here!'), mutationName: 'FillString' },
-  EmptyString: { replacement: types.stringLiteral(''), mutationName: 'EmptyString' },
-  EmptyInterpolation: { replacement: types.templateLiteral([types.templateElement({ raw: '' })], []), mutationName: 'EmptyInterpolation' },
+  FillString: { replacement: types.stringLiteral('Stryker was here!'), mutationName: 'StringLiteral_EmptyStringLiteral_ToFilledStringLiteral' },
+  EmptyString: { replacement: types.stringLiteral(''), mutationName: 'StringLiteral_FilledStringLiteral_ToEmptyStringLiteral' },
+  EmptyInterpolation: {
+    replacement: types.templateLiteral([types.templateElement({ raw: '' })], []),
+    mutationName: 'StringLiteral_FilledInterpolatedString_ToEmptyInterpolatedString',
+  },
   FillInterpolation: {
     replacement: types.templateLiteral([types.templateElement({ raw: 'Stryker was here!' })], []),
-    mutationName: 'FillInterpolation',
+    mutationName: 'StringLiteral_EmptyInterpolatedString_ToFilledInterpolatedString',
   },
 };
 

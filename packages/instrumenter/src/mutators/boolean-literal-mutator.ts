@@ -9,9 +9,9 @@ import { NodeMutatorConfiguration } from '../mutation-level/mutation-level.js';
 import { NodeMutator } from './index.js';
 
 const operators: NodeMutatorConfiguration = {
-  true: { replacement: false, mutationName: 'TrueToFalse' },
-  false: { replacement: true, mutationName: 'FalseToTrue' },
-  '!': { replacement: '', mutationName: 'RemoveNegation' },
+  true: { replacement: false, mutationName: 'BooleanLiteral_TrueLiteral_ToFalseLiteral' },
+  false: { replacement: true, mutationName: 'BooleanLiteral_FalseLiteral_ToTrueLiteral' },
+  '!': { replacement: '', mutationName: 'BooleanLiteral_LogicalNot_Removal' },
 };
 
 export const booleanLiteralMutator: NodeMutator = {

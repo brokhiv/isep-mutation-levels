@@ -11,14 +11,14 @@ const booleanOperators = Object.freeze(['!=', '!==', '&&', '<', '<=', '==', '===
 const { types } = babel;
 
 const operators: NodeMutatorConfiguration = {
-  BooleanExpressionToFalse: { replacement: types.booleanLiteral(false), mutationName: 'BooleanExpressionToFalse' },
-  BooleanExpressionToTrue: { replacement: types.booleanLiteral(true), mutationName: 'BooleanExpressionToTrue' },
-  DoWhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'DoWhileLoopToFalse' },
-  ForLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ForLoopToFalse' },
-  IfToFalse: { replacement: types.booleanLiteral(false), mutationName: 'IfToFalse' },
-  IfToTrue: { replacement: types.booleanLiteral(true), mutationName: 'IfToTrue' },
-  WhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'WhileLoopToFalse' },
-  SwitchToEmpty: { replacement: [], mutationName: 'SwitchToEmpty' },
+  BooleanExpressionToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_BooleanExpression_ToFalseLiteral' },
+  BooleanExpressionToTrue: { replacement: types.booleanLiteral(true), mutationName: 'ConditionalExpression_BooleanExpression_ToTrueLiteral' },
+  DoWhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_DoWhileLoopCondition_ToFalseLiteral' },
+  ForLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_ForLoopCondition_ToFalseLiteral' },
+  IfToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_IfCondition_ToFalseLiteral' },
+  IfToTrue: { replacement: types.booleanLiteral(true), mutationName: 'ConditionalExpression_IfCondition_ToTrueLiteral' },
+  WhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_WhileLoopCondition_ToFalseLiteral' },
+  SwitchToEmpty: { replacement: [], mutationName: 'ConditionalExpression_SwitchStatementBody_Removal' },
 };
 
 export const conditionalExpressionMutator: NodeMutator = {

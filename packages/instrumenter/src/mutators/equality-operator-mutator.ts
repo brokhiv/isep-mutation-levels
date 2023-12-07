@@ -8,25 +8,25 @@ const { types: t } = babel;
 
 const operators: NodeMutatorMultiConfiguration = {
   '<': [
-    { replacement: '<=', mutationName: '<To<=' },
-    { replacement: '>=', mutationName: '<To>=' },
+    { replacement: '<=', mutationName: 'EqualityOperator_LessThanOperator_Boundary' },
+    { replacement: '>=', mutationName: 'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator' },
   ],
   '<=': [
-    { replacement: '<', mutationName: '<=To<' },
-    { replacement: '>', mutationName: '<=To>' },
+    { replacement: '<', mutationName: 'EqualityOperator_LessThanEqualOperator_Boundary' },
+    { replacement: '>', mutationName: 'EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator' },
   ],
   '>': [
-    { replacement: '>=', mutationName: '>To>=' },
-    { replacement: '<=', mutationName: '>To<=' },
+    { replacement: '>=', mutationName: 'EqualityOperator_GreaterThanOperator_Boundary' },
+    { replacement: '<=', mutationName: 'EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator' },
   ],
   '>=': [
-    { replacement: '>', mutationName: '>=To>' },
-    { replacement: '<', mutationName: '>=To<' },
+    { replacement: '>', mutationName: 'EqualityOperator_GreatherThanEqualOperator_Boundary' },
+    { replacement: '<', mutationName: 'EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator' },
   ],
-  '==': [{ replacement: '!=', mutationName: '==To!=' }],
-  '!=': [{ replacement: '==', mutationName: '!=To==' }],
-  '===': [{ replacement: '!==', mutationName: '===To!==' }],
-  '!==': [{ replacement: '===', mutationName: '!==To===' }],
+  '==': [{ replacement: '!=', mutationName: 'EqualityOperator_EqualityOperator_ToInequalityOperator' }],
+  '!=': [{ replacement: '==', mutationName: 'EqualityOperator_InequalityOperator_ToEqualityOperator' }],
+  '===': [{ replacement: '!==', mutationName: 'EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator' }],
+  '!==': [{ replacement: '===', mutationName: 'EqualityOperator_StrictInequalityOperator_ToStrictEqualityOperator' }],
 };
 
 function isEqualityOperator(operator: string): operator is keyof typeof operators {

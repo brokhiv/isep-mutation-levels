@@ -20,8 +20,8 @@ const { types: t } = babel;
  */
 
 const operators: NodeMutatorConfiguration = {
-  OptionalCallExpression: { mutationName: 'OptionalCallExpression' },
-  OptionalMemberExpression: { mutationName: 'OptionalMemberExpression' },
+  OptionalCallExpression: { mutationName: 'OptionalChaining_OptionalCallExpression_OptionRemoval' },
+  OptionalMemberExpression: { mutationName: 'OptionalChaining_OptionalMemberExpression_OptionRemoval' },
 };
 
 export const optionalChainingMutator: NodeMutator = {

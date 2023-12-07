@@ -71,5 +71,5 @@ function hasSuperExpressionOnFirstLine(constructor: NodePath<babel.types.BlockSt
 }
 
 function isInMutationLevel(operations: string[] | undefined): boolean {
-  return operations === undefined || operations.length > 0;
+  return operations === undefined || operations.includes('BlockStatement_Removal');
 }

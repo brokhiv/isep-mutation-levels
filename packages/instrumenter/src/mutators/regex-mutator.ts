@@ -61,5 +61,5 @@ function mutatePattern(pattern: string, flags: string | undefined): string[] {
 }
 
 function isInMutationLevel(operations: string[] | undefined): boolean {
-  return operations === undefined || operations.length > 0;
+  return operations === undefined || operations.includes('Regex_Removal');
 }

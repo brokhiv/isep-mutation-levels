@@ -9,10 +9,22 @@ import { NodeMutator } from './index.js';
 const { types } = babel;
 
 const operators: NodeMutatorConfiguration = {
-  'Post++To--': { replacement: '--', mutationName: 'Post++To--' },
-  'Post--To++': { replacement: '++', mutationName: 'Post--To++' },
-  'Pre++To--': { replacement: '--', mutationName: 'Pre++To--' },
-  'Pre--To++': { replacement: '++', mutationName: 'Pre--To++' },
+  UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator: {
+    replacement: '--',
+    mutationName: 'UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator',
+  },
+  UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator: {
+    replacement: '++',
+    mutationName: 'UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator',
+  },
+  UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator: {
+    replacement: '--',
+    mutationName: 'UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator',
+  },
+  UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator: {
+    replacement: '++',
+    mutationName: 'UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator',
+  },
   '++': { replacement: '--', mutationName: '++all' },
   '--': { replacement: '++', mutationName: '--all' },
 };
@@ -28,13 +40,13 @@ export const updateOperatorMutator: NodeMutator = {
       } else {
         let replacement = undefined;
         if (path.node.prefix && path.node.operator == '++') {
-          replacement = getReplacement(levelMutations, operators['Pre++To--'].mutationName);
+          replacement = getReplacement(levelMutations, operators.UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator.mutationName);
         } else if (path.node.prefix && path.node.operator == '--') {
-          replacement = getReplacement(levelMutations, operators['Pre--To++'].mutationName);
+          replacement = getReplacement(levelMutations, operators.UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator.mutationName);
         } else if (!path.node.prefix && path.node.operator == '++') {
-          replacement = getReplacement(levelMutations, operators['Post++To--'].mutationName);
+          replacement = getReplacement(levelMutations, operators.UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator.mutationName);
         } else if (!path.node.prefix && path.node.operator == '--') {
-          replacement = getReplacement(levelMutations, operators['Post--To++'].mutationName);
+          replacement = getReplacement(levelMutations, operators.UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator.mutationName);
         }
         if (replacement !== undefined) {
           yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);

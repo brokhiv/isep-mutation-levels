@@ -2,10 +2,27 @@ import { expect } from 'chai';
 
 import { updateOperatorMutator as sut } from '../../../src/mutators/update-operator-mutator.js';
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
+import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
-const updateLevel: string[] = ['Pre--To++', 'Pre++To--'];
-const updateLevel2: string[] = ['Post++To--', 'Post--To++'];
-const updateLevel3 = undefined;
+const updateLevel: MutationLevel = {
+  name: 'UpdateLevel',
+  UpdateOperator: [
+    'UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator',
+    'UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator',
+  ],
+};
+
+const updateLevel2: MutationLevel = {
+  name: 'UpdateLevel2',
+  UpdateOperator: [
+    'UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator',
+    'UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator',
+  ],
+};
+
+const updateUndefinedLevel: MutationLevel = {
+  name: 'UpdateLevel3',
+};
 
 describe(sut.name, () => {
   it('should have name "UpdateOperator"', () => {
@@ -31,7 +48,7 @@ describe(sut.name, () => {
   it('should only mutate --a and ++a', () => {
     expectJSMutationWithLevel(
       sut,
-      updateLevel,
+      updateLevel.UpdateOperator,
       '--a; ++a; a--; a++',
       '++a; ++a; a--; a++', //mutates --a
       '--a; --a; a--; a++', //mutates ++a
@@ -41,7 +58,7 @@ describe(sut.name, () => {
   it('should only mutate a-- and a++', () => {
     expectJSMutationWithLevel(
       sut,
-      updateLevel2,
+      updateLevel2.UpdateOperator,
       '--a; ++a; a--; a++',
       '--a; ++a; a--; a--', //mutates a++
       '--a; ++a; a++; a++', //mutates a--
@@ -51,7 +68,7 @@ describe(sut.name, () => {
   it('should mutate all', () => {
     expectJSMutationWithLevel(
       sut,
-      updateLevel3,
+      updateUndefinedLevel.UpdateOperator,
       '--a; ++a; a--; a++',
       '++a; ++a; a--; a++', //mutates --a
       '--a; --a; a--; a++', //mutates ++a

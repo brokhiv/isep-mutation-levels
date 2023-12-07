@@ -271,6 +271,7 @@
         { "$ref": "#/definitions/BooleanLiteral" },
         { "$ref": "#/definitions/ConditionalExpression" },
         { "$ref": "#/definitions/EqualityOperator" },
+        { "$ref": "#/definitions/LogicalOperator"},
         { "$ref": "#/definitions/MethodExpression" },
         { "$ref": "#/definitions/ObjectLiteral" },
         { "$ref": "#/definitions/OptionalChaining" },
@@ -475,12 +476,12 @@
           "description": "Replace ```if (a > b) { }``` with ```if (false) { }```."
         },
         {
-          "const" : "ConditionalExpression_TernaryCondition_ToTrueLiteral",
+          "const" : "ConditionalExpression_BooleanExpression_ToTrueLiteral",
           "title": "TernaryConditionToTrueLiteral",
           "description": "Replace ```var x = a > b ? 1 : 2;``` with ```var x = true ? 1 : 2;```."
         },
         {
-          "const" : "ConditionalExpression_TernaryCondition_ToFalseLiteral",
+          "const" : "ConditionalExpression_BooleanExpression_ToFalseLiteral",
           "title": "ConditionalExpressionTernaryCondition_ToFalseLiteral",
           "description": "Replace ```var x = a > b ? 1 : 2;``` with ```var x = false ? 1 : 2;```."
         },
@@ -682,7 +683,7 @@
       ]
     },
     "ObjectLiteral": {
-      "const": "ObjectLiteralPropertiesRemoval",
+      "const": "ObjectLiteral_PropertiesRemoval",
       "description": "Replace ```{ foo: 'bar' }``` with ```{ }```."
     },
     "OptionalChaining": {
@@ -752,23 +753,23 @@
       "title": "UpdateOperator",
       "anyOf": [
         {
-          "const": "PostfixIncrementOperatorToPostfixDecrementOperator",
-          "title": "UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator",
+          "const": "UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator",
+          "title": "PostfixIncrementOperatorToPostfixDecrementOperator",
           "description": "Replace ```a++``` with ```a--```."
         },
         {
-          "const": "PostfixDecrementOperatorToPostfixIncrementOperator",
-          "title": "UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator",
+          "const": "UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator",
+          "title": "PostfixDecrementOperatorToPostfixIncrementOperator",
           "description": "Replace ```a--``` with ```a++```."
         },
         {
-          "const": "PrefixIncrementOperatorToPrefixDecrementOperator",
-          "title": "UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator",
+          "const": "UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator",
+          "title": "PrefixIncrementOperatorToPrefixDecrementOperator",
           "description": "Replace ```++a``` with ```--a```."
         },
         {
-          "const": "PrefixDecrementOperatorToPrefixIncrementOperator",
-          "title": "UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator",
+          "const": "UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator",
+          "title": "PrefixDecrementOperatorToPrefixIncrementOperator",
           "description": "Replace ```--a``` with ```++a```."
         }
       ]

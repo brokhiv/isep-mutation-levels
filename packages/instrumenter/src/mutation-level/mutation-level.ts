@@ -9,6 +9,7 @@ import {
   BooleanLiteral,
   ConditionalExpression,
   EqualityOperator,
+  LogicalOperator,
   MethodExpression,
   ObjectLiteral,
   OptionalChaining,
@@ -39,6 +40,7 @@ export interface MutationLevel {
   BooleanLiteral?: BooleanLiteral[];
   ConditionalExpression?: ConditionalExpression[];
   EqualityOperator?: EqualityOperator[];
+  LogicalOperator?: LogicalOperator[];
   MethodExpression?: MethodExpression[];
   ObjectLiteral?: ObjectLiteral[];
   OptionalChaining?: OptionalChaining[];
