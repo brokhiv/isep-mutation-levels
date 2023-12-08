@@ -7,21 +7,17 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 const equalityLevelA: MutationLevel = {
   name: 'EqualityLevelA',
   EqualityOperator: [
-    'EqualityOperator_LessThanOperator_Boundary',
-    'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator',
-    'EqualityOperator_GreatherThanEqualOperator_Boundary',
-    'EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator',
-    'EqualityOperator_EqualityOperator_ToInequalityOperator',
+    'LessThanOperatorBoundary',
+    'LessThanOperatorNegation',
+    'GreaterThanEqualOperatorBoundary',
+    'GreaterThanEqualOperatorNegation',
+    'EqualityOperatorNegation',
   ],
 };
 
 const equalityLevelB: MutationLevel = {
   name: 'EqualityLevelB',
-  EqualityOperator: [
-    'EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator',
-    'EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator',
-    'EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator',
-  ],
+  EqualityOperator: ['LessThanEqualOperatorNegation', 'GreaterThanOperatorNegation', 'StrictEqualityOperatorNegation'],
 };
 
 describe(sut.name, () => {

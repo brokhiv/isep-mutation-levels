@@ -10,22 +10,22 @@ export const equalityOperatorMutator: NodeMutator<EqualityOperator> = {
   name: 'EqualityOperator',
 
   operators: {
-    '<To<=': { replacement: '<=', mutationName: 'EqualityOperator_LessThanOperator_Boundary' },
-    '<To>=': { replacement: '>=', mutationName: 'EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator' },
+    '<To<=': { replacement: '<=', mutationName: 'LessThanOperatorBoundary' },
+    '<To>=': { replacement: '>=', mutationName: 'LessThanOperatorNegation' },
 
-    '<=To<': { replacement: '<', mutationName: 'EqualityOperator_LessThanEqualOperator_Boundary' },
-    '<=To>': { replacement: '>', mutationName: 'EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator' },
+    '<=To<': { replacement: '<', mutationName: 'LessThanEqualOperatorBoundary' },
+    '<=To>': { replacement: '>', mutationName: 'LessThanEqualOperatorNegation' },
 
-    '>To>=': { replacement: '>=', mutationName: 'EqualityOperator_GreaterThanOperator_Boundary' },
-    '>To<=': { replacement: '<=', mutationName: 'EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator' },
+    '>To>=': { replacement: '>=', mutationName: 'GreaterThanOperatorBoundary' },
+    '>To<=': { replacement: '<=', mutationName: 'GreaterThanOperatorNegation' },
 
-    '>=To>': { replacement: '>', mutationName: 'EqualityOperator_GreatherThanEqualOperator_Boundary' },
-    '>=To<': { replacement: '<', mutationName: 'EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator' },
+    '>=To>': { replacement: '>', mutationName: 'GreaterThanEqualOperatorBoundary' },
+    '>=To<': { replacement: '<', mutationName: 'GreaterThanEqualOperatorNegation' },
 
-    '==To!=': { replacement: '!=', mutationName: 'EqualityOperator_EqualityOperator_ToInequalityOperator' },
-    '!=To==': { replacement: '==', mutationName: 'EqualityOperator_InequalityOperator_ToEqualityOperator' },
-    '===To!==': { replacement: '!==', mutationName: 'EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator' },
-    '!==To===': { replacement: '===', mutationName: 'EqualityOperator_StrictInequalityOperator_ToStrictEqualityOperator' },
+    '==To!=': { replacement: '!=', mutationName: 'EqualityOperatorNegation' },
+    '!=To==': { replacement: '==', mutationName: 'InequalityOperatorNegation' },
+    '===To!==': { replacement: '!==', mutationName: 'StrictEqualityOperatorNegation' },
+    '!==To===': { replacement: '===', mutationName: 'StrictInequalityOperatorNegation' },
   },
 
   *mutate(path, levelMutations) {

@@ -220,6 +220,7 @@
         },
         "includedMutations": {
           "type": "array",
+          "uniqueItems": true,
           "default": [],
           "items": {
             "$ref": "#/definitions/MutatorDefinition"
@@ -227,6 +228,7 @@
         },
         "excludedMutations": {
           "type": "array",
+          "uniqueItems": true,
           "default": [],
           "items": {
             "$ref": "#/definitions/MutatorDefinition"
@@ -496,62 +498,62 @@
       "title": "EqualityOperator",
       "anyOf": [
         {
-          "const" : "EqualityOperator_StrictInequalityOperator_ToStrictEqualityOperator",
-          "title": "StrictInequalityOperatorToStrictEqualityOperator",
+          "const" : "StrictInequalityOperatorNegation",
+          "title": "StrictInequalityOperatorNegation",
           "description": "Replace ```a !== b``` with ```a === b```."
         },
         {
-          "const" : "EqualityOperator_InequalityOperator_ToEqualityOperator",
-          "title": "InequalityOperatorToEqualityOperator",
+          "const" : "InequalityOperatorNegation",
+          "title": "InequalityOperatorNegation",
           "description": "Replace ```a != b``` with ```a == b```."
         },
         {
-          "const" : "EqualityOperator_LessThanEqualOperator_Boundary",
+          "const" : "LessThanEqualOperatorBoundary",
           "title": "LessThanEqualOperatorBoundary",
           "description": "Replace ```a <= b``` with ```a < b```."
         },
         {
-          "const" : "EqualityOperator_LessThanEqualOperator_ToGreatherThanOperator",
-          "title": "LessThanEqualOperatorToGreatherThanOperator",
+          "const" : "LessThanEqualOperatorNegation",
+          "title": "LessThanEqualOperatorNegation",
           "description": "Replace ```a <= b``` with ```a > b```."
         },
         {
-          "const" : "EqualityOperator_LessThanOperator_Boundary",
+          "const" : "LessThanOperatorBoundary",
           "title": "LessThanOperatorBoundary",
           "description": "Replace ```a < b``` with ```a <= b```."
         },
         {
-          "const" : "EqualityOperator_LessThanOperator_ToGreatherThanEqualOperator",
-          "title": "LessThanOperatorToGreatherThanEqualOperator",
+          "const" : "LessThanOperatorNegation",
+          "title": "LessThanOperatorNegation",
           "description": "Replace ```a < b``` with ```a >= b```."
         },
         {
-          "const" : "EqualityOperator_StrictEqualityOperator_ToStrictInequalityOperator",
-          "title": "StrictEqualityOperatorToStrictInequalityOperator",
+          "const" : "StrictEqualityOperatorNegation",
+          "title": "StrictEqualityOperatorNegation",
           "description": "Replace ```a === b``` with ```a !== b```."
         },
         {
-          "const" : "EqualityOperator_EqualityOperator_ToInequalityOperator",
-          "title": "EqualityOperatorToInequalityOperator",
+          "const" : "EqualityOperatorNegation",
+          "title": "EqualityOperatorNegation",
           "description": "Replace ```a == b``` with ```a != b```."
         },
         {
-          "const" : "EqualityOperator_GreatherThanEqualOperator_ToLessThanOperator",
-          "title": "GreatherThanEqualOperatorToLessThanOperator",
+          "const" : "GreaterThanEqualOperatorNegation",
+          "title": "GreaterThanEqualOperatorNegation",
           "description": "Replace ```a >= b``` with ```a < b```."
         },
         {
-          "const" : "EqualityOperator_GreatherThanEqualOperator_Boundary",
-          "title": "GreatherThanEqualOperatorBoundary",
+          "const" : "GreaterThanEqualOperatorBoundary",
+          "title": "GreaterThanEqualOperatorBoundary",
           "description": "Replace ```a >= b``` with ```a > b```."
         },
         {
-          "const" : "EqualityOperator_GreaterThanOperator_ToLessThanEqualOperator",
-          "title": "GreaterThanOperatorToLessThanEqualOperator",
+          "const" : "GreaterThanOperatorNegation",
+          "title": "GreaterThanOperatorNegation",
           "description": "Replace ```a > b``` with ```a <= b```."
         },
         {
-          "const" : "EqualityOperator_GreaterThanOperator_Boundary",
+          "const" : "GreaterThanOperatorBoundary",
           "title": "GreaterThanOperatorBoundary",
           "description": "Replace ```a > b``` with ```a >= b```."
         }
@@ -561,18 +563,18 @@
       "title": "LogicalOperator",
       "anyOf": [
         {
-          "const" : "LogicalOperator_LogicalAndOperator_ToLogicalOrOperator",
-          "title": "LogicalAndOperatorToLogicalOrOperator",
+          "const" : "LogicalAndOperatorNegation",
+          "title": "LogicalAndOperatorNegation",
           "description": "Replace ```a && b``` with ```a || b```."
         },
         {
-          "const" : "LogicalOperator_LogicalOrOperator_ToLogicalAndOperator",
-          "title": "LogicalOrOperatorToLogicalAndOperator",
+          "const" : "LogicalOrOperatorNegation",
+          "title": "LogicalOrOperatorNegation",
           "description": "Replace ```a || b``` with ```a && b```."
         },
         {
-          "const" : "LogicalOperator_NullishCoalescingOperator_ToLogicalAnd",
-          "title": "NullishCoalescingOperatorToLogicalAnd",
+          "const" : "NullishCoalescingOperatorToLogicalAndReplacement",
+          "title": "NullishCoalescingOperatorToLogicalAndReplacement",
           "description": "Replace ```a ?? b``` with ```a && b```."
         }
       ]
@@ -581,109 +583,109 @@
       "title": "MethodExpression",
       "anyOf": [
         {
-          "const": "MethodExpression_charAtMethodCall_Removal",
-          "title": "charAtMethodCallRemoval",
+          "const": "CharAtMethodCallRemoval",
+          "title": "CharAtMethodCallRemoval",
           "description": "Remove ```charAt()``` call."
         },
         {
-          "const": "MethodExpression_endsWithMethodCall_TostartsWithMethodCall",
-          "title": "endsWithMethodCallTostartsWithMethodCall",
+          "const": "EndsWithMethodCallNegation",
+          "title": "EndsWithMethodCallNegation",
           "description": "Replace ```endsWith()``` with ```startsWith()```."
         },
         {
-          "const": "MethodExpression_startsWithMethodCall_ToendsWithMethodCall",
-          "title": "startsWithMethodCallToendsWithMethodCall",
+          "const": "StartsWithMethodCallNegation",
+          "title": "StartsWithMethodCallNegation",
           "description": "Replace ```startsWith()``` with ```endsWith()```."
         },
         {
-          "const": "MethodExpression_everyMethodCall_TosomeMethodCall",
-          "title": "everyMethodCallTosomeMethodCall",
+          "const": "EveryMethodCallNegation",
+          "title": "EveryMethodCallNegation",
           "description": "Replace ```every()``` with ```some()```."
         },
         {
-          "const": "MethodExpression_someMethodCall_ToeveryMethodCall",
-          "title": "someMethodCallToeveryMethodCall",
+          "const": "SomeMethodCallNegation",
+          "title": "SomeMethodCallNegation",
           "description": "Replace ```some()``` with ```every()```."
         },
         {
-          "const": "MethodExpression_filterMethodCall_Removal",
-          "title": "filterMethodCallRemoval",
+          "const": "FilterMethodCallRemoval",
+          "title": "FilterMethodCallRemoval",
           "description": "Remove ```filter()``` call."
         },
         {
-          "const": "MethodExpression_reverseMethodCall_Removal",
-          "title": "reverseMethodCallRemoval",
+          "const": "ReverseMethodCallRemoval",
+          "title": "ReverseMethodCallRemoval",
           "description": "Remove ```reverse()``` call"
         },
         {
-          "const": "MethodExpression_sliceMethodCall_Removal",
-          "title": "sliceMethodCallRemoval",
+          "const": "SliceMethodCallRemoval",
+          "title": "SliceMethodCallRemoval",
           "description": "Remove ```slice()``` call."
         },
         {
-          "const": "MethodExpression_sortMethodCall_Removal",
-          "title": "sortMethodCallRemoval",
+          "const": "SortMethodCallRemoval",
+          "title": "SortMethodCallRemoval",
           "description": "Remove ```sort()``` call."
         },
         {
-          "const": "MethodExpression_substrMethodCall_Removal",
-          "title": "substrMethodCallRemoval",
+          "const": "SubstrMethodCallRemoval",
+          "title": "SubstrMethodCallRemoval",
           "description": "Remove ```substr()``` call."
         },
         {
-          "const": "MethodExpression_substringMethodCall_Removal",
-          "title": "substringMethodCallRemoval",
+          "const": "SubstringMethodCallRemoval",
+          "title": "SubstringMethodCallRemoval",
           "description": "Remove ```substring()``` call."
         },
         {
-          "const": "MethodExpression_toLocaleLowerCaseMethodCall_TotoLocaleUpperCaseMethodCall",
-          "title": "toLocaleLowerCaseMethodCallTotoLocaleUpperCaseMethodCall",
+          "const": "ToLocaleLowerCaseMethodCallNegation",
+          "title": "ToLocaleLowerCaseMethodCallNegation",
           "description": "Replace ```toLocaleLowerCase()``` with ```toLocaleUpperCase()```."
         },
         {
-          "const": "MethodExpression_toLocaleUpperCaseMethodCall_TotoLocaleLowerCaseMethodCall",
-          "title": "toLocaleUpperCaseMethodCallTotoLocaleLowerCaseMethodCall",
+          "const": "ToLocaleUpperCaseMethodCallNegation",
+          "title": "ToLocaleUpperCaseMethodCallNegation",
           "description": "Replace ```toLocaleUpperCase()``` with ```toLocaleLowerCase()```."
         },
         {
-          "const": "MethodExpression_toLowerCaseMethodCall_TotoUpperCaseMethodCall",
-          "title": "toLowerCaseMethodCallTotoUpperCaseMethodCall",
+          "const": "ToLowerCaseMethodCallNegation",
+          "title": "ToLowerCaseMethodCallNegation",
           "description": "Replace ```toLowerCase()``` with ```toUpperCase()```."
         },
         {
-          "const": "MethodExpression_toUpperCaseMethodCall_TotoLowerCaseMethodCall",
-          "title": "toUpperCaseMethodCallTotoLowerCaseMethodCall",
+          "const": "ToUpperCaseMethodCallNegation",
+          "title": "ToUpperCaseMethodCallNegation",
           "description": "Replace ```toUpperCase()``` with ```toLowerCase()```."
         },
         {
-          "const": "MethodExpression_trimMethodCall_Removal",
-          "title": "trimMethodCallRemoval",
+          "const": "TrimMethodCallRemoval",
+          "title": "TrimMethodCallRemoval",
           "description": "Remove ```trim()``` call."
         },
         {
-          "const": "MethodExpression_trimEndMethodCall_TotrimStartMethodCall",
-          "title": "trimEndMethodCallTotrimStartMethodCall",
+          "const": "TrimEndMethodCallNegation",
+          "title": "TrimEndMethodCallNegation",
           "description": "Replace ```trimEnd()``` with ```trimStart()```."
         },
         {
-          "const": "MethodExpression_trimStartMethodCall_TotrimEndMutator",
-          "title": "trimStartMethodCallTotrimEndMutator",
+          "const": "TrimStartMethodCallNegation",
+          "title": "TrimStartMethodCallNegation",
           "description": "Replace ```trimStart()``` with ```trimEnd()```."
         },
         {
-          "const": "MethodExpression_minMethodCall_TomaxMethodCall",
-          "title": "minMethodCallTomaxMethodCall",
+          "const": "MinMethodCallNegation",
+          "title": "MinMethodCallNegation",
           "description": "Replace ```min()``` with ```max()```."
         },
         {
-          "const": "MethodExpression_maxMethodCall_toMinMethodCall",
-          "title": "maxMethodCalltoMinMethodCall",
+          "const": "MaxMethodCallNegation",
+          "title": "MaxMethodCallNegation",
           "description": "Replace ```max()``` with ```min()```."
         }
       ]
     },
     "ObjectLiteral": {
-      "const": "ObjectLiteral_PropertiesRemoval",
+      "const": "ObjectLiteralPropertiesRemoval",
       "description": "Replace ```{ foo: 'bar' }``` with ```{ }```."
     },
     "OptionalChaining": {

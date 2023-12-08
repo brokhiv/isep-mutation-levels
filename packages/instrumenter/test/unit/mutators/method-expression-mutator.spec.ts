@@ -6,12 +6,7 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const methodExpressionLevel: MutationLevel = {
   name: 'methodExpressionLevel',
-  MethodExpression: [
-    'MethodExpression_endsWithMethodCall_TostartsWithMethodCall',
-    'MethodExpression_startsWithMethodCall_ToendsWithMethodCall',
-    'MethodExpression_substringMethodCall_Removal',
-    'MethodExpression_toLowerCaseMethodCall_TotoUpperCaseMethodCall',
-  ],
+  MethodExpression: ['EndsWithMethodCallNegation', 'StartsWithMethodCallNegation', 'SubstringMethodCallRemoval', 'ToLowerCaseMethodCallNegation'],
 };
 
 describe(sut.name, () => {

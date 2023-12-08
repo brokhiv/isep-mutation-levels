@@ -10,7 +10,7 @@ export const objectLiteralMutator: NodeMutator<ObjectLiteral> = {
   name: 'ObjectLiteral',
 
   operators: {
-    ObjectLiteral: { mutationName: 'ObjectLiteral_PropertiesRemoval' },
+    ObjectLiteral: { mutationName: 'ObjectLiteralPropertiesRemoval' },
   },
 
   *mutate(path, levelMutations) {

@@ -8,9 +8,9 @@ export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
   name: 'LogicalOperator',
 
   operators: {
-    '&&': { replacement: '||', mutationName: 'LogicalOperator_LogicalAndOperator_ToLogicalOrOperator' },
-    '||': { replacement: '&&', mutationName: 'LogicalOperator_LogicalOrOperator_ToLogicalAndOperator' },
-    '??': { replacement: '&&', mutationName: 'LogicalOperator_NullishCoalescingOperator_ToLogicalAnd' },
+    '&&': { replacement: '||', mutationName: 'LogicalAndOperatorNegation' },
+    '||': { replacement: '&&', mutationName: 'LogicalOrOperatorNegation' },
+    '??': { replacement: '&&', mutationName: 'NullishCoalescingOperatorToLogicalAndReplacement' },
   },
 
   *mutate(path, levelMutations) {
