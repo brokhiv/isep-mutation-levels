@@ -23,15 +23,18 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
   name: 'OptionalChaining',
 
   operators: {
-    OptionalCallExpression: { mutationName: 'OptionalChaining_OptionalCallExpression_OptionRemoval' },
-    OptionalMemberExpression: { mutationName: 'OptionalChaining_OptionalMemberExpression_OptionRemoval' },
+    OptionalCallExpression: { mutationName: 'OptionalCallExpressionOptionalRemoval' },
+    OptionalMemberExpression: { mutationName: 'OptionalMemberExpressionOptionalRemoval' },
+    OptionalComputedMemberExpression: { mutationName: 'OptionalComputedMemberExpressionOptionalRemoval' },
   },
 
   *mutate(path, levelMutations) {
     if (
       path.isOptionalMemberExpression() &&
       path.node.optional &&
-      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalMemberExpression.mutationName))
+      (levelMutations === undefined ||
+        (!path.node.computed && levelMutations.includes(this.operators.OptionalMemberExpression.mutationName)) ||
+        (path.node.computed && levelMutations.includes(this.operators.OptionalComputedMemberExpression.mutationName)))
     ) {
       yield t.optionalMemberExpression(
         t.cloneNode(path.node.object, true),

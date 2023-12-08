@@ -692,13 +692,18 @@
       "title": "OptionalChaining",
       "anyOf": [
         {
-          "const": "OptionalChaining_OptionalMemberExpression_OptionRemoval",
-          "title": "OptionalMemberExpressionOptionRemoval",
+          "const": "OptionalMemberExpressionOptionalRemoval",
+          "title": "OptionalMemberExpressionOptionalRemoval",
           "description": "Replace ```foo?.bar``` with ```foo.bar```."
         },
         {
-          "const": "OptionalChaining_OptionalCallExpression_OptionRemoval",
-          "title": "OptionalCallExpressionOptionRemoval",
+          "const": "OptionalComputedMemberExpressionOptionalRemoval",
+          "title": "OptionalComputedMemberExpressionOptionalRemoval",
+          "description": "Replace ```foo?.[1]``` with ```foo[1]```."
+        },
+        {
+          "const": "OptionalCallExpressionOptionalRemoval",
+          "title": "OptionalCallExpressionOptionalRemoval",
           "description": "Replace ```foo?.()``` with ```foo()```."
         }
       ]
