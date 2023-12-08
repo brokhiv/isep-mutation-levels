@@ -23,9 +23,9 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
   name: 'OptionalChaining',
 
   operators: {
-    OptionalCallExpression: { mutationName: 'OptionalCallExpressionOptionalRemoval' },
-    OptionalMemberExpression: { mutationName: 'OptionalMemberExpressionOptionalRemoval' },
-    OptionalComputedMemberExpression: { mutationName: 'OptionalComputedMemberExpressionOptionalRemoval' },
+    OptionalCallExpressionOptionalRemoval: { mutationName: 'OptionalCallExpressionOptionalRemoval' },
+    OptionalMemberExpressionOptionalRemoval: { mutationName: 'OptionalMemberExpressionOptionalRemoval' },
+    OptionalComputedMemberExpressionOptionalRemoval: { mutationName: 'OptionalComputedMemberExpressionOptionalRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -33,8 +33,8 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
       path.isOptionalMemberExpression() &&
       path.node.optional &&
       (levelMutations === undefined ||
-        (!path.node.computed && levelMutations.includes(this.operators.OptionalMemberExpression.mutationName)) ||
-        (path.node.computed && levelMutations.includes(this.operators.OptionalComputedMemberExpression.mutationName)))
+        (!path.node.computed && levelMutations.includes(this.operators.OptionalMemberExpressionOptionalRemoval.mutationName)) ||
+        (path.node.computed && levelMutations.includes(this.operators.OptionalComputedMemberExpressionOptionalRemoval.mutationName)))
     ) {
       yield t.optionalMemberExpression(
         t.cloneNode(path.node.object, true),
@@ -46,7 +46,7 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
     if (
       path.isOptionalCallExpression() &&
       path.node.optional &&
-      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalCallExpression.mutationName))
+      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalCallExpressionOptionalRemoval.mutationName))
     ) {
       yield t.optionalCallExpression(
         t.cloneNode(path.node.callee, true),

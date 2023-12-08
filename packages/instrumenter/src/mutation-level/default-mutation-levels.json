@@ -1,7 +1,7 @@
 {
    "mutationLevels":[
       {
-         "name":"level1",
+         "name":"Level1",
          "UpdateOperator":[
             "UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator"
          ],
@@ -36,7 +36,7 @@
          ]
       },
       {
-         "name":"level2",
+         "name":"Level2",
          "UpdateOperator":[
             "UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator",
             "UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator"
@@ -89,7 +89,7 @@
          ]
       },
       {
-         "name":"level3",
+         "name":"Level3",
          "UpdateOperator":[
             "UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator",
             "UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator"

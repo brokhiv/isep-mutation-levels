@@ -223,10 +223,7 @@
           "uniqueItems": true,
           "default": [],
           "items": {
-            "anyOf": [
-              { "$ref": "#/definitions/MutatorDefinition"},
-              { "title": "MutationLevelName", "type": "string"}
-            ]
+            "$ref": "#/definitions/MutationSpecification"
           }
         },
         "excludedMutations": {
@@ -234,10 +231,7 @@
           "uniqueItems": true,
           "default": [],
           "items": {
-            "anyOf": [
-              { "$ref": "#/definitions/MutatorDefinition"},
-              { "title": "MutationLevelName", "type": "string"}
-            ]
+            "$ref": "#/definitions/MutationSpecification"
           }
         }
       }
@@ -269,9 +263,19 @@
         }
       }
     },
+    "MutationSpecification": {
+      "anyOf": [
+        { "$ref": "#/definitions/MutationLevelName"},
+        { "$ref": "#/definitions/MutatorDefinition"},
+        { "$ref": "#/definitions/MutatorGroupName"}
+      ]
+    },
+    "MutationLevelName": { 
+      "title": "MutationLevelName", 
+      "type": "string"
+    },
     "MutatorDefinition" : {
       "anyOf": [
-        { "$ref": "#/definitions/_MutatorGroupName"},
         { "$ref": "#/definitions/ArithmeticOperator" },
         { "$ref": "#/definitions/ArrayDeclaration" },
         { "$ref": "#/definitions/ArrowFunction"},
@@ -290,7 +294,7 @@
         { "$ref": "#/definitions/UpdateOperator" }
       ]
     },
-    "_MutatorGroupName": {
+    "MutatorGroupName": {
       "enum": [
         "@ArithmeticOperator",
         "@ArrayDeclaration",

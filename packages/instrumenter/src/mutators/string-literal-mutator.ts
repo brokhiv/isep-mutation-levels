@@ -10,13 +10,19 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
   name: 'StringLiteral',
 
   operators: {
-    FillString: { replacement: types.stringLiteral('Stryker was here!'), mutationName: 'EmptyStringLiteralToFilledReplacement' },
-    EmptyString: { replacement: types.stringLiteral(''), mutationName: 'FilledStringLiteralToEmptyReplacement' },
-    EmptyInterpolation: {
+    EmptyStringLiteralToFilledReplacement: {
+      replacement: types.stringLiteral('Stryker was here!'),
+      mutationName: 'EmptyStringLiteralToFilledReplacement',
+    },
+    FilledStringLiteralToEmptyReplacement: {
+      replacement: types.stringLiteral(''),
+      mutationName: 'FilledStringLiteralToEmptyReplacement',
+    },
+    FilledInterpolatedStringToEmptyReplacement: {
       replacement: types.templateLiteral([types.templateElement({ raw: '' })], []),
       mutationName: 'FilledInterpolatedStringToEmptyReplacement',
     },
-    FillInterpolation: {
+    EmptyInterpolatedStringToFilledReplacement: {
       replacement: types.templateLiteral([types.templateElement({ raw: 'Stryker was here!' })], []),
       mutationName: 'EmptyInterpolatedStringToFilledReplacement',
     },
@@ -27,20 +33,24 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
       const stringIsEmpty = path.node.quasis.length === 1 && path.node.quasis[0].value.raw.length === 0;
       if (
         levelMutations === undefined ||
-        (stringIsEmpty && levelMutations.includes(this.operators.FillInterpolation.mutationName)) ||
-        (!stringIsEmpty && levelMutations.includes(this.operators.EmptyInterpolation.mutationName))
+        (stringIsEmpty && levelMutations.includes(this.operators.EmptyInterpolatedStringToFilledReplacement.mutationName)) ||
+        (!stringIsEmpty && levelMutations.includes(this.operators.FilledInterpolatedStringToEmptyReplacement.mutationName))
       ) {
-        yield stringIsEmpty ? this.operators.FillInterpolation.replacement : this.operators.EmptyInterpolation.replacement;
+        yield stringIsEmpty
+          ? this.operators.EmptyInterpolatedStringToFilledReplacement.replacement
+          : this.operators.FilledInterpolatedStringToEmptyReplacement.replacement;
       }
     }
     if (path.isStringLiteral() && isValidParent(path)) {
       const stringIsEmpty = path.node.value.length === 0;
       if (
         levelMutations === undefined ||
-        (stringIsEmpty && levelMutations.includes(this.operators.FillString.mutationName)) ||
-        (!stringIsEmpty && levelMutations.includes(this.operators.EmptyString.mutationName))
+        (stringIsEmpty && levelMutations.includes(this.operators.EmptyStringLiteralToFilledReplacement.mutationName)) ||
+        (!stringIsEmpty && levelMutations.includes(this.operators.FilledStringLiteralToEmptyReplacement.mutationName))
       ) {
-        yield stringIsEmpty ? this.operators.FillString.replacement : this.operators.EmptyString.replacement;
+        yield stringIsEmpty
+          ? this.operators.EmptyStringLiteralToFilledReplacement.replacement
+          : this.operators.FilledStringLiteralToEmptyReplacement.replacement;
       }
     }
   },

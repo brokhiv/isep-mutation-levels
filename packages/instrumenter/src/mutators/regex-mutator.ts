@@ -35,7 +35,7 @@ export const regexMutator: NodeMutator<Regex> = {
   name: 'Regex',
 
   operators: {
-    Regex: { mutationName: 'RegexRemoval' },
+    RegexRemoval: { mutationName: 'RegexRemoval' },
   },
 
   *mutate(path, options) {
@@ -67,5 +67,5 @@ function mutatePattern(pattern: string, flags: string | undefined): string[] {
 }
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(regexMutator.operators.Regex.mutationName);
+  return levelMutations === undefined || levelMutations.includes(regexMutator.operators.RegexRemoval.mutationName);
 }
