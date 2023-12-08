@@ -18,7 +18,7 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
     },
     FillInterpolation: {
       replacement: types.templateLiteral([types.templateElement({ raw: 'Stryker was here!' })], []),
-      mutationName: 'EmptdInterpolatedStringToFilledReplacement',
+      mutationName: 'EmptyInterpolatedStringToFilledReplacement',
     },
   },
 
