@@ -7,20 +7,20 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 const conditionalLevel: MutationLevel = {
   name: 'ConditionalLevel',
   ConditionalExpression: [
-    'ConditionalExpression_ForLoopCondition_ToFalseLiteral',
-    'ConditionalExpression_IfCondition_ToFalseLiteral',
-    'ConditionalExpression_IfCondition_ToTrueLiteral',
-    'ConditionalExpression_SwitchStatementBody_Removal',
+    'ForLoopConditionToFalseReplacement',
+    'IfConditionToFalseReplacement',
+    'IfConditionToTrueReplacement',
+    'SwitchStatementBodyRemoval',
   ],
 };
 
 const conditionalLevel2: MutationLevel = {
   name: 'ConditionalLevel2',
   ConditionalExpression: [
-    'ConditionalExpression_WhileLoopCondition_ToFalseLiteral',
-    'ConditionalExpression_BooleanExpression_ToFalseLiteral',
-    'ConditionalExpression_DoWhileLoopCondition_ToFalseLiteral',
-    'ConditionalExpression_BooleanExpression_ToTrueLiteral',
+    'WhileLoopConditionToFalseReplacement',
+    'BooleanExpressionToFalseReplacement',
+    'DoWhileLoopConditionToFalseReplacement',
+    'BooleanExpressionToTrueReplacement',
   ],
 };
 

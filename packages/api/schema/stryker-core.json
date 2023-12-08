@@ -303,28 +303,28 @@
       "title": "ArithmeticOperator",
       "anyOf": [
         {
-          "const" : "ArithmeticOperator_RemainderOperator_ToMultiplicationOperator",
-          "title": "RemainderOperatorToMultiplicationOperator",
+          "const" : "RemainderOperatorToMultiplicationReplacement",
+          "title": "RemainderOperatorToMultiplicationReplacement",
           "description": "Replace ```a % b``` with ```a * b```."
         },
         {
-          "const" : "ArithmeticOperator_MultiplicationOperator_ToDivisionOperator",
-          "title": "MultiplicationOperatorToDivisionOperator",
+          "const" : "MultiplicationOperatorNegation",
+          "title": "MultiplicationOperatorNegation",
           "description": "Replace ```a * b``` with ```a / b```."
         },
         {
-          "const" : "ArithmeticOperator_DivisionOperator_ToMultiplicationOperator",
-          "title": "DivisionOperatorToMultiplicationOperator",
+          "const" : "DivisionOperatorNegation",
+          "title": "DivisionOperatorNegation",
           "description": "Replace ```a / b``` with ```a * b```."
         },
         {
-          "const" : "ArithmeticOperator_AdditionOperator_ToSubtractionOperator",
-          "title": "AdditionOperatorToSubtractionOperator",
+          "const" : "AdditionOperatorNegation",
+          "title": "AdditionOperatorNegation",
           "description": "Replace ```a + b``` with ```a - b```."
         },
         {
-          "const" : "ArithmeticOperator_SubtractionOperator_ToAdditionOperator",
-          "title": "SubtractionOperatorToAdditionOperator",
+          "const" : "SubtractionOperatorNegation",
+          "title": "SubtractionOperatorNegation",
           "description": "Replace ```a - b``` with ```a + b```."
         }
       ]
@@ -333,22 +333,22 @@
       "title": "ArrayDeclaration",
       "anyOf": [
         {
-          "const": "ArrayDeclaration_ArrayLiteral_Fill",
-          "title": "ArrayLiteralFill",
+          "const": "ArrayLiteralItemsFill",
+          "title": "ArrayLiteralItemsFill",
           "description": "Replace ```[ ]``` with ```[Stryker was here]```."
         },
         {
-          "const": "ArrayDeclaration_ArrayConstructor_Fill",
-          "title": "ArrayConstructorFill",
+          "const": "ArrayConstructorItemsFill",
+          "title": "ArrayConstructorItemsFill",
           "description": "Replace ```new Array()``` with  ```new Array(Stryker was here)```."
         },
         {
-          "const": "ArrayDeclaration_ArrayLiteral_ItemsRemoval",
+          "const": "ArrayLiteralItemsRemoval",
           "title": "ArrayLiteralItemsRemoval",
           "description": "Replace ```[1, 2, 3, 4]``` with ```[ ]```."
         },
         {
-          "const": "ArrayDeclaration_ArrayConstructor_ItemsRemoval",
+          "const": "ArrayConstructorItemsRemoval",
           "title": "ArrayConstructorItemsRemoval",
           "description": "Replace ```new Array([1, 2, 3, 4])``` with ```new Array()```."
         }
@@ -358,90 +358,90 @@
       "title": "AssignmentOperator",
       "anyOf": [
         {
-          "const" : "AssignmentOperator_AdditionAssignment_ToSubstractionAssignment",
-          "title": "AdditionAssignmentToSubstractionAssignment",
+          "const" : "AdditionAssignmentNegation",
+          "title": "AdditionAssignmentNegation",
           "description": "Replace ```a += b``` with ```a -= b```."
         },
         {
-          "const" : "AssignmentOperator_SubstractionAssignment_ToAdditionAssignment",
-          "title": "SubstractionAssignmentToAdditionAssignment",
+          "const" : "SubtractionAssignmentNegation",
+          "title": "SubtractionAssignmentNegation",
           "description": "Replace ```a -= b``` with ```a += b```."
         },
         {
-          "const" : "AssignmentOperator_MultiplicationAssignment_ToDivisionAssignment",
-          "title": "MultiplicationAssignmentToDivisionAssignment",
+          "const" : "MultiplicationAssignmentNegation",
+          "title": "MultiplicationAssignmentNegation",
           "description": "Replace ```a *= b``` with ```a /= b```."
         },
         {
-          "const" : "AssignmentOperator_DivisionAssignment_ToMultiplicationAssignment",
-          "title": "DivisionAssignmentToMultiplicationAssignment",
+          "const" : "DivisionAssignmentNegation",
+          "title": "DivisionAssignmentNegation",
           "description": "Replace ```a /= b``` with ```a *= b```."
         },
         {
-          "const" : "AssignmentOperator_RemainderAssignment_ToMultiplicationAssignment",
-          "title": "RemainderAssignmentToMultiplicationAssignment",
+          "const" : "RemainderAssignmentToMultiplicationReplacement",
+          "title": "RemainderAssignmentToMultiplicationReplacement",
           "description": "Replace ```a %= b``` with ```a *= b```."
         },
         {
-          "const" : "AssignmentOperator_LeftShiftAssignment_ToRightShiftAssignment",
-          "title": "LeftShiftAssignmentToRightShiftAssignment",
+          "const" : "LeftShiftAssignmentNegation",
+          "title": "LeftShiftAssignmentNegation",
           "description": "Replace ```a <<= b``` with ```a >>= b```."
         },
         {
-          "const" : "AssignmentOperator_RightShiftAssignment_ToLeftShiftAssignment",
-          "title": "RightShiftAssignmentToLeftShiftAssignment",
+          "const" : "RightShiftAssignmentNegation",
+          "title": "RightShiftAssignmentNegation",
           "description": "Replace ```a >>= b``` with ```a <<= b```."
         },
         {
-          "const" : "AssignmentOperator_BitwiseAndAssignment_ToBitwiseOrAssignment",
-          "title": "BitwiseAndAssignmentToBitwiseOrAssignment",
+          "const" : "BitwiseAndAssignmentNegation",
+          "title": "BitwiseAndAssignmentNegation",
           "description": "Replace ```a &= b``` with ```a |= b```."
         },
         {
-          "const" : "AssignmentOperator_BitwiseOrAssignment_ToBitwiseAndAssignment",
-          "title": "BitwiseOrAssignmentToBitwiseAndAssignment",
+          "const" : "BitwiseOrAssignmentNegation",
+          "title": "BitwiseOrAssignmentNegation",
           "description": "Replace ```a |= b``` with ```a &= b```."
         },
         {
-          "const" : "AssignmentOperator_LogicalAndAssignment_ToLogicalOrAssignment",
-          "title": "LogicalAndAssignmentToLogicalOrAssignment",
+          "const" : "LogicalAndAssignmentNegation",
+          "title": "LogicalOrAssignmentNegation",
           "description": "Replace ```a &&= b``` with ```a ||= b```."
         },
         {
-          "const" : "AssignmentOperator_LogicalOrAssignment_ToLogicalAndAssignment",
-          "title": "LogicalOrAssignmentToLogicalAndAssignment",
+          "const" : "LogicalOrAssignmentNegation",
+          "title": "LogicalOrAssignmentNegation",
           "description": "Replace ```a ||= b``` with ```a &&= b```."
         },
         {
-          "const" : "AssignmentOperator_NullishCoalescingAssignment_ToLogicalAndAssignment",
+          "const" : "NullishCoalescingAssignmentToLogicalAndReplacement",
           "title": "NullishCoalescingAssignmentToLogicalAndAssignment",
           "description": "Replace ```a ??= b``` with ```a &&= b```."
         }
       ]
     },
     "ArrowFunction": {
-      "const": "ArrowFunction_Removal",
+      "const": "ArrowFunctionRemoval",
       "description": "Mutates bodies of arrow functions to undefined"
     },
     "BlockStatement": {
-      "const": "BlockStatement_Removal",
+      "const": "BlockStatementRemoval",
       "description": "Removes the content of every block statement."
     },
     "BooleanLiteral": {
       "title": "BooleanLiteral",
       "anyOf": [
         {
-          "const" : "BooleanLiteral_TrueLiteral_ToFalseLiteral",
-          "title": "TrueLiteralToFalseLiteral",
+          "const" : "TrueLiteralNegation",
+          "title": "TrueLiteralNegation",
           "description": "Replace ```true``` with ```false```."
         },
         {
-          "const" : "BooleanLiteral_FalseLiteral_ToTrueLiteral",
-          "title": "FalseLiteralToTrueLiteral",
+          "const" : "FalseLiteralNegation",
+          "title": "FalseLiteralNegation",
           "description": "Replace ```false``` with ```true```."
         },
         {
-          "const" : "BooleanLiteral_LogicalNot_Removal",
+          "const" : "LogicalNotRemoval",
           "title": "LogicalNotRemoval",
           "description": "Replace ```!(a == b)``` with ```a == b```."
         }
@@ -451,42 +451,42 @@
       "title": "ConditionalExpression",
       "anyOf": [
         {
-          "const" : "ConditionalExpression_ForLoopCondition_ToFalseLiteral",
-          "title": "ForLoopConditionToFalseLiteral",
+          "const" : "ForLoopConditionToFalseReplacement",
+          "title": "ForLoopConditionToFalseReplacement",
           "description": "Replace ```for (var i = 0; i < 10; i++) { }``` with ```for (var i = 0; false; i++) { }```."
         },
         {
-          "const" : "ConditionalExpression_WhileLoopCondition_ToFalseLiteral",
-          "title": "WhileLoopConditionToFalseLiteral",
+          "const" : "WhileLoopConditionToFalseReplacement",
+          "title": "WhileLoopConditionToFalseReplacement",
           "description": "Replace ```while (a > b) { }``` with ```while (false) { }```."
         },
         {
-          "const" : "ConditionalExpression_DoWhileLoopCondition_ToFalseLiteral",
-          "title": "DoWhileLoopConditionToFalseLiteral",
+          "const" : "DoWhileLoopConditionToFalseReplacement",
+          "title": "DoWhileLoopConditionToFalseReplacement",
           "description": "Replace ```do { } while (a > b);``` with ```do { } while (false);```."
         },
         {
-          "const" : "ConditionalExpression_IfCondition_ToTrueLiteral",
-          "title": "IfConditionToTrueLiteral",
+          "const" : "IfConditionToTrueReplacement",
+          "title": "IfConditionToTrueReplacement",
           "description": "Replace ```if (a > b) { }``` with ```if (true) { }```."
         },
         {
-          "const" : "ConditionalExpression_IfCondition_ToFalseLiteral",
-          "title": "IfConditionToFalseLiteral",
+          "const" : "IfConditionToFalseReplacement",
+          "title": "IfConditionToFalseReplacement",
           "description": "Replace ```if (a > b) { }``` with ```if (false) { }```."
         },
         {
-          "const" : "ConditionalExpression_BooleanExpression_ToTrueLiteral",
-          "title": "TernaryConditionToTrueLiteral",
+          "const" : "BooleanExpressionToTrueReplacement",
+          "title": "BooleanExpressionToTrueReplacement",
           "description": "Replace ```var x = a > b ? 1 : 2;``` with ```var x = true ? 1 : 2;```."
         },
         {
-          "const" : "ConditionalExpression_BooleanExpression_ToFalseLiteral",
-          "title": "ConditionalExpressionTernaryCondition_ToFalseLiteral",
+          "const" : "BooleanExpressionToFalseReplacement",
+          "title": "BooleanExpressionToFalseReplacement",
           "description": "Replace ```var x = a > b ? 1 : 2;``` with ```var x = false ? 1 : 2;```."
         },
         {
-          "const" : "ConditionalExpression_SwitchStatementBody_Removal",
+          "const" : "SwitchStatementBodyRemoval",
           "title": "SwitchStatementBodyRemoval",
           "description": "Replace ```switch(x) with switch()```."
         }
@@ -702,7 +702,7 @@
       ]
     },
     "Regex": {
-      "const": "Regex_Removal"
+      "const": "RegexRemoval"
     },
     "StringLiteral": {
       "title": "StringLiteral",

@@ -6,12 +6,12 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const booleanLiteralLevel: MutationLevel = {
   name: 'BooleanLiteralLevel',
-  BooleanLiteral: ['BooleanLiteral_TrueLiteral_ToFalseLiteral', 'BooleanLiteral_LogicalNot_Removal'],
+  BooleanLiteral: ['TrueLiteralNegation', 'LogicalNotRemoval'],
 };
 
 const booleanLiteralAllLevel: MutationLevel = {
   name: 'BooleanLiteralLevel',
-  BooleanLiteral: ['BooleanLiteral_TrueLiteral_ToFalseLiteral', 'BooleanLiteral_FalseLiteral_ToTrueLiteral', 'BooleanLiteral_LogicalNot_Removal'],
+  BooleanLiteral: ['TrueLiteralNegation', 'FalseLiteralNegation', 'LogicalNotRemoval'],
 };
 
 const booleanLiteralUndefinedLevel: MutationLevel = {

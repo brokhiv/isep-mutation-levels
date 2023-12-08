@@ -6,12 +6,7 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const arrayDeclarationLevel: MutationLevel = {
   name: 'ArrayDeclarationLevel',
-  ArrayDeclaration: [
-    'ArrayDeclaration_ArrayLiteral_Fill',
-    'ArrayDeclaration_ArrayConstructor_Fill',
-    'ArrayDeclaration_ArrayLiteral_ItemsRemoval',
-    'ArrayDeclaration_ArrayConstructor_ItemsRemoval',
-  ],
+  ArrayDeclaration: ['ArrayLiteralItemsFill', 'ArrayConstructorItemsRemoval', 'ArrayLiteralItemsRemoval', 'ArrayConstructorItemsFill'],
 };
 
 describe(sut.name, () => {

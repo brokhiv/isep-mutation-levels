@@ -10,7 +10,7 @@ export const blockStatementMutator: NodeMutator<BlockStatement> = {
   name: 'BlockStatement',
 
   operators: {
-    BlockStatement: { mutationName: 'BlockStatement_Removal' },
+    BlockStatement: { mutationName: 'BlockStatementRemoval' },
   },
 
   *mutate(path, levelMutations) {

@@ -14,14 +14,14 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
   name: 'ConditionalExpression',
 
   operators: {
-    BooleanExpressionToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_BooleanExpression_ToFalseLiteral' },
-    BooleanExpressionToTrue: { replacement: types.booleanLiteral(true), mutationName: 'ConditionalExpression_BooleanExpression_ToTrueLiteral' },
-    DoWhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_DoWhileLoopCondition_ToFalseLiteral' },
-    ForLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_ForLoopCondition_ToFalseLiteral' },
-    IfToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_IfCondition_ToFalseLiteral' },
-    IfToTrue: { replacement: types.booleanLiteral(true), mutationName: 'ConditionalExpression_IfCondition_ToTrueLiteral' },
-    WhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ConditionalExpression_WhileLoopCondition_ToFalseLiteral' },
-    SwitchToEmpty: { replacement: [], mutationName: 'ConditionalExpression_SwitchStatementBody_Removal' },
+    BooleanExpressionToFalse: { replacement: types.booleanLiteral(false), mutationName: 'BooleanExpressionToFalseReplacement' },
+    BooleanExpressionToTrue: { replacement: types.booleanLiteral(true), mutationName: 'BooleanExpressionToTrueReplacement' },
+    DoWhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'DoWhileLoopConditionToFalseReplacement' },
+    ForLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'ForLoopConditionToFalseReplacement' },
+    IfToFalse: { replacement: types.booleanLiteral(false), mutationName: 'IfConditionToFalseReplacement' },
+    IfToTrue: { replacement: types.booleanLiteral(true), mutationName: 'IfConditionToTrueReplacement' },
+    WhileLoopToFalse: { replacement: types.booleanLiteral(false), mutationName: 'WhileLoopConditionToFalseReplacement' },
+    SwitchBodyRemoval: { replacement: [], mutationName: 'SwitchStatementBodyRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -78,9 +78,9 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
       }
     } else if (path.isSwitchCase() && path.node.consequent.length > 0) {
       // if not a fallthrough case
-      if (levelMutations === undefined || levelMutations.includes(this.operators.SwitchToEmpty.mutationName)) {
+      if (levelMutations === undefined || levelMutations.includes(this.operators.SwitchBodyRemoval.mutationName)) {
         const replacement = deepCloneNode(path.node);
-        replacement.consequent = this.operators.SwitchToEmpty.replacement;
+        replacement.consequent = this.operators.SwitchBodyRemoval.replacement;
         yield replacement;
       }
     }

@@ -10,7 +10,7 @@ export const arrowFunctionMutator: NodeMutator<ArrowFunction> = {
   name: 'ArrowFunction',
 
   operators: {
-    ArrowFunction: { mutationName: 'ArrowFunction_Removal' },
+    ArrowFunction: { mutationName: 'ArrowFunctionRemoval' },
   },
 
   *mutate(path, levelMutations) {

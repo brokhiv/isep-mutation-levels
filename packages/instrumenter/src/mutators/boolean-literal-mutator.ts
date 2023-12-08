@@ -12,9 +12,9 @@ export const booleanLiteralMutator: NodeMutator<BooleanLiteral> = {
   name: 'BooleanLiteral',
 
   operators: {
-    true: { replacement: false, mutationName: 'BooleanLiteral_TrueLiteral_ToFalseLiteral' },
-    false: { replacement: true, mutationName: 'BooleanLiteral_FalseLiteral_ToTrueLiteral' },
-    '!': { replacement: '', mutationName: 'BooleanLiteral_LogicalNot_Removal' },
+    true: { replacement: false, mutationName: 'TrueLiteralNegation' },
+    false: { replacement: true, mutationName: 'FalseLiteralNegation' },
+    '!': { replacement: '', mutationName: 'LogicalNotRemoval' },
   },
 
   *mutate(path, levelMutations) {

@@ -35,7 +35,7 @@ export const regexMutator: NodeMutator<Regex> = {
   name: 'Regex',
 
   operators: {
-    Regex: { mutationName: 'Regex_Removal' },
+    Regex: { mutationName: 'RegexRemoval' },
   },
 
   *mutate(path, options) {

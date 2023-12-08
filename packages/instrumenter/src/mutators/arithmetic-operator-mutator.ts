@@ -10,11 +10,11 @@ export const arithmeticOperatorMutator: NodeMutator<ArithmeticOperator> = {
   name: 'ArithmeticOperator',
 
   operators: {
-    '+': { replacement: '-', mutationName: 'ArithmeticOperator_AdditionOperator_ToSubtractionOperator' },
-    '-': { replacement: '+', mutationName: 'ArithmeticOperator_SubtractionOperator_ToAdditionOperator' },
-    '*': { replacement: '/', mutationName: 'ArithmeticOperator_MultiplicationOperator_ToDivisionOperator' },
-    '/': { replacement: '*', mutationName: 'ArithmeticOperator_DivisionOperator_ToMultiplicationOperator' },
-    '%': { replacement: '*', mutationName: 'ArithmeticOperator_RemainderOperator_ToMultiplicationOperator' },
+    '+': { replacement: '-', mutationName: 'AdditionOperatorNegation' },
+    '-': { replacement: '+', mutationName: 'SubtractionOperatorNegation' },
+    '*': { replacement: '/', mutationName: 'MultiplicationOperatorNegation' },
+    '/': { replacement: '*', mutationName: 'DivisionOperatorNegation' },
+    '%': { replacement: '*', mutationName: 'RemainderOperatorToMultiplicationReplacement' },
   },
 
   *mutate(path, levelMutations) {
