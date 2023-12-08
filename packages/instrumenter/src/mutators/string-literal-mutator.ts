@@ -10,15 +10,15 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
   name: 'StringLiteral',
 
   operators: {
-    FillString: { replacement: types.stringLiteral('Stryker was here!'), mutationName: 'StringLiteral_EmptyStringLiteral_ToFilledStringLiteral' },
-    EmptyString: { replacement: types.stringLiteral(''), mutationName: 'StringLiteral_FilledStringLiteral_ToEmptyStringLiteral' },
+    FillString: { replacement: types.stringLiteral('Stryker was here!'), mutationName: 'EmptyStringLiteralToFilledReplacement' },
+    EmptyString: { replacement: types.stringLiteral(''), mutationName: 'FilledStringLiteralToEmptyReplacement' },
     EmptyInterpolation: {
       replacement: types.templateLiteral([types.templateElement({ raw: '' })], []),
-      mutationName: 'StringLiteral_FilledInterpolatedString_ToEmptyInterpolatedString',
+      mutationName: 'FilledInterpolatedStringToEmptyReplacement',
     },
     FillInterpolation: {
       replacement: types.templateLiteral([types.templateElement({ raw: 'Stryker was here!' })], []),
-      mutationName: 'StringLiteral_EmptyInterpolatedString_ToFilledInterpolatedString',
+      mutationName: 'EmptdInterpolatedStringToFilledReplacement',
     },
   },
 

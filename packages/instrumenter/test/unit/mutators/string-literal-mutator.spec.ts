@@ -6,7 +6,7 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const stringLiteralLevel: MutationLevel = {
   name: 'ObjectLiteralLevel',
-  StringLiteral: ['StringLiteral_FilledStringLiteral_ToEmptyStringLiteral', 'StringLiteral_FilledInterpolatedString_ToEmptyInterpolatedString'],
+  StringLiteral: ['FilledStringLiteralToEmptyReplacement', 'FilledInterpolatedStringToEmptyReplacement'],
 };
 
 describe(sut.name, () => {

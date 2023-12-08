@@ -715,23 +715,23 @@
       "title": "StringLiteral",
       "anyOf": [
         {
-          "const": "StringLiteral_FilledStringLiteral_ToEmptyStringLiteral",
-          "title": "FilledStringLiteralToEmptyStringLiteral",
+          "const": "FilledStringLiteralToEmptyReplacement",
+          "title": "FilledStringLiteralToEmptyReplacement",
           "description": "Replace ```\"foo\"``` with ```\"\"```."
         },
         {
-          "const": "StringLiteral_EmptyStringLiteral_ToFilledStringLiteral",
-          "title": "EmptyStringLiteralToFilledStringLiteral",
+          "const": "EmptyStringLiteralToFilledReplacement",
+          "title": "EmptyStringLiteralToFilledReplacement",
           "description": "Replace ```\"\"``` with ```\"Stryker was here!\"```."
         },
         {
-          "const": "StringLiteral_FilledInterpolatedString_ToEmptyInterpolatedString",
-          "title": "FilledInterpolatedStringToEmptyInterpolatedString",
+          "const": "FilledInterpolatedStringToEmptyReplacement",
+          "title": "FilledInterpolatedStringToEmptyReplacement",
           "description": "Replace ```s\"foo ${bar}\"``` with ```s\"\"```."
         },
         {
-          "const": "StringLiteral_EmptyInterpolatedString_ToFilledInterpolatedString",
-          "title": "EmptyInterpolatedStringToFilledInterpolatedString",
+          "const": "EmptdInterpolatedStringToFilledReplacement",
+          "title": "EmptdInterpolatedStringToFilledReplacement",
           "description": "Replace ```s\"\"``` with ```s\"Stryker was here!\"```."
         }
       ]
@@ -740,19 +740,19 @@
       "title": "UnaryOperator",
       "anyOf": [
         {
-          "const": "UnaryOperator_UnaryPlusOperator_ToUnaryMinusOperator",
-          "title": "UnaryPlusOperatorToUnaryMinusOperator",
+          "const": "UnaryPlusOperatorNegation",
+          "title": "UnaryPlusOperatorNegation",
           "description": "Replace ```+a``` with ```-a```."
         },
         {
-          "const": "UnaryOperator_UnaryMinusOperator_ToUnaryPlusOperator",
-          "title": "UnaryMinusOperatorToUnaryPlusOperator",
+          "const": "UnaryMinOperatorNegation",
+          "title": "UnaryMinOperatorNegation",
           "description": "Replace ```-a``` with ```+a.```"
         },
         {
-          "const": "UnaryOperator_BitwiseOrOperator_Removal",
-          "title": "BitwiseOrOperatorRemoval",
-          "description": ""
+          "const": "UnaryBitwiseOrRemoval",
+          "title": "UnaryBitwiseOrRemoval",
+          "description": "Remove ```~``` from ```~a```."
         }
       ]
     },
@@ -760,23 +760,23 @@
       "title": "UpdateOperator",
       "anyOf": [
         {
-          "const": "UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator",
-          "title": "PostfixIncrementOperatorToPostfixDecrementOperator",
+          "const": "PostfixIncrementOperatorNegation",
+          "title": "PostfixIncrementOperatorNegation",
           "description": "Replace ```a++``` with ```a--```."
         },
         {
-          "const": "UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator",
-          "title": "PostfixDecrementOperatorToPostfixIncrementOperator",
+          "const": "PostfixDecrementOperatorNegation",
+          "title": "PostfixDecrementOperatorNegation",
           "description": "Replace ```a--``` with ```a++```."
         },
         {
-          "const": "UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator",
-          "title": "PrefixIncrementOperatorToPrefixDecrementOperator",
+          "const": "PrefixIncrementOperatorNegation",
+          "title": "PrefixIncrementOperatorNegation",
           "description": "Replace ```++a``` with ```--a```."
         },
         {
-          "const": "UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator",
-          "title": "PrefixDecrementOperatorToPrefixIncrementOperator",
+          "const": "PrefixDecrementOperatorNegation",
+          "title": "PrefixDecrementOperatorNegation",
           "description": "Replace ```--a``` with ```++a```."
         }
       ]

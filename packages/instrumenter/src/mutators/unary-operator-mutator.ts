@@ -12,9 +12,9 @@ export const unaryOperatorMutator: NodeMutator<UnaryOperator> = {
   name: 'UnaryOperator',
 
   operators: {
-    '+': { replacement: '-', mutationName: 'UnaryOperator_UnaryPlusOperator_ToUnaryMinusOperator' },
-    '-': { replacement: '+', mutationName: 'UnaryOperator_UnaryMinusOperator_ToUnaryPlusOperator' },
-    '~': { replacement: '', mutationName: 'UnaryOperator_BitwiseOrOperator_Removal' },
+    '+': { replacement: '-', mutationName: 'UnaryPlusOperatorNegation' },
+    '-': { replacement: '+', mutationName: 'UnaryMinOperatorNegation' },
+    '~': { replacement: '', mutationName: 'UnaryBitwiseOrRemoval' },
   },
 
   *mutate(path, levelMutations) {

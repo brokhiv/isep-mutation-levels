@@ -6,18 +6,12 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const updateLevel: MutationLevel = {
   name: 'UpdateLevel',
-  UpdateOperator: [
-    'UpdateOperator_PrefixDecrementOperator_ToPrefixIncrementOperator',
-    'UpdateOperator_PrefixIncrementOperator_ToPrefixDecrementOperator',
-  ],
+  UpdateOperator: ['PrefixDecrementOperatorNegation', 'PrefixIncrementOperatorNegation'],
 };
 
 const updateLevel2: MutationLevel = {
   name: 'UpdateLevel2',
-  UpdateOperator: [
-    'UpdateOperator_PostfixDecrementOperator_ToPostfixIncrementOperator',
-    'UpdateOperator_PostfixIncrementOperator_ToPostfixDecrementOperator',
-  ],
+  UpdateOperator: ['PostfixDecrementOperatorNegation', 'PostfixIncrementOperatorNegation'],
 };
 
 const updateUndefinedLevel: MutationLevel = {

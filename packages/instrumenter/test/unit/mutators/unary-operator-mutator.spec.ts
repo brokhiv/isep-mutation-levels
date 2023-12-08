@@ -6,9 +6,9 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const unaryOperatorLevelA: MutationLevel = {
   name: 'unaryOperatorA',
-  UnaryOperator: ['UnaryOperator_UnaryPlusOperator_ToUnaryMinusOperator', 'UnaryOperator_BitwiseOrOperator_Removal'],
+  UnaryOperator: ['UnaryPlusOperatorNegation', 'UnaryBitwiseOrRemoval'],
 };
-const unaryOperatorLevelB: MutationLevel = { name: 'unaryOperatorB', UnaryOperator: ['UnaryOperator_UnaryMinusOperator_ToUnaryPlusOperator'] };
+const unaryOperatorLevelB: MutationLevel = { name: 'unaryOperatorB', UnaryOperator: ['UnaryMinOperatorNegation'] };
 
 describe(sut.name, () => {
   it('should have name "UnaryOperator"', () => {
