@@ -5,6 +5,8 @@ import babel, { type NodePath, type types } from '@babel/core';
 import { File } from '@babel/core';
 /* eslint-enable import/no-duplicates */
 
+import { MutatorDefinition } from '@stryker-mutator/api/core';
+
 import { isImportDeclaration, isTypeNode, locationIncluded, locationOverlaps, placeHeaderIfNeeded } from '../util/syntax-helpers.js';
 import { ScriptFormat } from '../syntax/index.js';
 import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-placers/index.js';
@@ -156,18 +158,13 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
    * Generate mutants for the current node.
    */
   function* mutate(node: NodePath): Iterable<Mutable> {
-    //TODO: Create runLevel here
-    const runLevel: MutationLevel | undefined = undefined;
-    for (const defaultLevel of defaultMutationLevels) {
-      if (options.includedMutations.includes('@' + defaultLevel.name)) {
-        //For each key in defaultLevel, ADD it to the runLevel
-      }
-    }
+    const runLevel = createRunLevel();
+
     for (const mutator of mutators) {
       if (runLevel === undefined || mutator.name in runLevel) {
         let propertyValue = undefined;
         if (runLevel !== undefined) {
-          propertyValue = runLevel?.[mutator.name as keyof MutationLevel] as string[];
+          propertyValue = runLevel?.[mutator.name] as string[];
         }
 
         for (const replacement of mutator.mutate(node, propertyValue)) {
@@ -190,5 +187,67 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
         return undefined;
       }
     }
+  }
+
+  function createRunLevel(): MutationLevel | undefined {
+    // What to do if we don't have includedMutations, but we have excludedMutations?
+    if (options.includedMutations === undefined || options.includedMutations.length === 0) {
+      return undefined;
+    }
+
+    // The type `MutationLevel` is erased at compile time, but we need to know what are its properties, so create an empty object here
+    const runLevel: MutationLevel = {
+      name: 'RunningLevel',
+      ArithmeticOperator: [],
+      ArrayDeclaration: [],
+      ArrowFunction: [],
+      AssignmentOperator: [],
+      BlockStatement: [],
+      BooleanLiteral: [],
+      ConditionalExpression: [],
+      EqualityOperator: [],
+      LogicalOperator: [],
+      MethodExpression: [],
+      ObjectLiteral: [],
+      OptionalChaining: [],
+      Regex: [],
+      StringLiteral: [],
+      UnaryOperator: [],
+      UpdateOperator: [],
+    };
+
+    for (const inclMut of options.includedMutations) {
+      // Check if it's a mutation level
+      const defaultLevel = defaultMutationLevels.find((dl) => '@' + dl.name === inclMut);
+      if (defaultLevel) {
+        Object.keys(defaultLevel)
+          .filter((k) => k !== 'name')
+          .forEach((levelKey) => (runLevel[levelKey] as MutatorDefinition[]).push(...(defaultLevel[levelKey] as MutatorDefinition[])));
+        continue;
+      }
+
+      // Check if it's a operator group
+      const opGroupName = Object.keys(runLevel).find((levelKey) => levelKey !== 'name' && '@' + levelKey === inclMut);
+      if (opGroupName) {
+        const nodeMutatorToAdd = allMutators.find((mut) => mut.name === opGroupName);
+        if (nodeMutatorToAdd) {
+          Object.values(nodeMutatorToAdd.operators).forEach((mutator) => {
+            (runLevel[opGroupName] as MutatorDefinition[]).push(mutator.mutationName as MutatorDefinition);
+          });
+          continue;
+        }
+      }
+
+      // Else, must be a suboperator
+      const nodeMutator = allMutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationName === inclMut));
+
+      if (nodeMutator) {
+        (runLevel[nodeMutator.name] as MutatorDefinition[]).push(inclMut as MutatorDefinition);
+      }
+    }
+
+    //TODO: similar thing for options.excludedMutations
+
+    return runLevel;
   }
 };
