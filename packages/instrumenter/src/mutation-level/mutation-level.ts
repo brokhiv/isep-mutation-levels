@@ -11,6 +11,7 @@ import {
   EqualityOperator,
   LogicalOperator,
   MethodExpression,
+  MutatorDefinition,
   ObjectLiteral,
   OptionalChaining,
   Regex,
@@ -18,6 +19,8 @@ import {
   UnaryOperator,
   UpdateOperator,
 } from '@stryker-mutator/api/core';
+
+import { allMutators } from '../mutators/mutate.js';
 
 export type NodeMutatorConfiguration<T> = Record<string, ReplacementConfiguration<T>>;
 
@@ -47,9 +50,37 @@ export interface MutationLevel {
   StringLiteral?: StringLiteral[];
   UnaryOperator?: UnaryOperator[];
   UpdateOperator?: UpdateOperator[];
-  [k: string]: unknown;
+  [k: string]: MutatorDefinition[] | string | undefined;
 }
 
 export const defaultMutationLevels: MutationLevel[] = JSON.parse(
   fs.readFileSync(new URL('../../../src/mutation-level/default-mutation-levels.json', import.meta.url), 'utf-8'),
 ).mutationLevels;
+
+/** Empty mutation level, with each mutator initialised with an empty list */
+export const emptyMutationLevel: MutationLevel = {
+  name: 'RunningLevel',
+  ArithmeticOperator: [],
+  ArrayDeclaration: [],
+  ArrowFunction: [],
+  AssignmentOperator: [],
+  BlockStatement: [],
+  BooleanLiteral: [],
+  ConditionalExpression: [],
+  EqualityOperator: [],
+  LogicalOperator: [],
+  MethodExpression: [],
+  ObjectLiteral: [],
+  OptionalChaining: [],
+  Regex: [],
+  StringLiteral: [],
+  UnaryOperator: [],
+  UpdateOperator: [],
+};
+
+/** Filled mutation level, where each mutator is filled with all possible mutations */
+const filledMutationLevel = emptyMutationLevel;
+allMutators.forEach((mut) =>
+  Object.values(mut.operators).forEach((op) => (filledMutationLevel[mut.name] as MutatorDefinition[]).push(op.mutationName as MutatorDefinition)),
+);
+export { filledMutationLevel };

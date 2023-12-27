@@ -5,7 +5,7 @@ import babel, { type NodePath, type types } from '@babel/core';
 import { File } from '@babel/core';
 /* eslint-enable import/no-duplicates */
 
-import { MutatorDefinition } from '@stryker-mutator/api/core';
+import { MutationSpecification, MutatorDefinition } from '@stryker-mutator/api/core';
 
 import { isImportDeclaration, isTypeNode, locationIncluded, locationOverlaps, placeHeaderIfNeeded } from '../util/syntax-helpers.js';
 import { ScriptFormat } from '../syntax/index.js';
@@ -13,7 +13,7 @@ import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-p
 import { Mutable, Mutant } from '../mutant.js';
 import { allMutators } from '../mutators/index.js';
 
-import { MutationLevel, defaultMutationLevels } from '../mutation-level/mutation-level.js';
+import { MutationLevel, defaultMutationLevels, emptyMutationLevel, filledMutationLevel } from '../mutation-level/mutation-level.js';
 
 import { DirectiveBookkeeper } from './directive-bookkeeper.js';
 import { IgnorerBookkeeper } from './ignorer-bookkeeper.js';
@@ -189,65 +189,63 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
     }
   }
 
+  /**
+   * @returns `undefined` for the default stryker behaviour or a MutationLevel according to the specification
+   */
   function createRunLevel(): MutationLevel | undefined {
-    // What to do if we don't have includedMutations, but we have excludedMutations?
+    let runLevel = emptyMutationLevel;
+
     if (options.includedMutations === undefined || options.includedMutations.length === 0) {
-      return undefined;
-    }
-
-    // The type `MutationLevel` is erased at compile time, but we need to know what are its properties, so create an empty object here
-    const runLevel: MutationLevel = {
-      name: 'RunningLevel',
-      ArithmeticOperator: [],
-      ArrayDeclaration: [],
-      ArrowFunction: [],
-      AssignmentOperator: [],
-      BlockStatement: [],
-      BooleanLiteral: [],
-      ConditionalExpression: [],
-      EqualityOperator: [],
-      LogicalOperator: [],
-      MethodExpression: [],
-      ObjectLiteral: [],
-      OptionalChaining: [],
-      Regex: [],
-      StringLiteral: [],
-      UnaryOperator: [],
-      UpdateOperator: [],
-    };
-
-    for (const inclMut of options.includedMutations) {
-      // Check if it's a mutation level
-      const defaultLevel = defaultMutationLevels.find((dl) => '@' + dl.name === inclMut);
-      if (defaultLevel) {
-        Object.keys(defaultLevel)
-          .filter((k) => k !== 'name')
-          .forEach((levelKey) => (runLevel[levelKey] as MutatorDefinition[]).push(...(defaultLevel[levelKey] as MutatorDefinition[])));
-        continue;
-      }
-
-      // Check if it's a operator group
-      const opGroupName = Object.keys(runLevel).find((levelKey) => levelKey !== 'name' && '@' + levelKey === inclMut);
-      if (opGroupName) {
-        const nodeMutatorToAdd = allMutators.find((mut) => mut.name === opGroupName);
-        if (nodeMutatorToAdd) {
-          Object.values(nodeMutatorToAdd.operators).forEach((mutator) => {
-            (runLevel[opGroupName] as MutatorDefinition[]).push(mutator.mutationName as MutatorDefinition);
-          });
-          continue;
-        }
-      }
-
-      // Else, must be a suboperator
-      const nodeMutator = allMutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationName === inclMut));
-
-      if (nodeMutator) {
-        (runLevel[nodeMutator.name] as MutatorDefinition[]).push(inclMut as MutatorDefinition);
+      if (options.excludedMutations === undefined) {
+        // include everything
+        return undefined;
+      } else {
+        // remove `excludedMutations` from a complete level
+        runLevel = filledMutationLevel;
       }
     }
 
-    //TODO: similar thing for options.excludedMutations
+    updateRunLevel(runLevel, options.includedMutations, true);
+    updateRunLevel(runLevel, options.excludedMutations, false);
 
     return runLevel;
+  }
+
+  function updateRunLevel(runLevel: MutationLevel, mutations: MutationSpecification[] | undefined, includeMutations: boolean) {
+    if (mutations) {
+      const updateFunc: (mutatorList: MutatorDefinition[], ...toUpdate: MutatorDefinition[]) => void = includeMutations
+        ? (mutatorList, toAdd) => mutatorList.push(toAdd)
+        : (mutatorList, toRemove) => (mutatorList = mutatorList.filter((m) => !toRemove.includes(m)));
+
+      for (const spec of mutations) {
+        // Check if it's a mutation level
+        const defaultLevel = defaultMutationLevels.find((dl) => '@' + dl.name === spec);
+        if (defaultLevel) {
+          Object.keys(defaultLevel)
+            .filter((k) => k !== 'name')
+            .forEach((levelKey) => updateFunc(runLevel[levelKey] as MutatorDefinition[], ...(defaultLevel[levelKey] as MutatorDefinition[])));
+          continue;
+        }
+
+        // Check if it's a operator group
+        const opGroupName = Object.keys(runLevel).find((levelKey) => levelKey !== 'name' && '@' + levelKey === spec);
+        if (opGroupName) {
+          const nodeMutatorToAdd = allMutators.find((mut) => mut.name === opGroupName);
+          if (nodeMutatorToAdd) {
+            Object.values(nodeMutatorToAdd.operators).forEach((mutator) => {
+              updateFunc(runLevel[opGroupName] as MutatorDefinition[], mutator.mutationName as MutatorDefinition);
+            });
+            continue;
+          }
+        }
+
+        // Else, must be a suboperator
+        const nodeMutator = allMutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationName === spec));
+
+        if (nodeMutator) {
+          updateFunc(runLevel[nodeMutator.name] as MutatorDefinition[], spec as MutatorDefinition);
+        }
+      }
+    }
   }
 };
