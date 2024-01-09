@@ -5,7 +5,8 @@ import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expec
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const blockStatementLevel: MutationLevel = { name: 'BlockStatementLevel', BlockStatement: ['BlockStatementRemoval'] };
-const blockStatementUndefinedLevel: MutationLevel = { name: 'BlockStatementLevel' };
+const blockStatementUndefinedLevel: MutationLevel = { name: 'BlockStatementLevel', BlockStatement: [] };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "BlockStatement"', () => {
@@ -80,16 +81,11 @@ describe(sut.name, () => {
     });
 
     it('should not mutate anything if there are no values in the mutation level', () => {
-      expectJSMutationWithLevel(sut, [], 'class Foo { constructor() { bar(); } }');
+      expectJSMutationWithLevel(sut, blockStatementUndefinedLevel.BlockStatement, 'class Foo { constructor() { bar(); } }');
     });
 
     it('should mutate everything if the mutation level is undefined', () => {
-      expectJSMutationWithLevel(
-        sut,
-        blockStatementUndefinedLevel.BlockStatement,
-        'class Foo { constructor() { bar(); } }',
-        'class Foo { constructor() {} }',
-      );
+      expectJSMutationWithLevel(sut, noLevel, 'class Foo { constructor() { bar(); } }', 'class Foo { constructor() {} }');
     });
   });
 });
