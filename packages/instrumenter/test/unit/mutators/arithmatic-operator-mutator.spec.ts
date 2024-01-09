@@ -8,6 +8,8 @@ const arithmeticLevel: MutationLevel = {
   name: 'ArithemticLevel',
   ArithmeticOperator: ['AdditionOperatorNegation', 'SubtractionOperatorNegation', 'MultiplicationOperatorNegation'],
 };
+const arithmeticOperatorUndefinedLevel: MutationLevel = { name: 'ArithmeticOperatorLevel', ArithmeticOperator: [] };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "ArithmeticOperator"', () => {
@@ -42,6 +44,24 @@ describe(sut.name, () => {
       sut,
       arithmeticLevel.ArithmeticOperator,
       'a + b; a - b; a * b; a % b; a / b; a % b',
+      'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
+      'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
+      'a + b; a - b; a / b; a % b; a / b; a % b', // mutates *
+    );
+  });
+
+  it('should not mutate +, - and * from all possible mutators', () => {
+    expectJSMutationWithLevel(sut, arithmeticOperatorUndefinedLevel.ArithmeticOperator, 'a + b; a - b; a * b; a % b; a / b; a % b');
+  });
+
+  it('should all possible mutators', () => {
+    expectJSMutationWithLevel(
+      sut,
+      noLevel,
+      'a + b; a - b; a * b; a % b; a / b; a % b',
+      'a + b; a - b; a * b; a % b; a * b; a % b', // mutates /
+      'a + b; a - b; a * b; a % b; a / b; a * b', // mutates %
+      'a + b; a - b; a * b; a * b; a / b; a % b', // mutates %
       'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
       'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
       'a + b; a - b; a / b; a % b; a / b; a % b', // mutates *
