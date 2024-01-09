@@ -9,6 +9,12 @@ const optionalChainingLevel: MutationLevel = {
   name: 'OptionalChainingLevel',
   OptionalChaining: ['OptionalMemberExpressionOptionalRemoval'],
 };
+const optionalChainingUndefinedLevel: MutationLevel = {
+  name: 'optionalChainingUndefinedLevel',
+  OptionalChaining: [],
+};
+
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "OptionalChaining"', () => {
@@ -46,12 +52,12 @@ describe(sut.name, () => {
       );
     });
     it('should block all mutators', () => {
-      expectJSMutationWithLevel(sut, [], 'foo?.bar; foo?.[0]; foo?.()');
+      expectJSMutationWithLevel(sut, optionalChainingUndefinedLevel.OptionalChaining, 'foo?.bar; foo?.[0]; foo?.()');
     });
     it('should allow all mutators', () => {
       expectJSMutationWithLevel(
         sut,
-        undefined,
+        noLevel,
         'foo?.bar; foo?.[0]; foo?.()',
         'foo.bar; foo?.[0]; foo?.()', // removes .bar optional
         'foo?.bar; foo[0]; foo?.()', // removes [0] optional
