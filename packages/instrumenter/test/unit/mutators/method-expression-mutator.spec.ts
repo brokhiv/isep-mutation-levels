@@ -8,6 +8,12 @@ const methodExpressionLevel: MutationLevel = {
   name: 'methodExpressionLevel',
   MethodExpression: ['EndsWithMethodCallNegation', 'StartsWithMethodCallNegation', 'SubstringMethodCallRemoval', 'ToLowerCaseMethodCallNegation'],
 };
+const methodExpressionUndefinedLevel: MutationLevel = {
+  name: 'methodExpressionUndefinedLevel',
+  MethodExpression: [],
+};
+
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "MethodExpression"', () => {
@@ -163,5 +169,60 @@ describe(sut.name, () => {
     // The two below are not in the mutation level, so should be ignored
     expectJSMutationWithLevel(sut, methodExpressionLevel.MethodExpression, 'text.toUpperCase();');
     expectJSMutationWithLevel(sut, methodExpressionLevel.MethodExpression, 'text.substr();');
+  });
+
+  it('should not mutate at all', () => {
+    expectJSMutationWithLevel(
+      sut,
+      methodExpressionUndefinedLevel.MethodExpression,
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()',
+    );
+  });
+
+  it('should not mutate at all', () => {
+    expectJSMutationWithLevel(
+      sut,
+      noLevel,
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.endsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimEnd();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toLowerCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.every(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text;text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text;text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text;text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text;text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.some();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text;text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toUpperCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text;text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text;text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimStart();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text; text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.startsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.max();text.max()',
+      'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();text.min()',
+      // 'text.endsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();text.min();max()', // mutates startswith()
+      // // 'text.startsWith(); text.startsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates endswith()
+      // 'text.startsWith(); text.endsWith(); text; text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates trim()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimStart();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates trimEnd()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimEnd();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates trimStart()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text;text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates substr()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr;text;text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates substring()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr;text.substring;text.toLowerCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates toUpperCase()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr;text.substring;text.toUpperCase();text.toUpperCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates toLowerCase()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr;text.substring;text.toUpperCase();text.toLowerCase();text.toLocalLowerCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates toLocalUpperCase()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr;text.substring;text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalUpperCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates toLocalLowerCase()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text;text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates sort()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.every(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates some()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.some();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates every()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text;text.filter();text.slice();text.charAt();min();max()', // mutates reverse()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text;text.slice();text.charAt();min();max()', // mutates filter()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text;text.charAt();min();max()', // mutates slice()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text;min();max()', // mutates CharAt
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr;text.substring;text.toLowerCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();max()', // mutates toUpperCase()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();max();max()', // mutates min()
+      // 'text.startsWith(); text.endsWith(); text.trim(); text.trimEnd();text.trimStart();text.substr();text.substring();text.toUpperCase();text.toLowerCase();text.toLocalUpperCase();text.toLocalLowerCase();text.sort();text.some(); text.every();text.reverse();text.filter();text.slice();text.charAt();min();min()', // mutates max ()
+    );
   });
 });
