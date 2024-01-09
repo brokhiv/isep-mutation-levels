@@ -4,8 +4,8 @@ import { equalityOperatorMutator as sut } from '../../../src/mutators/equality-o
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
-const equalityLevelA: MutationLevel = {
-  name: 'EqualityLevelA',
+const equalityOperatorLevel: MutationLevel = {
+  name: 'EqualityOperatorLevel',
   EqualityOperator: [
     'LessThanOperatorBoundary',
     'LessThanOperatorNegation',
@@ -15,10 +15,12 @@ const equalityLevelA: MutationLevel = {
   ],
 };
 
-const equalityLevelB: MutationLevel = {
-  name: 'EqualityLevelB',
-  EqualityOperator: ['LessThanEqualOperatorNegation', 'GreaterThanOperatorNegation', 'StrictEqualityOperatorNegation'],
+const equalityOperatorUndefinedLevel: MutationLevel = {
+  name: 'EqualityOperatorUndefinedLevel',
+  EqualityOperator: [],
 };
+
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "EqualityOperator"', () => {
@@ -48,7 +50,7 @@ describe(sut.name, () => {
   it('should only mutate <, >=, == from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
-      equalityLevelA.EqualityOperator,
+      equalityOperatorLevel.EqualityOperator,
       'a < b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b',
       'a <= b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <
       'a >= b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <
@@ -58,14 +60,27 @@ describe(sut.name, () => {
     );
   });
 
-  it('should only mutate <= to >, > to <=, and === to !== from all possible mutators', () => {
+  it('should not mutate mutators', () => {
+    expectJSMutationWithLevel(sut, equalityOperatorUndefinedLevel.EqualityOperator, 'a < b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b');
+  });
+
+  it('should mutate all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
-      equalityLevelB.EqualityOperator,
+      noLevel,
       'a < b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b',
-      'a < b; a > b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <= to >
+      'a < b; a < b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <= to <
       'a < b; a <= b; a <= b; a >= b; a == b; a != b; a === b; a !== b', // mutates > to <=
+      'a < b; a <= b; a > b; a < b; a == b; a != b; a === b; a !== b', // mutates <= to <
+      'a < b; a <= b; a > b; a > b; a == b; a != b; a === b; a !== b', // mutates >= to >
+      'a < b; a <= b; a > b; a >= b; a != b; a != b; a === b; a !== b', // mutates == to !=
       'a < b; a <= b; a > b; a >= b; a == b; a != b; a !== b; a !== b', // mutates === to !==
+      'a < b; a <= b; a > b; a >= b; a == b; a != b; a === b; a === b', // mutates !== to ===
+      'a < b; a <= b; a > b; a >= b; a == b; a == b; a === b; a !== b', // mutates != to ==
+      'a < b; a <= b; a >= b; a >= b; a == b; a != b; a === b; a !== b', // mutates > to >=
+      'a < b; a > b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates <= to >
+      'a <= b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates < to <=
+      'a >= b; a <= b; a > b; a >= b; a == b; a != b; a === b; a !== b', // mutates < to >=
     );
   });
 });
