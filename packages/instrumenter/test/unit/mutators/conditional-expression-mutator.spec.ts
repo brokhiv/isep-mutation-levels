@@ -14,19 +14,12 @@ const conditionalLevel: MutationLevel = {
   ],
 };
 
-const conditionalLevel2: MutationLevel = {
-  name: 'ConditionalLevel2',
-  ConditionalExpression: [
-    'WhileLoopConditionToFalseReplacement',
-    'BooleanExpressionToFalseReplacement',
-    'DoWhileLoopConditionToFalseReplacement',
-    'BooleanExpressionToTrueReplacement',
-  ],
+const conditionalUndefinedLevel: MutationLevel = {
+  name: 'ConditionLevelEmpty',
+  ConditionalExpression: [],
 };
 
-const conditionalLevelUndefined: MutationLevel = {
-  name: 'ConditionLevelEmpty',
-};
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "ConditionalExpression"', () => {
@@ -178,22 +171,18 @@ describe(sut.name, () => {
     );
   });
 
-  it('should only mutate while, while do and boolean expression', () => {
+  it('should not mutate at all', () => {
     expectJSMutationWithLevel(
       sut,
-      conditionalLevel2.ConditionalExpression,
-      'while (a > b) { }; do { } while (a > b); var x = a > b ? 1 : 2',
-      'while (false) { }; do { } while (a > b); var x = a > b ? 1 : 2', // mutates while loop
-      'while (a > b) { }; do { } while (a > b); var x = false ? 1 : 2', // mutates boolean to false
-      'while (a > b) { }; do { } while (false); var x = a > b ? 1 : 2', // mutates while do loop
-      'while (a > b) { }; do { } while (a > b); var x = true ? 1 : 2', // mutates boolean to false
+      conditionalUndefinedLevel.ConditionalExpression,
+      'for (var i = 0; i < 10; i++) { };if(x > 2); switch (x) {case 0: 2}; while (a > b); { } do { } while (a > b); var x = a > b ? 1 : 2',
     );
   });
 
   it('should only mutate all', () => {
     expectJSMutationWithLevel(
       sut,
-      conditionalLevelUndefined.ConditionalExpression,
+      noLevel,
       'for (var i = 0; i < 10; i++) { };if(x > 2); switch (x) {case 0: 2}; while (a > b); { } do { } while (a > b); var x = a > b ? 1 : 2',
       'for (var i = 0; false; i++) { };if(x > 2); switch (x) {case 0: 2}; while (a > b); { } do { } while (a > b); var x = a > b ? 1 : 2', // mutates for loop
       'for (var i = 0; i < 10; i++) { };if(false); switch (x) {case 0: 2}; while (a > b); { } do { } while (a > b); var x = a > b ? 1 : 2', // mutates if statement to false
