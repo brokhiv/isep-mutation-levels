@@ -8,6 +8,8 @@ const arrayDeclarationLevel: MutationLevel = {
   name: 'ArrayDeclarationLevel',
   ArrayDeclaration: ['ArrayLiteralItemsFill', 'ArrayConstructorItemsRemoval', 'ArrayLiteralItemsRemoval', 'ArrayConstructorItemsFill'],
 };
+const arrayDeclarationOperatorUndefinedLevel: MutationLevel = { name: 'ArrayDeclarationcOperatorOperatorLevel', ArrayDeclaration: [] };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "ArrayDeclaration"', () => {
@@ -48,7 +50,14 @@ describe(sut.name, () => {
   it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
-      arrayDeclarationLevel.ArrayDeclaration,
+      arrayDeclarationOperatorUndefinedLevel.ArrayDeclaration,
+      '[]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]',
+    );
+  });
+  it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
+    expectJSMutationWithLevel(
+      sut,
+      noLevel,
       '[]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]',
       '["Stryker was here"]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]', // mutates []
       '[]; new Array("Stryker was here"); new Array({x:"", y:""}); [{x:"", y:""}]', // mutates new Array()
