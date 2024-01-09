@@ -4,10 +4,17 @@ import { logicalOperatorMutator as sut } from '../../../src/mutators/logical-ope
 import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expect-mutation.js';
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
-const logicalOpLevel: MutationLevel = {
-  name: 'EqualityLevelB',
+const logicalOperatorLevel: MutationLevel = {
+  name: 'logicalOperatorLevel',
   LogicalOperator: ['LogicalOrOperatorNegation', 'LogicalAndOperatorNegation'],
 };
+
+const logicalOperatorUndefinedLevel: MutationLevel = {
+  name: 'logicalOperatorUndefinedLevel',
+  LogicalOperator: [],
+};
+
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "LogicalOperator"', () => {
@@ -32,14 +39,20 @@ describe(sut.name, () => {
   });
 
   it('should only mutate || and &&', () => {
-    expectJSMutationWithLevel(sut, logicalOpLevel.LogicalOperator, 'a || b; a && b; a ?? b', 'a && b; a && b; a ?? b', 'a || b; a || b; a ?? b');
+    expectJSMutationWithLevel(
+      sut,
+      logicalOperatorLevel.LogicalOperator,
+      'a || b; a && b; a ?? b',
+      'a && b; a && b; a ?? b',
+      'a || b; a || b; a ?? b',
+    );
   });
 
   it('should mutate all three', () => {
-    expectJSMutationWithLevel(sut, undefined, 'a || b; a && b; a ?? b', 'a && b; a && b; a ?? b', 'a || b; a || b; a ?? b', 'a || b; a && b; a && b');
+    expectJSMutationWithLevel(sut, noLevel, 'a || b; a && b; a ?? b', 'a && b; a && b; a ?? b', 'a || b; a || b; a ?? b', 'a || b; a && b; a && b');
   });
 
   it('should mutate nothing', () => {
-    expectJSMutationWithLevel(sut, [], 'a || b; a && b; a ?? b' /*Nothing*/);
+    expectJSMutationWithLevel(sut, logicalOperatorUndefinedLevel.LogicalOperator, 'a || b; a && b; a ?? b' /*Nothing*/);
   });
 });
