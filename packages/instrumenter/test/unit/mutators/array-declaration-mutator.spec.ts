@@ -6,7 +6,7 @@ import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const arrayDeclarationLevel: MutationLevel = {
   name: 'ArrayDeclarationLevel',
-  ArrayDeclaration: ['ArrayLiteralItemsFill', 'ArrayConstructorItemsRemoval', 'ArrayLiteralItemsRemoval', 'ArrayConstructorItemsFill'],
+  ArrayDeclaration: ['ArrayLiteralItemsFill', 'ArrayLiteralItemsRemoval'],
 };
 const arrayDeclarationOperatorUndefinedLevel: MutationLevel = { name: 'ArrayDeclarationcOperatorOperatorLevel', ArrayDeclaration: [] };
 const noLevel = undefined;
@@ -50,10 +50,21 @@ describe(sut.name, () => {
   it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
+      arrayDeclarationLevel.ArrayDeclaration,
+      '[]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]',
+      '["Stryker was here"]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]', // mutates []
+      '[]; new Array(); new Array({x:"", y:""}); []', // mutates [x,y]
+    );
+  });
+
+  it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
+    expectJSMutationWithLevel(
+      sut,
       arrayDeclarationOperatorUndefinedLevel.ArrayDeclaration,
       '[]; new Array(); new Array({x:"", y:""}); [{x:"", y:""}]',
     );
   });
+
   it('should only mutate [], new Array(), new Array(x,y) and [x,y] from all possible mutators', () => {
     expectJSMutationWithLevel(
       sut,
