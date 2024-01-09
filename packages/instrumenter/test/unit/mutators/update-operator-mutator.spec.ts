@@ -9,14 +9,11 @@ const updateLevel: MutationLevel = {
   UpdateOperator: ['PrefixDecrementOperatorNegation', 'PrefixIncrementOperatorNegation'],
 };
 
-const updateLevel2: MutationLevel = {
-  name: 'UpdateLevel2',
-  UpdateOperator: ['PostfixDecrementOperatorNegation', 'PostfixIncrementOperatorNegation'],
-};
-
 const updateUndefinedLevel: MutationLevel = {
   name: 'UpdateLevel3',
+  UpdateOperator: [],
 };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "UpdateOperator"', () => {
@@ -50,19 +47,13 @@ describe(sut.name, () => {
   });
 
   it('should only mutate a-- and a++', () => {
-    expectJSMutationWithLevel(
-      sut,
-      updateLevel2.UpdateOperator,
-      '--a; ++a; a--; a++',
-      '--a; ++a; a--; a--', //mutates a++
-      '--a; ++a; a++; a++', //mutates a--
-    );
+    expectJSMutationWithLevel(sut, updateUndefinedLevel.UpdateOperator, '--a; ++a; a--; a++');
   });
 
   it('should mutate all', () => {
     expectJSMutationWithLevel(
       sut,
-      updateUndefinedLevel.UpdateOperator,
+      noLevel,
       '--a; ++a; a--; a++',
       '++a; ++a; a--; a++', //mutates --a
       '--a; --a; a--; a++', //mutates ++a
