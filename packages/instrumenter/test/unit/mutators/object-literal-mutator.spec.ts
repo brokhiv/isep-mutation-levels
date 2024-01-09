@@ -5,7 +5,8 @@ import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expec
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const objectLiteralLevel: MutationLevel = { name: 'ObjectLiteralLevel', ObjectLiteral: ['ObjectLiteralPropertiesRemoval'] };
-const objectLiteralUndefinedLevel: MutationLevel = { name: 'ObjectLiteralLevel' };
+const objectLiteralUndefinedLevel: MutationLevel = { name: 'ObjectLiteralLevel', ObjectLiteral: [] };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "ObjectLiteral"', () => {
@@ -33,10 +34,10 @@ describe(sut.name, () => {
   });
 
   it('should not mutate anything if there are no values in the mutation level', () => {
-    expectJSMutationWithLevel(sut, [], "{ foo: 'bar' }");
+    expectJSMutationWithLevel(sut, objectLiteralUndefinedLevel.ObjectLiteral, "{ foo: 'bar' }");
   });
 
   it('should mutate everything if the mutation level is undefined', () => {
-    expectJSMutationWithLevel(sut, objectLiteralUndefinedLevel.ObjectLiteral, 'const o = { ["foo"]: "bar" }', 'const o = {}');
+    expectJSMutationWithLevel(sut, noLevel, 'const o = { ["foo"]: "bar" }', 'const o = {}');
   });
 });
