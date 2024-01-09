@@ -5,7 +5,8 @@ import { expectJSMutation, expectJSMutationWithLevel } from '../../helpers/expec
 import { MutationLevel } from '../../../src/mutation-level/mutation-level.js';
 
 const arrowFunctionLevel: MutationLevel = { name: 'ArrowFunctionLevel', ArrowFunction: ['ArrowFunctionRemoval'] };
-const arrowFunctionUndefinedLevel: MutationLevel = { name: 'ArrowFunctionLevel' };
+const arrowFunctionOperatorUndefinedLevel: MutationLevel = { name: 'ArrowFunctionLevel', ArrowFunction: [] };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "ArrowFunction"', () => {
@@ -29,10 +30,10 @@ describe(sut.name, () => {
   });
 
   it('should not mutate anything if there are no values in the mutation level', () => {
-    expectJSMutationWithLevel(sut, [], 'const b = () => 4;');
+    expectJSMutationWithLevel(sut, arrowFunctionOperatorUndefinedLevel.ArrowFunction, 'const b = () => 4;');
   });
 
   it('should mutate everything if the mutation level is undefined', () => {
-    expectJSMutationWithLevel(sut, arrowFunctionUndefinedLevel.ArrowFunction, 'const b = () => 4;', 'const b = () => undefined;');
+    expectJSMutationWithLevel(sut, noLevel, 'const b = () => 4;', 'const b = () => undefined;');
   });
 });
