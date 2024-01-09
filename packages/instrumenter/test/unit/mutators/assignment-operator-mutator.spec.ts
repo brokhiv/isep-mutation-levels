@@ -8,24 +8,8 @@ const assignmentOperatorLevel: MutationLevel = {
   name: 'AssignmentOperatorLevel',
   AssignmentOperator: ['SubtractionAssignmentNegation', 'LeftShiftAssignmentNegation', 'LogicalAndAssignmentNegation'],
 };
-const assignmentOperatorAllLevel: MutationLevel = {
-  name: 'AssignmentOperatorLevel',
-  AssignmentOperator: [
-    'AdditionAssignmentNegation',
-    'SubtractionAssignmentNegation',
-    'MultiplicationAssignmentNegation',
-    'DivisionAssignmentNegation',
-    'RemainderAssignmentToMultiplicationReplacement',
-    'LeftShiftAssignmentNegation',
-    'RightShiftAssignmentNegation',
-    'BitwiseAndAssignmentNegation',
-    'BitwiseOrAssignmentNegation',
-    'LogicalAndAssignmentNegation',
-    'LogicalOrAssignmentNegation',
-    'NullishCoalescingAssignmentToLogicalAndReplacement',
-  ],
-};
-const assignmentOperatorUndefinedLevel: MutationLevel = { name: 'AssignmentOperatorLevel' };
+const assignmentOperatorUndefinedLevel: MutationLevel = { name: 'AssignmentOperatorLevel', AssignmentOperator: [] };
+const noLevel = undefined;
 
 describe(sut.name, () => {
   it('should have name "AssignmentOperator"', () => {
@@ -112,24 +96,14 @@ describe(sut.name, () => {
     expectJSMutationWithLevel(sut, [], 'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;');
   });
 
-  it('should mutate everything if everything is in the mutation level', () => {
-    expectJSMutationWithLevel(
-      sut,
-      assignmentOperatorAllLevel.BooleanLiteral,
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;', // mutated += to -=
-      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
-      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;', // mutated *= to /=
-      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;', // mutated /= to *=
-      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutated <<= to >>=
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutated &&= to ||=
-    );
+  it('should mutate nothing if the operator has no suboperators', () => {
+    expectJSMutationWithLevel(sut, assignmentOperatorUndefinedLevel.AssignmentOperator, 'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;');
   });
 
   it('should mutate everything if the mutation level is undefined', () => {
     expectJSMutationWithLevel(
       sut,
-      assignmentOperatorUndefinedLevel.BooleanLiteral,
+      noLevel,
       'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
       'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;', // mutated += to -=
       'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
