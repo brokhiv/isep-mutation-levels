@@ -33,28 +33,30 @@ describe(sut.name, () => {
     expectJSMutation(sut, '!a', 'a');
   });
 
-  it('should only mutate what is defined in the mutation level', () => {
-    expectJSMutationWithLevel(
-      sut,
-      booleanLiteralLevel.BooleanLiteral,
-      'if (true) {}; if (false) {}; if (!value) {}',
-      'if (false) {}; if (false) {}; if (!value) {}',
-      'if (true) {}; if (false) {}; if (value) {}',
-    );
-  });
+  describe('mutation level', () => {
+    it('should only mutate TrueLiteralNegation, LogicalNotRemoval', () => {
+      expectJSMutationWithLevel(
+        sut,
+        booleanLiteralLevel.BooleanLiteral,
+        'if (true) {}; if (false) {}; if (!value) {}',
+        'if (false) {}; if (false) {}; if (!value) {}', // TrueLiteralNegation
+        'if (true) {}; if (false) {}; if (value) {}', // LogicalNotRemoval
+      );
+    });
 
-  it('should not mutate anything if there are no values in the mutation level', () => {
-    expectJSMutationWithLevel(sut, booleanLiteralUndefinedLevel.BooleanLiteral, 'if (true) {}; if (false) {}; if (!value) {}');
-  });
+    it('should not perform any ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, booleanLiteralUndefinedLevel.BooleanLiteral, 'if (true) {}; if (false) {}; if (!value) {}');
+    });
 
-  it('should mutate everything if the mutation level is undefined', () => {
-    expectJSMutationWithLevel(
-      sut,
-      noLevel,
-      'if (true) {}; if (false) {}; if (!value) {}',
-      'if (false) {}; if (false) {}; if (!value) {}',
-      'if (true) {}; if (false) {}; if (value) {}',
-      'if (true) {}; if (true) {}; if (!value) {}',
-    );
+    it('should perform all ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(
+        sut,
+        noLevel,
+        'if (true) {}; if (false) {}; if (!value) {}',
+        'if (false) {}; if (false) {}; if (!value) {}', // TrueLiteralNegation
+        'if (true) {}; if (false) {}; if (value) {}', // LogicalNotRemoval
+        'if (true) {}; if (true) {}; if (!value) {}', // FalseLiteralNegation
+      );
+    });
   });
 });

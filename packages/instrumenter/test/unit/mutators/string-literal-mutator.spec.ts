@@ -122,7 +122,7 @@ describe(sut.name, () => {
   });
 
   describe('mutation level', () => {
-    it('should only mutate EmptyString and EmptyInterpolation from all possible mutations', () => {
+    it('should only mutate EmptyString and EmptyInterpolation', () => {
       expectJSMutationWithLevel(
         sut,
         stringLiteralLevel.StringLiteral,
@@ -131,14 +131,14 @@ describe(sut.name, () => {
         'const bar = "bar"; const foo = ``; const emptyString=""; const emptyInterp=``', // empties interpolation
       );
     });
-    it('should block the mutators', () => {
+    it('should not perform any ' + sut.name + ' mutations', () => {
       expectJSMutationWithLevel(
         sut,
         stringLiteralUndefinedLevel.StringLiteral,
         'const bar = "bar"; const foo = `name: ${level_name}`; const emptyString=""; const emptyInterp=``',
       );
     });
-    it('should mutate everything', () => {
+    it('should perform all ' + sut.name + ' mutations', () => {
       expectJSMutationWithLevel(
         sut,
         noLevel,

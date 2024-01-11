@@ -36,15 +36,30 @@ describe(sut.name, () => {
     expectJSMutation(sut, 'a-a');
   });
 
-  it('should not mutate -b to +b', () => {
-    expectJSMutationWithLevel(sut, unaryOperatorLevel.UnaryOperator, '+a; -b; ~c;', '-a; -b; ~c;', '+a; -b; c;');
-  });
+  describe('mutation level', () => {
+    it('should only mutate unary + and ~', () => {
+      expectJSMutationWithLevel(
+        sut,
+        unaryOperatorLevel.UnaryOperator,
+        '+a; -b; ~c;',
+        '-a; -b; ~c;', // mutates + to -
+        '+a; -b; c;', // removes ~
+      );
+    });
 
-  it('should only mutate -b to +b', () => {
-    expectJSMutationWithLevel(sut, unaryOperatorUndefinedLevel.UnaryOperator, '+a; -b; ~c;');
-  });
+    it('should not perform any ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, unaryOperatorUndefinedLevel.UnaryOperator, '+a; -b; ~c;');
+    });
 
-  it('should mutate all', () => {
-    expectJSMutationWithLevel(sut, noLevel, '+a; -b; ~c;', '-a; -b; ~c;', '+a; -b; c;', '+a; +b; ~c;');
+    it('should perform all ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(
+        sut,
+        noLevel,
+        '+a; -b; ~c;',
+        '-a; -b; ~c;', // mutates + to -
+        '+a; -b; c;', // removes ~
+        '+a; +b; ~c;', // mutates - to +
+      );
+    });
   });
 });

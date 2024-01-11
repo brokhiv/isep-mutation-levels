@@ -81,36 +81,34 @@ describe(sut.name, () => {
     expectJSMutation(sut, 'a ??= `b`', 'a &&= `b`');
   });
 
-  it('should only mutate what is defined in the mutator level', () => {
-    expectJSMutationWithLevel(
-      sut,
-      assignmentOperatorLevel.AssignmentOperator,
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
-      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutated <<= to >>=
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutated &&= to ||=
-    );
-  });
+  describe('mutation level', () => {
+    it('should only mutate -=, <<, &&=', () => {
+      expectJSMutationWithLevel(
+        sut,
+        assignmentOperatorLevel.AssignmentOperator,
+        'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
+        'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutates -= to +=
+        'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutates <<= to >>=
+        'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutates &&= to ||=
+      );
+    });
 
-  it('should not mutate anything if there are no values in the mutation level', () => {
-    expectJSMutationWithLevel(sut, [], 'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;');
-  });
+    it('should not perform any ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, assignmentOperatorUndefinedLevel.AssignmentOperator, 'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;');
+    });
 
-  it('should mutate nothing if the operator has no suboperators', () => {
-    expectJSMutationWithLevel(sut, assignmentOperatorUndefinedLevel.AssignmentOperator, 'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;');
-  });
-
-  it('should mutate everything if the mutation level is undefined', () => {
-    expectJSMutationWithLevel(
-      sut,
-      noLevel,
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
-      'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;', // mutated += to -=
-      'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutated -= to +=
-      'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;', // mutated *= to /=
-      'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;', // mutated /= to *=
-      'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutated <<= to >>=
-      'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutated &&= to ||=
-    );
+    it('should perform all ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(
+        sut,
+        noLevel,
+        'a += b; a -= b; a *= b; a /= b; a <<= b; a &&= b;',
+        'a -= b; a -= b; a *= b; a /= b; a <<= b; a &&= b;', // mutates += to -=
+        'a += b; a += b; a *= b; a /= b; a <<= b; a &&= b;', // mutates -= to +=
+        'a += b; a -= b; a /= b; a /= b; a <<= b; a &&= b;', // mutates *= to /=
+        'a += b; a -= b; a *= b; a *= b; a <<= b; a &&= b;', // mutates /= to *=
+        'a += b; a -= b; a *= b; a /= b; a >>= b; a &&= b;', // mutates <<= to >>=
+        'a += b; a -= b; a *= b; a /= b; a <<= b; a ||= b;', // mutates &&= to ||=
+      );
+    });
   });
 });

@@ -38,21 +38,30 @@ describe(sut.name, () => {
     expectJSMutation(sut, 'a ?? b', 'a && b');
   });
 
-  it('should only mutate || and &&', () => {
-    expectJSMutationWithLevel(
-      sut,
-      logicalOperatorLevel.LogicalOperator,
-      'a || b; a && b; a ?? b',
-      'a && b; a && b; a ?? b',
-      'a || b; a || b; a ?? b',
-    );
-  });
+  describe('mutation level', () => {
+    it('should only mutate || and &&', () => {
+      expectJSMutationWithLevel(
+        sut,
+        logicalOperatorLevel.LogicalOperator,
+        'a || b; a && b; a ?? b',
+        'a && b; a && b; a ?? b', // mutates || to &&
+        'a || b; a || b; a ?? b', // mutates && to ||
+      );
+    });
 
-  it('should mutate all three', () => {
-    expectJSMutationWithLevel(sut, noLevel, 'a || b; a && b; a ?? b', 'a && b; a && b; a ?? b', 'a || b; a || b; a ?? b', 'a || b; a && b; a && b');
-  });
+    it('should not perform any ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, logicalOperatorUndefinedLevel.LogicalOperator, 'a || b; a && b; a ?? b');
+    });
 
-  it('should mutate nothing', () => {
-    expectJSMutationWithLevel(sut, logicalOperatorUndefinedLevel.LogicalOperator, 'a || b; a && b; a ?? b' /*Nothing*/);
+    it('should perform all ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(
+        sut,
+        noLevel,
+        'a || b; a && b; a ?? b',
+        'a && b; a && b; a ?? b', // mutates || to &&
+        'a || b; a || b; a ?? b', // mutates && to ||
+        'a || b; a && b; a && b', // mutates ?? to &&
+      );
+    });
   });
 });

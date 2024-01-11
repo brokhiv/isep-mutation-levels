@@ -25,15 +25,17 @@ describe(sut.name, () => {
     expectJSMutation(sut, 'const b = () => undefined');
   });
 
-  it('should only mutate what is defined in the mutator level', () => {
-    expectJSMutationWithLevel(sut, arrowFunctionLevel.ArrowFunction, 'const b = () => 4;', 'const b = () => undefined;');
-  });
+  describe('mutation level', () => {
+    it('should remove ArrowFunction', () => {
+      expectJSMutationWithLevel(sut, arrowFunctionLevel.ArrowFunction, 'const b = () => 4;', 'const b = () => undefined;'); // ArrowFunctionRemoval
+    });
 
-  it('should not mutate anything if there are no values in the mutation level', () => {
-    expectJSMutationWithLevel(sut, arrowFunctionOperatorUndefinedLevel.ArrowFunction, 'const b = () => 4;');
-  });
+    it('should not perform any ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, arrowFunctionOperatorUndefinedLevel.ArrowFunction, 'const b = () => 4;');
+    });
 
-  it('should mutate everything if the mutation level is undefined', () => {
-    expectJSMutationWithLevel(sut, noLevel, 'const b = () => 4;', 'const b = () => undefined;');
+    it('should perform all ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, noLevel, 'const b = () => 4;', 'const b = () => undefined;');
+    });
   });
 });

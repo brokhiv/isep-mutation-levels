@@ -39,32 +39,34 @@ describe(sut.name, () => {
     expectJSMutation(sut, '"a" + b + "c" + d + "e"');
   });
 
-  it('should only mutate +, - and * from all possible mutators', () => {
-    expectJSMutationWithLevel(
-      sut,
-      arithmeticLevel.ArithmeticOperator,
-      'a + b; a - b; a * b; a % b; a / b; a % b',
-      'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
-      'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
-      'a + b; a - b; a / b; a % b; a / b; a % b', // mutates *
-    );
-  });
+  describe('mutation level', () => {
+    it('should only mutate +, - and *', () => {
+      expectJSMutationWithLevel(
+        sut,
+        arithmeticLevel.ArithmeticOperator,
+        'a + b; a - b; a * b; a % b; a / b; a % b',
+        'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
+        'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
+        'a + b; a - b; a / b; a % b; a / b; a % b', // mutates *
+      );
+    });
 
-  it('should not mutate +, - and * from all possible mutators', () => {
-    expectJSMutationWithLevel(sut, arithmeticOperatorUndefinedLevel.ArithmeticOperator, 'a + b; a - b; a * b; a % b; a / b; a % b');
-  });
+    it('should not perform any ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(sut, arithmeticOperatorUndefinedLevel.ArithmeticOperator, 'a + b; a - b; a * b; a % b; a / b; a % b');
+    });
 
-  it('should all possible mutators', () => {
-    expectJSMutationWithLevel(
-      sut,
-      noLevel,
-      'a + b; a - b; a * b; a % b; a / b; a % b',
-      'a + b; a - b; a * b; a % b; a * b; a % b', // mutates /
-      'a + b; a - b; a * b; a % b; a / b; a * b', // mutates %
-      'a + b; a - b; a * b; a * b; a / b; a % b', // mutates %
-      'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
-      'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
-      'a + b; a - b; a / b; a % b; a / b; a % b', // mutates *
-    );
+    it('should perform all ' + sut.name + ' mutations', () => {
+      expectJSMutationWithLevel(
+        sut,
+        noLevel,
+        'a + b; a - b; a * b; a % b; a / b; a % b',
+        'a + b; a - b; a * b; a % b; a * b; a % b', // mutates /
+        'a + b; a - b; a * b; a % b; a / b; a * b', // mutates %
+        'a + b; a - b; a * b; a * b; a / b; a % b', // mutates %
+        'a - b; a - b; a * b; a % b; a / b; a % b', // mutates +
+        'a + b; a + b; a * b; a % b; a / b; a % b', // mutates -
+        'a + b; a - b; a / b; a % b; a / b; a % b', // mutates *
+      );
+    });
   });
 });

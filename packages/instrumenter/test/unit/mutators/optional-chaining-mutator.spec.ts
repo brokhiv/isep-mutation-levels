@@ -43,7 +43,7 @@ describe(sut.name, () => {
   });
 
   describe('mutation level', () => {
-    it('should only mutate OptionalMemberExpression from all possible mutators', () => {
+    it('should only mutate OptionalMemberExpression', () => {
       expectJSMutationWithLevel(
         sut,
         optionalChainingLevel.OptionalChaining,
@@ -51,10 +51,10 @@ describe(sut.name, () => {
         'foo.bar; foo?.[0]; foo?.()', // removes .bar optional
       );
     });
-    it('should block all mutators', () => {
+    it('should not perform any ' + sut.name + ' mutations', () => {
       expectJSMutationWithLevel(sut, optionalChainingUndefinedLevel.OptionalChaining, 'foo?.bar; foo?.[0]; foo?.()');
     });
-    it('should allow all mutators', () => {
+    it('should perform all ' + sut.name + ' mutations', () => {
       expectJSMutationWithLevel(
         sut,
         noLevel,
