@@ -13,7 +13,7 @@ import { allMutantPlacers, MutantPlacer, throwPlacementError } from '../mutant-p
 import { Mutable, Mutant } from '../mutant.js';
 import { allMutators } from '../mutators/index.js';
 
-import { MutationLevel, defaultMutationLevels, emptyMutationLevel, filledMutationLevel } from '../mutation-level/mutation-level.js';
+import { MutationLevel, defaultMutationLevels } from '../mutation-level/mutation-level.js';
 
 import { DirectiveBookkeeper } from './directive-bookkeeper.js';
 import { IgnorerBookkeeper } from './ignorer-bookkeeper.js';
@@ -181,7 +181,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
     }
 
     function findExcludedMutatorIgnoreReason(mutatorName: string): string | undefined {
-      if (options.excludedMutations.includes(mutatorName)) {
+      if (options.excludedMutations?.includes(mutatorName)) {
         return `Ignored because of excluded mutation "${mutatorName}"`;
       } else {
         return undefined;
@@ -193,7 +193,8 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
    * @returns `undefined` for the default stryker behaviour or a MutationLevel according to the specification
    */
   function createRunLevel(): MutationLevel | undefined {
-    let runLevel = emptyMutationLevel;
+    const runLevel: MutationLevel = { name: 'RunningLevel' };
+    mutators.forEach((mut) => (runLevel[mut.name] = []));
 
     if (options.includedMutations === undefined || options.includedMutations.length === 0) {
       if (options.excludedMutations === undefined) {
@@ -201,7 +202,9 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
         return undefined;
       } else {
         // remove `excludedMutations` from a complete level
-        runLevel = filledMutationLevel;
+        mutators.forEach((mut) =>
+          Object.values(mut.operators).forEach((op) => (runLevel[mut.name] as MutatorDefinition[]).push(op.mutationName as MutatorDefinition)),
+        );
       }
     }
 
@@ -215,7 +218,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
     if (mutations) {
       const updateFunc: (mutatorList: MutatorDefinition[], ...toUpdate: MutatorDefinition[]) => void = includeMutations
         ? (mutatorList, toAdd) => mutatorList.push(toAdd)
-        : (mutatorList, toRemove) => (mutatorList = mutatorList.filter((m) => !toRemove.includes(m)));
+        : (mutatorList, toRemove) => mutatorList.splice(0, mutatorList.length, ...mutatorList.filter((m) => !toRemove.includes(m))); // in-place filter
 
       for (const spec of mutations) {
         // Check if it's a mutation level
@@ -230,7 +233,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
         // Check if it's a operator group
         const opGroupName = Object.keys(runLevel).find((levelKey) => levelKey !== 'name' && '@' + levelKey === spec);
         if (opGroupName) {
-          const nodeMutatorToAdd = allMutators.find((mut) => mut.name === opGroupName);
+          const nodeMutatorToAdd = mutators.find((mut) => mut.name === opGroupName);
           if (nodeMutatorToAdd) {
             Object.values(nodeMutatorToAdd.operators).forEach((mutator) => {
               updateFunc(runLevel[opGroupName] as MutatorDefinition[], mutator.mutationName as MutatorDefinition);
@@ -240,7 +243,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
         }
 
         // Else, must be a suboperator
-        const nodeMutator = allMutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationName === spec));
+        const nodeMutator = mutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationName === spec));
 
         if (nodeMutator) {
           updateFunc(runLevel[nodeMutator.name] as MutatorDefinition[], spec as MutatorDefinition);

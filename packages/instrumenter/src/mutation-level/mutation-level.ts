@@ -20,8 +20,6 @@ import {
   UpdateOperator,
 } from '@stryker-mutator/api/core';
 
-import { allMutators } from '../mutators/mutate.js';
-
 export type NodeMutatorConfiguration<T> = Record<string, ReplacementConfiguration<T>>;
 
 interface ReplacementConfiguration<T> {
@@ -77,10 +75,3 @@ export const emptyMutationLevel: MutationLevel = {
   UnaryOperator: [],
   UpdateOperator: [],
 };
-
-/** Filled mutation level, where each mutator is filled with all possible mutations */
-const filledMutationLevel = emptyMutationLevel;
-allMutators.forEach((mut) =>
-  Object.values(mut.operators).forEach((op) => (filledMutationLevel[mut.name] as MutatorDefinition[]).push(op.mutationName as MutatorDefinition)),
-);
-export { filledMutationLevel };
