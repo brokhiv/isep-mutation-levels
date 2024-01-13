@@ -50,6 +50,8 @@ export class ClearTextReporter implements Reporter {
     }
     if (this.options.clearTextReporter.reportScoreTable) {
       this.writeLine(new ClearTextScoreTable(metrics.systemUnderTestMetrics, this.options).draw());
+      // TODO remove/change
+      this.writeLine(metrics.systemUnderTestMetrics.metrics.totalInvalid.toString());
     }
   }
 
