@@ -55,4 +55,8 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
       );
     }
   },
+
+  isMutable(path): boolean {
+    return (path.isOptionalMemberExpression() || path.isOptionalCallExpression()) && path.node.optional;
+  },
 };

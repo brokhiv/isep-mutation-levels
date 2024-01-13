@@ -184,14 +184,16 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
           };
         }
       }
-      for (let i = 0; i < totalMutatorCount - mutated; i++) {
-        // totalMutatorCount - mutated is the number of potential mutants not mutated
-        const placeholderNode = babel.types.stringLiteral('excludedByLevel');
-        yield {
-          replacement: placeholderNode,
-          mutatorName: mutator.name,
-          ignoreReason: IGNORED_BY_LEVEL_STATUS,
-        };
+      if (mutator.isMutable(node)) {
+        for (let i = 0; i < totalMutatorCount - mutated; i++) {
+          // totalMutatorCount - mutated is the number of potential mutants not mutated
+          const placeholderNode = babel.types.stringLiteral('excludedByLevel');
+          yield {
+            replacement: placeholderNode,
+            mutatorName: mutator.name,
+            ignoreReason: IGNORED_BY_LEVEL_STATUS,
+          };
+        }
       }
     }
 

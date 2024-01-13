@@ -39,6 +39,9 @@ describe('babel-transformer', () => {
         yield types.identifier('bar');
       }
     },
+    isMutable(path): boolean {
+      return true;
+    },
   };
   const plusMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Plus',
@@ -47,6 +50,9 @@ describe('babel-transformer', () => {
       if (path.isBinaryExpression() && path.node.operator === '+') {
         yield types.binaryExpression('-', types.cloneNode(path.node.left, true), types.cloneNode(path.node.right, true));
       }
+    },
+    isMutable(path): boolean {
+      return true;
     },
   };
 
@@ -630,6 +636,9 @@ describe('babel-transformer', () => {
           if (path.isBlockStatement()) {
             yield types.blockStatement([]);
           }
+        },
+        isMutable(path): boolean {
+          return true;
         },
       });
       const catchAllMutantPlacer: MutantPlacer<babel.types.Program> = {

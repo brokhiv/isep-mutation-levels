@@ -94,6 +94,19 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
       }
     }
   },
+
+  isMutable(path): boolean {
+    if (isTestOfLoop(path) && (isTestOfWhileLoop(path) || isTestOfDoWhileLoop(path) || isTestOfForLoop(path))) {
+      return true;
+    } else if (isTestOfCondition(path) || isBooleanExpression(path)) {
+      return true;
+    } else if (path.isForStatement() && !path.node.test) {
+      return true;
+    } else if (path.isSwitchCase() && path.node.consequent.length > 0) {
+      return true;
+    }
+    return false;
+  },
 };
 
 function isTestOfLoop(path: NodePath): boolean {

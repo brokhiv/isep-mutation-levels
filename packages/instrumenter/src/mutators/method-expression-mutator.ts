@@ -77,4 +77,25 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
         : types.optionalCallExpression(mutatedCallee, nodeArguments, path.node.optional);
     }
   },
+
+  isMutable(path): boolean {
+    // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
+
+    if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
+      return false;
+    }
+
+    const { callee } = path.node;
+    if (!(types.isMemberExpression(callee) || types.isOptionalMemberExpression(callee)) || !types.isIdentifier(callee.property)) {
+      return false;
+    }
+
+    const mutation = this.operators[callee.property.name];
+    if (mutation === undefined) {
+      // Function is not known in `operators`, so no mutations
+      return false;
+    }
+
+    return true;
+  },
 };
