@@ -54,24 +54,3 @@ export interface MutationLevel {
 export const defaultMutationLevels: MutationLevel[] = JSON.parse(
   fs.readFileSync(new URL('../../../src/mutation-level/default-mutation-levels.json', import.meta.url), 'utf-8'),
 ).mutationLevels;
-
-/** Empty mutation level, with each mutator initialised with an empty list */
-export const emptyMutationLevel: MutationLevel = {
-  name: 'RunningLevel',
-  ArithmeticOperator: [],
-  ArrayDeclaration: [],
-  ArrowFunction: [],
-  AssignmentOperator: [],
-  BlockStatement: [],
-  BooleanLiteral: [],
-  ConditionalExpression: [],
-  EqualityOperator: [],
-  LogicalOperator: [],
-  MethodExpression: [],
-  ObjectLiteral: [],
-  OptionalChaining: [],
-  Regex: [],
-  StringLiteral: [],
-  UnaryOperator: [],
-  UpdateOperator: [],
-};
