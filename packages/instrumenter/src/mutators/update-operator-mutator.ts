@@ -56,6 +56,10 @@ export const updateOperatorMutator: NodeMutator<UpdateOperator> = {
   isMutable(path): boolean {
     return path.isUpdateExpression();
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function getReplacement(levelMutations: string[], mutationName: string): '--' | '++' | undefined {

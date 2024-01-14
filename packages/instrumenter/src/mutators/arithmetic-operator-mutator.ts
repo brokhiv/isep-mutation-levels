@@ -29,6 +29,10 @@ export const arithmeticOperatorMutator: NodeMutator<ArithmeticOperator> = {
   isMutable(path): boolean {
     return path.isBinaryExpression() && isSupported(path.node.operator, path.node);
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isInMutationLevel(node: types.BinaryExpression, operations: string[] | undefined): boolean {

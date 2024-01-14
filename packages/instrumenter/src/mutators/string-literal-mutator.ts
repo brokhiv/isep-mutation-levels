@@ -58,6 +58,10 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
   isMutable(path): boolean {
     return path.isTemplateLiteral() || (path.isStringLiteral() && isValidParent(path));
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isValidParent(child: NodePath<babel.types.StringLiteral>): boolean {

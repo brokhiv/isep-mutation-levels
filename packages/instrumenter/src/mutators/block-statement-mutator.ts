@@ -22,6 +22,10 @@ export const blockStatementMutator: NodeMutator<BlockStatement> = {
   isMutable(path): boolean {
     return path.isBlockStatement() && isValid(path);
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isValid(path: NodePath<babel.types.BlockStatement>) {

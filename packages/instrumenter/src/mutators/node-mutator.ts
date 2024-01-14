@@ -5,6 +5,7 @@ import { NodeMutatorConfiguration, MutationLevel } from '../mutation-level/mutat
 export interface NodeMutator<T extends keyof MutationLevel> {
   mutate(path: NodePath, levelMutations: string[] | undefined): Iterable<types.Node>;
   isMutable(path: NodePath): boolean;
+  numberOfMutants(path: NodePath): number;
   readonly name: string;
   operators: NodeMutatorConfiguration<T>;
 }

@@ -26,6 +26,10 @@ export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
   isMutable(path): boolean {
     return path.isLogicalExpression() && isSupported(path.node.operator);
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isSupported(operator: string): operator is keyof typeof logicalOperatorMutator.operators {

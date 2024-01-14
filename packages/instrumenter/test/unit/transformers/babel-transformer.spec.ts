@@ -42,6 +42,9 @@ describe('babel-transformer', () => {
     isMutable(path): boolean {
       return true;
     },
+    numberOfMutants(path): number {
+      return 1;
+    },
   };
   const plusMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Plus',
@@ -53,6 +56,9 @@ describe('babel-transformer', () => {
     },
     isMutable(path): boolean {
       return true;
+    },
+    numberOfMutants(path): number {
+      return 1;
     },
   };
 
@@ -639,6 +645,9 @@ describe('babel-transformer', () => {
         },
         isMutable(path): boolean {
           return true;
+        },
+        numberOfMutants(path): number {
+          return 1;
         },
       });
       const catchAllMutantPlacer: MutantPlacer<babel.types.Program> = {

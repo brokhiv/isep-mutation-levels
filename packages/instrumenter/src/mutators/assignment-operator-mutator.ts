@@ -44,6 +44,10 @@ export const assignmentOperatorMutator: NodeMutator<AssignmentOperator> = {
   isMutable(path): boolean {
     return path.isAssignmentExpression() && isSupportedAssignmentOperator(path.node.operator) && isSupported(path.node);
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isInMutationLevel(node: types.AssignmentExpression, operations: string[] | undefined): boolean {

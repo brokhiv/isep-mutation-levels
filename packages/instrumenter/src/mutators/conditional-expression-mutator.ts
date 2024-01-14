@@ -107,6 +107,13 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
     }
     return false;
   },
+
+  numberOfMutants(path): number {
+    if (isTestOfCondition(path) || isBooleanExpression(path)) {
+      return 2;
+    }
+    return 1;
+  },
 };
 
 function isTestOfLoop(path: NodePath): boolean {

@@ -26,6 +26,10 @@ export const arrowFunctionMutator: NodeMutator<ArrowFunction> = {
       !(types.isIdentifier(path.node.body) && path.node.body.name === 'undefined')
     );
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {

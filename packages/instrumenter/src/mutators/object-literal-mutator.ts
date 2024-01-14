@@ -22,6 +22,10 @@ export const objectLiteralMutator: NodeMutator<ObjectLiteral> = {
   isMutable(path): boolean {
     return path.isObjectExpression() && path.node.properties.length > 0;
   },
+
+  numberOfMutants(_): number {
+    return 1;
+  },
 };
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {

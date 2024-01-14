@@ -164,7 +164,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
     const runLevel = createRunLevel();
 
     for (const mutator of mutators) {
-      const totalMutatorCount = Object.keys(mutator.operators).length;
+      const totalMutatorCount = mutator.numberOfMutants(node);
       let mutated = 0;
       if (runLevel === undefined || mutator.name in runLevel) {
         let propertyValue = undefined;
