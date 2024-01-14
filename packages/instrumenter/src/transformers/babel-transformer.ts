@@ -166,7 +166,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
     for (const mutator of mutators) {
       const totalMutatorCount = mutator.numberOfMutants(node);
       let mutated = 0;
-      if (runLevel === undefined || mutator.name in runLevel) {
+      if (mutator.isMutable(node) && (runLevel === undefined || mutator.name in runLevel)) {
         let propertyValue = undefined;
         if (runLevel !== undefined) {
           propertyValue = runLevel?.[mutator.name] as string[];
@@ -183,8 +183,6 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
               ignorerBookkeeper.currentIgnoreMessage,
           };
         }
-      }
-      if (runLevel !== undefined && mutator.isMutable(node)) {
         for (let i = 0; i < totalMutatorCount - mutated; i++) {
           // totalMutatorCount - mutated is the number of potential mutants not mutated
           const placeholderNode = babel.types.stringLiteral('excludedByLevel');

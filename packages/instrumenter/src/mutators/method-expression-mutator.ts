@@ -80,45 +80,31 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
 
   isMutable(path): boolean {
     // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
-
     if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
       return false;
     }
-
     const { callee } = path.node;
     if (!(types.isMemberExpression(callee) || types.isOptionalMemberExpression(callee)) || !types.isIdentifier(callee.property)) {
       return false;
     }
-
-    const mutation = this.operators[callee.property.name];
-    if (mutation === undefined) {
-      // Function is not known in `operators`, so no mutations
-      return false;
-    }
-
-    return true;
+    return this.operators[callee.property.name] !== undefined;
   },
 
   numberOfMutants(path): number {
     // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
-
     if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
       return 0;
     }
-
     const { callee } = path.node;
     if (!(types.isMemberExpression(callee) || types.isOptionalMemberExpression(callee)) || !types.isIdentifier(callee.property)) {
       return 0;
     }
-
     const mutation = this.operators[callee.property.name];
     if (mutation === undefined) {
       // Function is not known in `operators`, so no mutations
       return 0;
     }
-
     let mutatedCallee = undefined;
-
     if (mutation.replacement != null) {
       mutatedCallee = types.isMemberExpression(callee)
         ? types.memberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement as string), false, callee.optional)
@@ -126,10 +112,6 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
     } else if (typeof mutation.replacement == 'object' && mutation.replacement == null) {
       return 1;
     }
-
-    if (mutatedCallee != undefined) {
-      return 1;
-    }
-    return 0;
+    return mutatedCallee !== undefined ? 1 : 0;
   },
 };

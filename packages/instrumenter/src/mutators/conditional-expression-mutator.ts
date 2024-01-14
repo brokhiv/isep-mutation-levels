@@ -154,18 +154,12 @@ function isTestOfLoop(path: NodePath): boolean {
 
 function isTestOfWhileLoop(path: NodePath): boolean {
   const { parentPath } = path;
-  if (!parentPath) {
-    return false;
-  }
-  return parentPath.isWhileStatement() && parentPath.node.test === path.node;
+  return parentPath !== null && parentPath && parentPath.isWhileStatement() && parentPath.node.test === path.node;
 }
 
 function isTestOfForLoop(path: NodePath): boolean {
   const { parentPath } = path;
-  if (!parentPath) {
-    return false;
-  }
-  return parentPath.isForStatement() && parentPath.node.test === path.node;
+  return parentPath !== null && parentPath && parentPath.isForStatement() && parentPath.node.test === path.node;
 }
 
 function isTestOfDoWhileLoop(path: NodePath): boolean {
