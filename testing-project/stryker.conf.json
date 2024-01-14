@@ -1,0 +1,22 @@
+{
+  "$schema": "../packages/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": [
+    "html",
+    "clear-text",
+    "progress"
+  ],
+  "testRunner": "jest",
+  "testRunnerNodeArgs": ["--experimental-vm-modules"],
+  "plugins": [
+    "../packages/jest-runner/dist/src/index.js"
+  ],
+  "jest": {
+    "configFile": "jest.config.cjs"
+  },
+  "coverageAnalysis": "perTest",
+  "mutator": {
+    "includedMutations": ["@Level1", "@ArithmeticOperator", "removeCharAt", "BlockStatement"],
+    "excludedMutations": ["@Regex", "Remove~"]
+  }
+}
