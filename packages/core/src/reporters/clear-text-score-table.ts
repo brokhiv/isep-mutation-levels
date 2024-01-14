@@ -122,11 +122,11 @@ export class ClearTextScoreTable {
         (row) => {
           // TODO change every occurrence of this constant to row.metrics.ignoredByMutationlevel after updated metrics has
           //  been published in mutation-testing-metrics
-          const ignoredByMutationlevel = 5;
+          const ignoredByMutationlevel = 0;
           if (isNaN(row.metrics.mutationScore)) {
             return 'n/a';
           }
-          const { mutationScore: score } = metricsResult.metrics;
+          const { mutationScore: score } = row.metrics;
           const considered = row.metrics.totalMutants - ignoredByMutationlevel;
           return ((score * considered) / row.metrics.totalMutants).toFixed(2);
         },
