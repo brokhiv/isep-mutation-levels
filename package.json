@@ -69,8 +69,5 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  },
-  "dependencies": {
-    "node": "^21.1.0"
   }
 }
