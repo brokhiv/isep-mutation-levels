@@ -40,16 +40,13 @@ export const equalityOperatorMutator: NodeMutator<EqualityOperator> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isBinaryExpression() && isEqualityOperator(path.node.operator);
-  },
-
   numberOfMutants(path): number {
     // Necessary to use path.node.operator
-    if (!path.isBinaryExpression()) {
-      return 1;
+    if (path.isBinaryExpression() && isEqualityOperator(path.node.operator)) {
+      return Object.keys(equalityOperatorMutator.operators).filter((k) => k.startsWith(path.node.operator + 'To')).length;
     }
-    return Object.keys(equalityOperatorMutator.operators).filter((k) => k.startsWith(path.node.operator + 'To')).length;
+
+    return 0;
   },
 };
 

@@ -14,17 +14,13 @@ export const blockStatementMutator: NodeMutator<BlockStatement> = {
   },
 
   *mutate(path, levelMutations) {
-    if (this.isMutable(path) && isInMutationLevel(levelMutations)) {
+    if (this.numberOfMutants(path) > 0 && isInMutationLevel(levelMutations)) {
       yield types.blockStatement([]);
     }
   },
 
-  isMutable(path): boolean {
-    return path.isBlockStatement() && isValid(path);
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isBlockStatement() && isValid(path) ? 1 : 0;
   },
 };
 

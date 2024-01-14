@@ -39,9 +39,6 @@ describe('babel-transformer', () => {
         yield types.identifier('bar');
       }
     },
-    isMutable(path): boolean {
-      return true;
-    },
     numberOfMutants(path): number {
       return path.isIdentifier() && path.node.name === 'foo' ? 1 : 0;
     },
@@ -53,9 +50,6 @@ describe('babel-transformer', () => {
       if (path.isBinaryExpression() && path.node.operator === '+') {
         yield types.binaryExpression('-', types.cloneNode(path.node.left, true), types.cloneNode(path.node.right, true));
       }
-    },
-    isMutable(path): boolean {
-      return true;
     },
     numberOfMutants(path): number {
       return path.isBinaryExpression() && path.node.operator === '+' ? 1 : 0;
@@ -642,9 +636,6 @@ describe('babel-transformer', () => {
           if (path.isBlockStatement()) {
             yield types.blockStatement([]);
           }
-        },
-        isMutable(path): boolean {
-          return true;
         },
         numberOfMutants(path): number {
           return path.isBlockStatement() ? 1 : 0;

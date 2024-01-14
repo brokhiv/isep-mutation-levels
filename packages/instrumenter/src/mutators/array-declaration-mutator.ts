@@ -47,15 +47,15 @@ export const arrayDeclarationMutator: NodeMutator<ArrayDeclaration> = {
     }
   },
 
-  isMutable(path): boolean {
-    return (
+  numberOfMutants(path): number {
+    if (
       path.isArrayExpression() ||
       ((path.isCallExpression() || path.isNewExpression()) && types.isIdentifier(path.node.callee) && path.node.callee.name === 'Array')
-    );
-  },
+    ) {
+      return 1;
+    }
 
-  numberOfMutants(_): number {
-    return 1;
+    return 0;
   },
 };
 

@@ -53,12 +53,8 @@ export const updateOperatorMutator: NodeMutator<UpdateOperator> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isUpdateExpression();
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isUpdateExpression() ? 1 : 0;
   },
 };
 

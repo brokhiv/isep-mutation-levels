@@ -34,12 +34,8 @@ export const unaryOperatorMutator: NodeMutator<UnaryOperator> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isUnaryExpression() && isSupported(path.node.operator) && path.node.prefix;
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isUnaryExpression() && isSupported(path.node.operator) && path.node.prefix ? 1 : 0;
   },
 };
 

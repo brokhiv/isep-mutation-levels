@@ -78,18 +78,6 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
     }
   },
 
-  isMutable(path): boolean {
-    // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
-    if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
-      return false;
-    }
-    const { callee } = path.node;
-    if (!(types.isMemberExpression(callee) || types.isOptionalMemberExpression(callee)) || !types.isIdentifier(callee.property)) {
-      return false;
-    }
-    return this.operators[callee.property.name] !== undefined;
-  },
-
   numberOfMutants(path): number {
     // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
     if (!(path.isCallExpression() || path.isOptionalCallExpression())) {

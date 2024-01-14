@@ -52,12 +52,8 @@ export const regexMutator: NodeMutator<Regex> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isRegExpLiteral() || (path.isStringLiteral() && isObviousRegexString(path));
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isRegExpLiteral() || (path.isStringLiteral() && isObviousRegexString(path)) ? 1 : 0;
   },
 };
 

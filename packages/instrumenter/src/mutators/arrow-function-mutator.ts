@@ -14,21 +14,21 @@ export const arrowFunctionMutator: NodeMutator<ArrowFunction> = {
   },
 
   *mutate(path, levelMutations) {
-    if (this.isMutable(path) && isInMutationLevel(levelMutations)) {
+    if (this.numberOfMutants(path) > 0 && isInMutationLevel(levelMutations)) {
       yield types.arrowFunctionExpression([], types.identifier('undefined'));
     }
   },
 
-  isMutable(path): boolean {
-    return (
+  numberOfMutants(path): number {
+    if (
       path.isArrowFunctionExpression() &&
       !types.isBlockStatement(path.node.body) &&
       !(types.isIdentifier(path.node.body) && path.node.body.name === 'undefined')
-    );
-  },
+    ) {
+      return 1;
+    }
 
-  numberOfMutants(_): number {
-    return 1;
+    return 0;
   },
 };
 

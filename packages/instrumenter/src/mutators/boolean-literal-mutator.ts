@@ -28,12 +28,8 @@ export const booleanLiteralMutator: NodeMutator<BooleanLiteral> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isBooleanLiteral() || (path.isUnaryExpression() && path.node.operator === '!' && path.node.prefix);
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isBooleanLiteral() || (path.isUnaryExpression() && path.node.operator === '!' && path.node.prefix) ? 1 : 0;
   },
 };
 

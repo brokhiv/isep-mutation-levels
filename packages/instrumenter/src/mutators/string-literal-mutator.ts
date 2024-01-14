@@ -55,12 +55,8 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isTemplateLiteral() || (path.isStringLiteral() && isValidParent(path));
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isTemplateLiteral() || (path.isStringLiteral() && isValidParent(path)) ? 1 : 0;
   },
 };
 

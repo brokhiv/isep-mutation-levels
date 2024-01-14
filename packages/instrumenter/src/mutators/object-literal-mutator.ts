@@ -14,17 +14,13 @@ export const objectLiteralMutator: NodeMutator<ObjectLiteral> = {
   },
 
   *mutate(path, levelMutations) {
-    if (this.isMutable(path) && isInMutationLevel(levelMutations)) {
+    if (this.numberOfMutants(path) > 0 && isInMutationLevel(levelMutations)) {
       yield types.objectExpression([]);
     }
   },
 
-  isMutable(path): boolean {
-    return path.isObjectExpression() && path.node.properties.length > 0;
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isObjectExpression() && path.node.properties.length > 0 ? 1 : 0;
   },
 };
 

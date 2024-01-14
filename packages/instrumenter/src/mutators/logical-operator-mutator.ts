@@ -23,12 +23,8 @@ export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
     }
   },
 
-  isMutable(path): boolean {
-    return path.isLogicalExpression() && isSupported(path.node.operator);
-  },
-
-  numberOfMutants(_): number {
-    return 1;
+  numberOfMutants(path): number {
+    return path.isLogicalExpression() && isSupported(path.node.operator) ? 1 : 0;
   },
 };
 

@@ -116,19 +116,6 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
     }
   },
 
-  isMutable(path): boolean {
-    if (isTestOfLoop(path) && (isTestOfWhileLoop(path) || isTestOfDoWhileLoop(path) || isTestOfForLoop(path))) {
-      return true;
-    } else if (isTestOfCondition(path) || isBooleanExpression(path)) {
-      return true;
-    } else if (path.isForStatement() && !path.node.test) {
-      return true;
-    } else if (path.isSwitchCase() && path.node.consequent.length > 0) {
-      return true;
-    }
-    return false;
-  },
-
   numberOfMutants(path): number {
     if (
       isTestOfLoop(path) ||
@@ -164,10 +151,7 @@ function isTestOfForLoop(path: NodePath): boolean {
 
 function isTestOfDoWhileLoop(path: NodePath): boolean {
   const { parentPath } = path;
-  if (!parentPath) {
-    return false;
-  }
-  return parentPath.isDoWhileStatement() && parentPath.node.test === path.node;
+  return parentPath !== null && parentPath.isDoWhileStatement() && parentPath.node.test === path.node;
 }
 
 function isTestOfCondition(path: NodePath): boolean {

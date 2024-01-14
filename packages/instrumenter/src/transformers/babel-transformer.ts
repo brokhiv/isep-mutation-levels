@@ -165,12 +165,14 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
 
     for (const mutator of mutators) {
       const totalMutatorCount = mutator.numberOfMutants(node);
-      let mutated = 0;
-      if (mutator.isMutable(node) && (runLevel === undefined || mutator.name in runLevel)) {
+
+      if (totalMutatorCount > 0 && (runLevel === undefined || mutator.name in runLevel)) {
         let propertyValue = undefined;
         if (runLevel !== undefined) {
           propertyValue = runLevel?.[mutator.name] as string[];
         }
+
+        let mutated = 0;
 
         for (const replacement of mutator.mutate(node, propertyValue)) {
           mutated++;
