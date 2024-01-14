@@ -38,7 +38,7 @@ describe('After running stryker on jest-react project', () => {
     expect(mutantsAtLine3).lengthOf(2);
     mutantsAtLine3.forEach((mutant) => {
       expect(mutant.status).eq(MutantStatus.Ignored);
-      expect(mutant.statusReason).eq('Ignored because of excluded mutation "ArithmeticOperator"');
+      expect(mutant.statusReason).eq('Ignored by level');
     });
   });
 
