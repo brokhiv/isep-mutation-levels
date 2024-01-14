@@ -43,7 +43,7 @@ describe('babel-transformer', () => {
       return true;
     },
     numberOfMutants(path): number {
-      return 1;
+      return path.isIdentifier() && path.node.name === 'foo' ? 1 : 0;
     },
   };
   const plusMutator: NodeMutator<keyof MutationLevel> = {
@@ -58,7 +58,7 @@ describe('babel-transformer', () => {
       return true;
     },
     numberOfMutants(path): number {
-      return 1;
+      return path.isBinaryExpression() && path.node.operator === '+' ? 1 : 0;
     },
   };
 
@@ -647,7 +647,7 @@ describe('babel-transformer', () => {
           return true;
         },
         numberOfMutants(path): number {
-          return 1;
+          return path.isBlockStatement() ? 1 : 0;
         },
       });
       const catchAllMutantPlacer: MutantPlacer<babel.types.Program> = {
