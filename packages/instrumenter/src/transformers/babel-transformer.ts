@@ -184,7 +184,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
           };
         }
       }
-      if (mutator.isMutable(node)) {
+      if (runLevel !== undefined && mutator.isMutable(node)) {
         for (let i = 0; i < totalMutatorCount - mutated; i++) {
           // totalMutatorCount - mutated is the number of potential mutants not mutated
           const placeholderNode = babel.types.stringLiteral('excludedByLevel');
