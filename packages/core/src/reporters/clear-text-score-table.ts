@@ -118,7 +118,7 @@ export class ClearTextScoreTable {
       new FileColumn(metricsResult),
       new MutationScoreColumn(metricsResult, options.thresholds),
       new Column(
-        `% adjusted`,
+        '% adjusted',
         (row) => {
           // TODO change every occurrence of this constant to row.metrics.ignoredByMutationlevel after updated metrics has
           //  been published in mutation-testing-metrics
@@ -126,9 +126,9 @@ export class ClearTextScoreTable {
           if (isNaN(row.metrics.mutationScore)) {
             return 'n/a';
           }
-          const mutationScore = row.metrics.mutationScore;
+          const { mutationScore: score } = metricsResult.metrics;
           const considered = row.metrics.totalMutants - ignoredByMutationlevel;
-          return ((mutationScore * considered) / row.metrics.totalMutants).toFixed(2);
+          return ((score * considered) / row.metrics.totalMutants).toFixed(2);
         },
         metricsResult,
       ),
