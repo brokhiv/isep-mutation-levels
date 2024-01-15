@@ -9,12 +9,12 @@ export interface NodeMutator<T extends keyof MutationLevel> {
    * @param levelMutations the relevant group of allowed mutations in the Mutation Level. Allows all if undefined.
    */
   mutate(path: NodePath, levelMutations: string[] | undefined): Iterable<types.Node>;
-  
+
   /**
    * Number of mutants that can be generated, .
    */
   numberOfMutants(path: NodePath): number;
-  
+
   /**
    * Name of the Mutator.
    */
