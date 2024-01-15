@@ -4,11 +4,7 @@
   "concurrency": 2,
   "coverageAnalysis": "perTest",
   "mutator": {
-<<<<<<< HEAD
-    "excludedMutations": ["@ArithmeticOperator", "@BlockStatement"]
-=======
     "excludedMutations": ["@ArithmeticOperator", "BlockStatementRemoval"]
->>>>>>> origin/e2e-tests
   },
   "reporters": [
     "clear-text",
