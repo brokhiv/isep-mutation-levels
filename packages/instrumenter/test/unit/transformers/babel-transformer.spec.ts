@@ -33,20 +33,26 @@ describe('babel-transformer', () => {
 
   const fooMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Foo',
-    operators: {},
+    operators: { Foo: { mutationName: 'Foo' } },
     *mutate(path) {
       if (path.isIdentifier() && path.node.name === 'foo') {
         yield types.identifier('bar');
       }
     },
+    numberOfMutants(path): number {
+      return path.isIdentifier() && path.node.name === 'foo' ? 1 : 0;
+    },
   };
   const plusMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Plus',
-    operators: {},
+    operators: { Plus: { mutationName: 'Plus' } },
     *mutate(path) {
       if (path.isBinaryExpression() && path.node.operator === '+') {
         yield types.binaryExpression('-', types.cloneNode(path.node.left, true), types.cloneNode(path.node.right, true));
       }
+    },
+    numberOfMutants(path): number {
+      return path.isBinaryExpression() && path.node.operator === '+' ? 1 : 0;
     },
   };
 
@@ -630,6 +636,9 @@ describe('babel-transformer', () => {
           if (path.isBlockStatement()) {
             yield types.blockStatement([]);
           }
+        },
+        numberOfMutants(path): number {
+          return path.isBlockStatement() ? 1 : 0;
         },
       });
       const catchAllMutantPlacer: MutantPlacer<babel.types.Program> = {
