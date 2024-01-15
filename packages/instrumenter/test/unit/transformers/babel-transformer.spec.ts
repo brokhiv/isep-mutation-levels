@@ -33,20 +33,34 @@ describe('babel-transformer', () => {
 
   const fooMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Foo',
-    operators: {},
-    *mutate(path) {
-      if (path.isIdentifier() && path.node.name === 'foo') {
+    operators: { Foo: { mutationName: 'Foo' } },
+    *mutate(path, levelMutations) {
+      if (
+        path.isIdentifier() &&
+        path.node.name === 'foo' &&
+        (levelMutations === undefined || levelMutations.includes(this.operators.Foo.mutationName as string))
+      ) {
         yield types.identifier('bar');
       }
+    },
+    numberOfMutants(path): number {
+      return path.isIdentifier() && path.node.name === 'foo' ? 1 : 0;
     },
   };
   const plusMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Plus',
-    operators: {},
-    *mutate(path) {
-      if (path.isBinaryExpression() && path.node.operator === '+') {
+    operators: { Plus: { mutationName: 'Plus' } },
+    *mutate(path, levelMutations) {
+      if (
+        path.isBinaryExpression() &&
+        path.node.operator === '+' &&
+        (levelMutations === undefined || levelMutations.includes(this.operators.Plus.mutationName as string))
+      ) {
         yield types.binaryExpression('-', types.cloneNode(path.node.left, true), types.cloneNode(path.node.right, true));
       }
+    },
+    numberOfMutants(path): number {
+      return path.isBinaryExpression() && path.node.operator === '+' ? 1 : 0;
     },
   };
 
@@ -130,7 +144,7 @@ describe('babel-transformer', () => {
       context.options.excludedMutations = ['Foo'];
       act(ast);
       expect(mutantCollector.mutants).lengthOf(1);
-      expect(mutantCollector.mutants[0].ignoreReason).eq('Ignored because of excluded mutation "Foo"');
+      expect(mutantCollector.mutants[0].ignoreReason).eq('Ignored by level');
     });
   });
 
@@ -630,6 +644,9 @@ describe('babel-transformer', () => {
           if (path.isBlockStatement()) {
             yield types.blockStatement([]);
           }
+        },
+        numberOfMutants(path): number {
+          return path.isBlockStatement() ? 1 : 0;
         },
       });
       const catchAllMutantPlacer: MutantPlacer<babel.types.Program> = {
