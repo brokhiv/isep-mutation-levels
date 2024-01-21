@@ -65,10 +65,6 @@
       "path": "perf"
     },
     {
-      "name": "testing-project",
-      "path": "testing-project"
-    },
-    {
       "name": "parent",
       "path": "."
     }
@@ -99,7 +95,7 @@
     "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
     "task.autoDetect": "off",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
     "cSpell.words": [
       "Appender",
