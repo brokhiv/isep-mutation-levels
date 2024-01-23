@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@jest/globals": "^29.7.0",
+    "root": "github:Luctia/isep-mutation-testing-elements",
     "whatwg-fetch": "^3.6.2"
   }
 }
