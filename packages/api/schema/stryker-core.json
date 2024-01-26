@@ -221,7 +221,6 @@
         "includedMutations": {
           "type": "array",
           "uniqueItems": true,
-          "default": [],
           "items": {
             "$ref": "#/definitions/MutationSpecification"
           },
@@ -230,7 +229,6 @@
         "excludedMutations": {
           "type": "array",
           "uniqueItems": true,
-          "default": [],
           "items": {
             "$ref": "#/definitions/MutationSpecification"
           }
