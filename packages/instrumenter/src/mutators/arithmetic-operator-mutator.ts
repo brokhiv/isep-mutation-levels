@@ -10,11 +10,11 @@ export const arithmeticOperatorMutator: NodeMutator<ArithmeticOperator> = {
   name: 'ArithmeticOperator',
 
   operators: {
-    '+': { replacement: '-', mutationName: 'AdditionOperatorNegation' },
-    '-': { replacement: '+', mutationName: 'SubtractionOperatorNegation' },
-    '*': { replacement: '/', mutationName: 'MultiplicationOperatorNegation' },
-    '/': { replacement: '*', mutationName: 'DivisionOperatorNegation' },
-    '%': { replacement: '*', mutationName: 'RemainderOperatorToMultiplicationReplacement' },
+    '+': { replacement: '-', mutationOperator: 'AdditionOperatorNegation' },
+    '-': { replacement: '+', mutationOperator: 'SubtractionOperatorNegation' },
+    '*': { replacement: '/', mutationOperator: 'MultiplicationOperatorNegation' },
+    '/': { replacement: '*', mutationOperator: 'DivisionOperatorNegation' },
+    '%': { replacement: '*', mutationOperator: 'RemainderOperatorToMultiplicationReplacement' },
   },
 
   *mutate(path, levelMutations) {
@@ -37,7 +37,7 @@ function isInMutationLevel(node: types.BinaryExpression, operations: string[] | 
     return true;
   }
 
-  const mutatedOperator = arithmeticOperatorMutator.operators[node.operator].mutationName;
+  const mutatedOperator = arithmeticOperatorMutator.operators[node.operator].mutationOperator;
   return operations.some((op) => op === mutatedOperator);
 }
 

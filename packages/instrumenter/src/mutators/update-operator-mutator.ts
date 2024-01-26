@@ -14,19 +14,19 @@ export const updateOperatorMutator: NodeMutator<UpdateOperator> = {
   operators: {
     PostfixIncrementOperatorNegation: {
       replacement: '--',
-      mutationName: 'PostfixIncrementOperatorNegation',
+      mutationOperator: 'PostfixIncrementOperatorNegation',
     },
     PostfixDecrementOperatorNegation: {
       replacement: '++',
-      mutationName: 'PostfixDecrementOperatorNegation',
+      mutationOperator: 'PostfixDecrementOperatorNegation',
     },
     PrefixIncrementOperatorNegation: {
       replacement: '--',
-      mutationName: 'PrefixIncrementOperatorNegation',
+      mutationOperator: 'PrefixIncrementOperatorNegation',
     },
     PrefixDecrementOperatorNegation: {
       replacement: '++',
-      mutationName: 'PrefixDecrementOperatorNegation',
+      mutationOperator: 'PrefixDecrementOperatorNegation',
     },
   },
 
@@ -38,13 +38,13 @@ export const updateOperatorMutator: NodeMutator<UpdateOperator> = {
       } else {
         let replacement = undefined;
         if (path.node.prefix && path.node.operator == '++') {
-          replacement = getReplacement(levelMutations, this.operators.PrefixIncrementOperatorNegation.mutationName);
+          replacement = getReplacement(levelMutations, this.operators.PrefixIncrementOperatorNegation.mutationOperator);
         } else if (path.node.prefix && path.node.operator == '--') {
-          replacement = getReplacement(levelMutations, this.operators.PrefixDecrementOperatorNegation.mutationName);
+          replacement = getReplacement(levelMutations, this.operators.PrefixDecrementOperatorNegation.mutationOperator);
         } else if (!path.node.prefix && path.node.operator == '++') {
-          replacement = getReplacement(levelMutations, this.operators.PostfixIncrementOperatorNegation.mutationName);
+          replacement = getReplacement(levelMutations, this.operators.PostfixIncrementOperatorNegation.mutationOperator);
         } else if (!path.node.prefix && path.node.operator == '--') {
-          replacement = getReplacement(levelMutations, this.operators.PostfixDecrementOperatorNegation.mutationName);
+          replacement = getReplacement(levelMutations, this.operators.PostfixDecrementOperatorNegation.mutationOperator);
         }
         if (replacement !== undefined) {
           yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);

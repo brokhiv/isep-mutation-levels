@@ -14,11 +14,11 @@ export const arrayDeclarationMutator: NodeMutator<ArrayDeclaration> = {
   operators: {
     ArrayLiteralItemsFill: {
       replacement: types.arrayExpression([types.stringLiteral('Stryker was here')]),
-      mutationName: 'ArrayLiteralItemsFill',
+      mutationOperator: 'ArrayLiteralItemsFill',
     },
-    ArrayConstructorItemsFill: { replacement: [types.stringLiteral('Stryker was here')], mutationName: 'ArrayConstructorItemsFill' },
-    ArrayLiteralItemsRemoval: { replacement: types.arrayExpression(), mutationName: 'ArrayLiteralItemsRemoval' },
-    ArrayConstructorItemsRemoval: { replacement: [], mutationName: 'ArrayConstructorItemsRemoval' },
+    ArrayConstructorItemsFill: { replacement: [types.stringLiteral('Stryker was here')], mutationOperator: 'ArrayConstructorItemsFill' },
+    ArrayLiteralItemsRemoval: { replacement: types.arrayExpression(), mutationOperator: 'ArrayLiteralItemsRemoval' },
+    ArrayConstructorItemsRemoval: { replacement: [], mutationOperator: 'ArrayConstructorItemsRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -66,8 +66,8 @@ function isArrayInLevel(node: babel.types.ArrayExpression, levelMutations: strin
   }
 
   return (
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayLiteralItemsRemoval.mutationName) && node.elements.length > 0) ||
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayLiteralItemsFill.mutationName) && node.elements.length === 0)
+    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayLiteralItemsRemoval.mutationOperator) && node.elements.length > 0) ||
+    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayLiteralItemsFill.mutationOperator) && node.elements.length === 0)
   );
 }
 
@@ -78,7 +78,7 @@ function isArrayConstructorInLevel(node: babel.types.CallExpression | babel.type
   }
 
   return (
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayConstructorItemsRemoval.mutationName) && node.arguments.length > 0) ||
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayConstructorItemsFill.mutationName) && node.arguments.length === 0)
+    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayConstructorItemsRemoval.mutationOperator) && node.arguments.length > 0) ||
+    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayConstructorItemsFill.mutationOperator) && node.arguments.length === 0)
   );
 }

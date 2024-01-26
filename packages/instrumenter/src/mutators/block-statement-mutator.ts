@@ -10,7 +10,7 @@ export const blockStatementMutator: NodeMutator<BlockStatement> = {
   name: 'BlockStatement',
 
   operators: {
-    BlockStatementRemoval: { mutationName: 'BlockStatementRemoval' },
+    BlockStatementRemoval: { mutationOperator: 'BlockStatementRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -81,5 +81,5 @@ function hasSuperExpressionOnFirstLine(constructor: NodePath<babel.types.BlockSt
 }
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(blockStatementMutator.operators.BlockStatementRemoval.mutationName);
+  return levelMutations === undefined || levelMutations.includes(blockStatementMutator.operators.BlockStatementRemoval.mutationOperator);
 }

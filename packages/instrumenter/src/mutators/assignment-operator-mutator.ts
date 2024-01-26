@@ -13,18 +13,18 @@ export const assignmentOperatorMutator: NodeMutator<AssignmentOperator> = {
   name: 'AssignmentOperator',
 
   operators: {
-    '+=': { replacement: '-=', mutationName: 'AdditionAssignmentNegation' },
-    '-=': { replacement: '+=', mutationName: 'SubtractionAssignmentNegation' },
-    '*=': { replacement: '/=', mutationName: 'MultiplicationAssignmentNegation' },
-    '/=': { replacement: '*=', mutationName: 'DivisionAssignmentNegation' },
-    '%=': { replacement: '*=', mutationName: 'RemainderAssignmentToMultiplicationReplacement' },
-    '<<=': { replacement: '>>=', mutationName: 'LeftShiftAssignmentNegation' },
-    '>>=': { replacement: '<<=', mutationName: 'RightShiftAssignmentNegation' },
-    '&=': { replacement: '|=', mutationName: 'BitwiseAndAssignmentNegation' },
-    '|=': { replacement: '&=', mutationName: 'BitwiseOrAssignmentNegation' },
-    '&&=': { replacement: '||=', mutationName: 'LogicalAndAssignmentNegation' },
-    '||=': { replacement: '&&=', mutationName: 'LogicalOrAssignmentNegation' },
-    '??=': { replacement: '&&=', mutationName: 'NullishCoalescingAssignmentToLogicalAndReplacement' },
+    '+=': { replacement: '-=', mutationOperator: 'AdditionAssignmentNegation' },
+    '-=': { replacement: '+=', mutationOperator: 'SubtractionAssignmentNegation' },
+    '*=': { replacement: '/=', mutationOperator: 'MultiplicationAssignmentNegation' },
+    '/=': { replacement: '*=', mutationOperator: 'DivisionAssignmentNegation' },
+    '%=': { replacement: '*=', mutationOperator: 'RemainderAssignmentToMultiplicationReplacement' },
+    '<<=': { replacement: '>>=', mutationOperator: 'LeftShiftAssignmentNegation' },
+    '>>=': { replacement: '<<=', mutationOperator: 'RightShiftAssignmentNegation' },
+    '&=': { replacement: '|=', mutationOperator: 'BitwiseAndAssignmentNegation' },
+    '|=': { replacement: '&=', mutationOperator: 'BitwiseOrAssignmentNegation' },
+    '&&=': { replacement: '||=', mutationOperator: 'LogicalAndAssignmentNegation' },
+    '||=': { replacement: '&&=', mutationOperator: 'LogicalOrAssignmentNegation' },
+    '??=': { replacement: '&&=', mutationOperator: 'NullishCoalescingAssignmentToLogicalAndReplacement' },
   },
 
   *mutate(path, levelMutations) {
@@ -50,7 +50,7 @@ function isInMutationLevel(node: types.AssignmentExpression, operations: string[
   if (operations === undefined) {
     return true;
   }
-  const { mutationName } = assignmentOperatorMutator.operators[node.operator];
+  const { mutationOperator: mutationName } = assignmentOperatorMutator.operators[node.operator];
   return operations.some((op) => op === mutationName);
 }
 

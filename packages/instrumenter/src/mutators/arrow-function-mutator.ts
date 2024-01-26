@@ -10,7 +10,7 @@ export const arrowFunctionMutator: NodeMutator<ArrowFunction> = {
   name: 'ArrowFunction',
 
   operators: {
-    ArrowFunctionRemoval: { mutationName: 'ArrowFunctionRemoval' },
+    ArrowFunctionRemoval: { mutationOperator: 'ArrowFunctionRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -33,5 +33,5 @@ export const arrowFunctionMutator: NodeMutator<ArrowFunction> = {
 };
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(arrowFunctionMutator.operators.ArrowFunctionRemoval.mutationName);
+  return levelMutations === undefined || levelMutations.includes(arrowFunctionMutator.operators.ArrowFunctionRemoval.mutationOperator);
 }

@@ -23,9 +23,9 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
   name: 'OptionalChaining',
 
   operators: {
-    OptionalCallExpressionOptionalRemoval: { mutationName: 'OptionalCallExpressionOptionalRemoval' },
-    OptionalMemberExpressionOptionalRemoval: { mutationName: 'OptionalMemberExpressionOptionalRemoval' },
-    OptionalComputedMemberExpressionOptionalRemoval: { mutationName: 'OptionalComputedMemberExpressionOptionalRemoval' },
+    OptionalCallExpressionOptionalRemoval: { mutationOperator: 'OptionalCallExpressionOptionalRemoval' },
+    OptionalMemberExpressionOptionalRemoval: { mutationOperator: 'OptionalMemberExpressionOptionalRemoval' },
+    OptionalComputedMemberExpressionOptionalRemoval: { mutationOperator: 'OptionalComputedMemberExpressionOptionalRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -33,8 +33,8 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
       path.isOptionalMemberExpression() &&
       path.node.optional &&
       (levelMutations === undefined ||
-        (!path.node.computed && levelMutations.includes(this.operators.OptionalMemberExpressionOptionalRemoval.mutationName)) ||
-        (path.node.computed && levelMutations.includes(this.operators.OptionalComputedMemberExpressionOptionalRemoval.mutationName)))
+        (!path.node.computed && levelMutations.includes(this.operators.OptionalMemberExpressionOptionalRemoval.mutationOperator)) ||
+        (path.node.computed && levelMutations.includes(this.operators.OptionalComputedMemberExpressionOptionalRemoval.mutationOperator)))
     ) {
       yield t.optionalMemberExpression(
         t.cloneNode(path.node.object, true),
@@ -46,7 +46,7 @@ export const optionalChainingMutator: NodeMutator<OptionalChaining> = {
     if (
       path.isOptionalCallExpression() &&
       path.node.optional &&
-      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalCallExpressionOptionalRemoval.mutationName))
+      (levelMutations === undefined || levelMutations.includes(this.operators.OptionalCallExpressionOptionalRemoval.mutationOperator))
     ) {
       yield t.optionalCallExpression(
         t.cloneNode(path.node.callee, true),

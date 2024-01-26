@@ -12,26 +12,26 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
   name: 'MethodExpression',
 
   operators: {
-    charAt: { replacement: null, mutationName: 'CharAtMethodCallRemoval' },
-    endsWith: { replacement: 'startsWith', mutationName: 'EndsWithMethodCallNegation' },
-    startsWith: { replacement: 'endsWith', mutationName: 'StartsWithMethodCallNegation' },
-    every: { replacement: 'some', mutationName: 'EveryMethodCallNegation' },
-    some: { replacement: 'every', mutationName: 'SomeMethodCallNegation' },
-    filter: { replacement: null, mutationName: 'FilterMethodCallRemoval' },
-    reverse: { replacement: null, mutationName: 'ReverseMethodCallRemoval' },
-    slice: { replacement: null, mutationName: 'SliceMethodCallRemoval' },
-    sort: { replacement: null, mutationName: 'SortMethodCallRemoval' },
-    substr: { replacement: null, mutationName: 'SubstrMethodCallRemoval' },
-    substring: { replacement: null, mutationName: 'SubstringMethodCallRemoval' },
-    toLocaleLowerCase: { replacement: 'toLocaleUpperCase', mutationName: 'ToLocaleLowerCaseMethodCallNegation' },
-    toLocaleUpperCase: { replacement: 'toLocaleLowerCase', mutationName: 'ToLocaleUpperCaseMethodCallNegation' },
-    toLowerCase: { replacement: 'toUpperCase', mutationName: 'ToLowerCaseMethodCallNegation' },
-    toUpperCase: { replacement: 'toLowerCase', mutationName: 'ToUpperCaseMethodCallNegation' },
-    trim: { replacement: null, mutationName: 'TrimMethodCallRemoval' },
-    trimEnd: { replacement: 'trimStart', mutationName: 'TrimEndMethodCallNegation' },
-    trimStart: { replacement: 'trimEnd', mutationName: 'TrimStartMethodCallNegation' },
-    min: { replacement: 'max', mutationName: 'MinMethodCallNegation' },
-    max: { replacement: 'min', mutationName: 'MaxMethodCallNegation' },
+    charAt: { replacement: null, mutationOperator: 'CharAtMethodCallRemoval' },
+    endsWith: { replacement: 'startsWith', mutationOperator: 'EndsWithMethodCallNegation' },
+    startsWith: { replacement: 'endsWith', mutationOperator: 'StartsWithMethodCallNegation' },
+    every: { replacement: 'some', mutationOperator: 'EveryMethodCallNegation' },
+    some: { replacement: 'every', mutationOperator: 'SomeMethodCallNegation' },
+    filter: { replacement: null, mutationOperator: 'FilterMethodCallRemoval' },
+    reverse: { replacement: null, mutationOperator: 'ReverseMethodCallRemoval' },
+    slice: { replacement: null, mutationOperator: 'SliceMethodCallRemoval' },
+    sort: { replacement: null, mutationOperator: 'SortMethodCallRemoval' },
+    substr: { replacement: null, mutationOperator: 'SubstrMethodCallRemoval' },
+    substring: { replacement: null, mutationOperator: 'SubstringMethodCallRemoval' },
+    toLocaleLowerCase: { replacement: 'toLocaleUpperCase', mutationOperator: 'ToLocaleLowerCaseMethodCallNegation' },
+    toLocaleUpperCase: { replacement: 'toLocaleLowerCase', mutationOperator: 'ToLocaleUpperCaseMethodCallNegation' },
+    toLowerCase: { replacement: 'toUpperCase', mutationOperator: 'ToLowerCaseMethodCallNegation' },
+    toUpperCase: { replacement: 'toLowerCase', mutationOperator: 'ToUpperCaseMethodCallNegation' },
+    trim: { replacement: null, mutationOperator: 'TrimMethodCallRemoval' },
+    trimEnd: { replacement: 'trimStart', mutationOperator: 'TrimEndMethodCallNegation' },
+    trimStart: { replacement: 'trimEnd', mutationOperator: 'TrimStartMethodCallNegation' },
+    min: { replacement: 'max', mutationOperator: 'MinMethodCallNegation' },
+    max: { replacement: 'min', mutationOperator: 'MaxMethodCallNegation' },
   },
 
   *mutate(path, levelMutations) {
@@ -52,7 +52,7 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
       return;
     }
 
-    if (levelMutations !== undefined && !levelMutations.includes(mutation.mutationName)) {
+    if (levelMutations !== undefined && !levelMutations.includes(mutation.mutationOperator)) {
       // Mutator is blocked by mutation level, so no replacementOperator
       return;
     }

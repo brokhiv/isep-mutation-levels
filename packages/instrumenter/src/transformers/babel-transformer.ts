@@ -211,7 +211,7 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
       } else {
         // remove `excludedMutations` from a complete level
         mutators.forEach((mut) =>
-          Object.values(mut.operators).forEach((op) => (runLevel[mut.name] as MutatorDefinition[]).push(op.mutationName as MutatorDefinition)),
+          Object.values(mut.operators).forEach((op) => (runLevel[mut.name] as MutatorDefinition[]).push(op.mutationOperator as MutatorDefinition)),
         );
       }
     }
@@ -244,14 +244,14 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
           const nodeMutatorToAdd = mutators.find((mut) => mut.name === opGroupName);
           if (nodeMutatorToAdd) {
             Object.values(nodeMutatorToAdd.operators).forEach((mutator) => {
-              updateFunc(runLevel[opGroupName] as MutatorDefinition[], mutator.mutationName as MutatorDefinition);
+              updateFunc(runLevel[opGroupName] as MutatorDefinition[], mutator.mutationOperator as MutatorDefinition);
             });
             continue;
           }
         }
 
         // Else, must be a suboperator
-        const nodeMutator = mutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationName === spec));
+        const nodeMutator = mutators.find((mut) => Object.values(mut.operators).some((mutator) => mutator.mutationOperator === spec));
 
         if (nodeMutator) {
           updateFunc(runLevel[nodeMutator.name] as MutatorDefinition[], spec as MutatorDefinition);

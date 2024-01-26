@@ -12,16 +12,16 @@ export const unaryOperatorMutator: NodeMutator<UnaryOperator> = {
   name: 'UnaryOperator',
 
   operators: {
-    '+': { replacement: '-', mutationName: 'UnaryPlusOperatorNegation' },
-    '-': { replacement: '+', mutationName: 'UnaryMinOperatorNegation' },
-    '~': { replacement: '', mutationName: 'UnaryBitwiseOrRemoval' },
+    '+': { replacement: '-', mutationOperator: 'UnaryPlusOperatorNegation' },
+    '-': { replacement: '+', mutationOperator: 'UnaryMinOperatorNegation' },
+    '~': { replacement: '', mutationOperator: 'UnaryBitwiseOrRemoval' },
   },
 
   *mutate(path, levelMutations) {
     if (path.isUnaryExpression() && isSupported(path.node.operator) && path.node.prefix) {
       const mutation = this.operators[path.node.operator];
 
-      if (levelMutations !== undefined && !levelMutations.includes(mutation.mutationName)) {
+      if (levelMutations !== undefined && !levelMutations.includes(mutation.mutationOperator)) {
         // Mutator not allowed by MutationLevel
         return;
       }

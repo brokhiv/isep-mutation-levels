@@ -10,7 +10,7 @@ export const objectLiteralMutator: NodeMutator<ObjectLiteral> = {
   name: 'ObjectLiteral',
 
   operators: {
-    ObjectLiteralPropertiesRemoval: { mutationName: 'ObjectLiteralPropertiesRemoval' },
+    ObjectLiteralPropertiesRemoval: { mutationOperator: 'ObjectLiteralPropertiesRemoval' },
   },
 
   *mutate(path, levelMutations) {
@@ -26,6 +26,6 @@ export const objectLiteralMutator: NodeMutator<ObjectLiteral> = {
 
 function isInMutationLevel(levelMutations: string[] | undefined): boolean {
   return (
-    levelMutations === undefined || levelMutations.includes(objectLiteralMutator.operators.ObjectLiteralPropertiesRemoval.mutationName as string)
+    levelMutations === undefined || levelMutations.includes(objectLiteralMutator.operators.ObjectLiteralPropertiesRemoval.mutationOperator as string)
   );
 }

@@ -8,9 +8,9 @@ export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
   name: 'LogicalOperator',
 
   operators: {
-    '&&': { replacement: '||', mutationName: 'LogicalAndOperatorNegation' },
-    '||': { replacement: '&&', mutationName: 'LogicalOrOperatorNegation' },
-    '??': { replacement: '&&', mutationName: 'NullishCoalescingOperatorToLogicalAndReplacement' },
+    '&&': { replacement: '||', mutationOperator: 'LogicalAndOperatorNegation' },
+    '||': { replacement: '&&', mutationOperator: 'LogicalOrOperatorNegation' },
+    '??': { replacement: '&&', mutationOperator: 'NullishCoalescingOperatorToLogicalAndReplacement' },
   },
 
   *mutate(path, levelMutations) {
@@ -33,5 +33,5 @@ function isSupported(operator: string): operator is keyof typeof logicalOperator
 }
 
 function isInMutationLevel(operator: string, levelMutations: string[] | undefined): boolean {
-  return levelMutations === undefined || levelMutations.includes(logicalOperatorMutator.operators[operator].mutationName as string);
+  return levelMutations === undefined || levelMutations.includes(logicalOperatorMutator.operators[operator].mutationOperator as string);
 }

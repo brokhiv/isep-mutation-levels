@@ -12,19 +12,19 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
   operators: {
     EmptyStringLiteralToFilledReplacement: {
       replacement: types.stringLiteral('Stryker was here!'),
-      mutationName: 'EmptyStringLiteralToFilledReplacement',
+      mutationOperator: 'EmptyStringLiteralToFilledReplacement',
     },
     FilledStringLiteralToEmptyReplacement: {
       replacement: types.stringLiteral(''),
-      mutationName: 'FilledStringLiteralToEmptyReplacement',
+      mutationOperator: 'FilledStringLiteralToEmptyReplacement',
     },
     FilledInterpolatedStringToEmptyReplacement: {
       replacement: types.templateLiteral([types.templateElement({ raw: '' })], []),
-      mutationName: 'FilledInterpolatedStringToEmptyReplacement',
+      mutationOperator: 'FilledInterpolatedStringToEmptyReplacement',
     },
     EmptyInterpolatedStringToFilledReplacement: {
       replacement: types.templateLiteral([types.templateElement({ raw: 'Stryker was here!' })], []),
-      mutationName: 'EmptyInterpolatedStringToFilledReplacement',
+      mutationOperator: 'EmptyInterpolatedStringToFilledReplacement',
     },
   },
 
@@ -33,8 +33,8 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
       const stringIsEmpty = path.node.quasis.length === 1 && path.node.quasis[0].value.raw.length === 0;
       if (
         levelMutations === undefined ||
-        (stringIsEmpty && levelMutations.includes(this.operators.EmptyInterpolatedStringToFilledReplacement.mutationName)) ||
-        (!stringIsEmpty && levelMutations.includes(this.operators.FilledInterpolatedStringToEmptyReplacement.mutationName))
+        (stringIsEmpty && levelMutations.includes(this.operators.EmptyInterpolatedStringToFilledReplacement.mutationOperator)) ||
+        (!stringIsEmpty && levelMutations.includes(this.operators.FilledInterpolatedStringToEmptyReplacement.mutationOperator))
       ) {
         yield stringIsEmpty
           ? this.operators.EmptyInterpolatedStringToFilledReplacement.replacement
@@ -45,8 +45,8 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
       const stringIsEmpty = path.node.value.length === 0;
       if (
         levelMutations === undefined ||
-        (stringIsEmpty && levelMutations.includes(this.operators.EmptyStringLiteralToFilledReplacement.mutationName)) ||
-        (!stringIsEmpty && levelMutations.includes(this.operators.FilledStringLiteralToEmptyReplacement.mutationName))
+        (stringIsEmpty && levelMutations.includes(this.operators.EmptyStringLiteralToFilledReplacement.mutationOperator)) ||
+        (!stringIsEmpty && levelMutations.includes(this.operators.FilledStringLiteralToEmptyReplacement.mutationOperator))
       ) {
         yield stringIsEmpty
           ? this.operators.EmptyStringLiteralToFilledReplacement.replacement

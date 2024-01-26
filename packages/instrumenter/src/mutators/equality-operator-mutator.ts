@@ -10,22 +10,22 @@ export const equalityOperatorMutator: NodeMutator<EqualityOperator> = {
   name: 'EqualityOperator',
 
   operators: {
-    '<To<=': { replacement: '<=', mutationName: 'LessThanOperatorBoundary' },
-    '<To>=': { replacement: '>=', mutationName: 'LessThanOperatorNegation' },
+    '<To<=': { replacement: '<=', mutationOperator: 'LessThanOperatorBoundary' },
+    '<To>=': { replacement: '>=', mutationOperator: 'LessThanOperatorNegation' },
 
-    '<=To<': { replacement: '<', mutationName: 'LessThanEqualOperatorBoundary' },
-    '<=To>': { replacement: '>', mutationName: 'LessThanEqualOperatorNegation' },
+    '<=To<': { replacement: '<', mutationOperator: 'LessThanEqualOperatorBoundary' },
+    '<=To>': { replacement: '>', mutationOperator: 'LessThanEqualOperatorNegation' },
 
-    '>To>=': { replacement: '>=', mutationName: 'GreaterThanOperatorBoundary' },
-    '>To<=': { replacement: '<=', mutationName: 'GreaterThanOperatorNegation' },
+    '>To>=': { replacement: '>=', mutationOperator: 'GreaterThanOperatorBoundary' },
+    '>To<=': { replacement: '<=', mutationOperator: 'GreaterThanOperatorNegation' },
 
-    '>=To>': { replacement: '>', mutationName: 'GreaterThanEqualOperatorBoundary' },
-    '>=To<': { replacement: '<', mutationName: 'GreaterThanEqualOperatorNegation' },
+    '>=To>': { replacement: '>', mutationOperator: 'GreaterThanEqualOperatorBoundary' },
+    '>=To<': { replacement: '<', mutationOperator: 'GreaterThanEqualOperatorNegation' },
 
-    '==To!=': { replacement: '!=', mutationName: 'EqualityOperatorNegation' },
-    '!=To==': { replacement: '==', mutationName: 'InequalityOperatorNegation' },
-    '===To!==': { replacement: '!==', mutationName: 'StrictEqualityOperatorNegation' },
-    '!==To===': { replacement: '===', mutationName: 'StrictInequalityOperatorNegation' },
+    '==To!=': { replacement: '!=', mutationOperator: 'EqualityOperatorNegation' },
+    '!=To==': { replacement: '==', mutationOperator: 'InequalityOperatorNegation' },
+    '===To!==': { replacement: '!==', mutationOperator: 'StrictEqualityOperatorNegation' },
+    '!==To===': { replacement: '===', mutationOperator: 'StrictInequalityOperatorNegation' },
   },
 
   *mutate(path, levelMutations) {
@@ -65,5 +65,5 @@ function filterMutationLevel(node: types.BinaryExpression, levelMutations: strin
     return allMutations;
   }
 
-  return allMutations.filter((mut) => levelMutations.some((op) => op === mut.mutationName));
+  return allMutations.filter((mut) => levelMutations.some((op) => op === mut.mutationOperator));
 }

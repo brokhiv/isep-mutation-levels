@@ -22,7 +22,7 @@ export type NodeMutatorConfiguration<T> = Record<string, ReplacementConfiguratio
 
 interface ReplacementConfiguration<T> {
   replacement?: any;
-  mutationName: T;
+  mutationOperator: T;
 }
 
 export interface MutationLevel {

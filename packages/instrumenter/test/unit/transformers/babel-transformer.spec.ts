@@ -33,12 +33,12 @@ describe('babel-transformer', () => {
 
   const fooMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Foo',
-    operators: { Foo: { mutationName: 'Foo' } },
+    operators: { Foo: { mutationOperator: 'Foo' } },
     *mutate(path, levelMutations) {
       if (
         path.isIdentifier() &&
         path.node.name === 'foo' &&
-        (levelMutations === undefined || levelMutations.includes(this.operators.Foo.mutationName as string))
+        (levelMutations === undefined || levelMutations.includes(this.operators.Foo.mutationOperator as string))
       ) {
         yield types.identifier('bar');
       }
@@ -49,12 +49,12 @@ describe('babel-transformer', () => {
   };
   const plusMutator: NodeMutator<keyof MutationLevel> = {
     name: 'Plus',
-    operators: { Plus: { mutationName: 'Plus' } },
+    operators: { Plus: { mutationOperator: 'Plus' } },
     *mutate(path, levelMutations) {
       if (
         path.isBinaryExpression() &&
         path.node.operator === '+' &&
-        (levelMutations === undefined || levelMutations.includes(this.operators.Plus.mutationName as string))
+        (levelMutations === undefined || levelMutations.includes(this.operators.Plus.mutationOperator as string))
       ) {
         yield types.binaryExpression('-', types.cloneNode(path.node.left, true), types.cloneNode(path.node.right, true));
       }
