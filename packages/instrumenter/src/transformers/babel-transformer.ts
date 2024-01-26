@@ -24,8 +24,6 @@ import { AstTransformer } from './index.js';
 
 const { traverse } = babel;
 
-const IGNORED_BY_LEVEL_STATUS = 'Ignored by level';
-
 interface MutantsPlacement<TNode extends types.Node> {
   appliedMutants: Map<Mutant, TNode>;
   placer: MutantPlacer<TNode>;
@@ -166,35 +164,37 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
     const runLevel = createRunLevel();
 
     for (const mutator of mutators) {
-      const totalMutatorCount = mutator.numberOfMutants(node);
-
-      if (totalMutatorCount > 0 && (runLevel === undefined || mutator.name in runLevel)) {
-        let propertyValue = undefined;
-        if (runLevel !== undefined) {
-          propertyValue = runLevel?.[mutator.name] as string[];
-        }
-
-        let mutated = 0;
-
-        for (const replacement of mutator.mutate(node, propertyValue)) {
-          mutated++;
-          yield {
-            replacement,
-            mutatorName: mutator.name,
-            ignoreReason: directiveBookkeeper.findIgnoreReason(node.node.loc!.start.line, mutator.name) ?? ignorerBookkeeper.currentIgnoreMessage,
-          };
-        }
-        for (let i = 0; i < totalMutatorCount - mutated; i++) {
-          // totalMutatorCount - mutated is the number of potential mutants not mutated
-          const placeholderNode = babel.types.stringLiteral('excludedByLevel');
-          yield {
-            replacement: placeholderNode,
-            mutatorName: mutator.name,
-            ignoreReason: IGNORED_BY_LEVEL_STATUS,
-          };
-        }
+      for (const [replacement, mutationOperator] of mutator.mutate(node)) {
+        yield {
+          replacement,
+          mutatorName: mutator.name,
+          ignoreReason:
+            directiveBookkeeper.findIgnoreReason(node.node.loc!.start.line, mutator.name) ??
+            findExcludedMutatorIgnoreReason(runLevel, mutator.name, mutationOperator) ??
+            ignorerBookkeeper.currentIgnoreMessage,
+        };
       }
     }
+  }
+
+  function findExcludedMutatorIgnoreReason(
+    runLevel: MutationLevel | undefined,
+    mutatorName: string,
+    mutationOperator: keyof MutationLevel,
+  ): string | undefined {
+    if (runLevel === undefined) {
+      return;
+    }
+
+    if (!(mutatorName in runLevel)) {
+      return `Ignored because "${mutatorName}" is not recognised as a mutator`;
+    }
+
+    if (!runLevel[mutatorName]?.includes(mutationOperator as MutatorDefinition)) {
+      return `Ignored because the operator "${mutationOperator}" is excluded from the mutation run`;
+    }
+
+    return;
   }
 
   /**

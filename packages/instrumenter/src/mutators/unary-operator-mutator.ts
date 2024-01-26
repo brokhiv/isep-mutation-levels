@@ -17,25 +17,16 @@ export const unaryOperatorMutator: NodeMutator<UnaryOperator> = {
     '~': { replacement: '', mutationOperator: 'UnaryBitwiseOrRemoval' },
   },
 
-  *mutate(path, levelMutations) {
+  *mutate(path) {
     if (path.isUnaryExpression() && isSupported(path.node.operator) && path.node.prefix) {
-      const mutation = this.operators[path.node.operator];
+      const { replacement, mutationOperator } = this.operators[path.node.operator];
 
-      if (levelMutations !== undefined && !levelMutations.includes(mutation.mutationOperator)) {
-        // Mutator not allowed by MutationLevel
-        return;
-      }
-
-      const replacementOperator = mutation.replacement.length
-        ? types.unaryExpression(mutation.replacement as '-' | '+', deepCloneNode(path.node.argument))
+      const nodeClone = replacement.length
+        ? types.unaryExpression(replacement as '-' | '+', deepCloneNode(path.node.argument))
         : deepCloneNode(path.node.argument);
 
-      yield replacementOperator;
+      yield [nodeClone, mutationOperator];
     }
-  },
-
-  numberOfMutants(path): number {
-    return path.isUnaryExpression() && isSupported(path.node.operator) && path.node.prefix ? 1 : 0;
   },
 };
 

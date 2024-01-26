@@ -28,35 +28,25 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
     },
   },
 
-  *mutate(path, levelMutations) {
+  *mutate(path) {
     if (path.isTemplateLiteral()) {
       const stringIsEmpty = path.node.quasis.length === 1 && path.node.quasis[0].value.raw.length === 0;
-      if (
-        levelMutations === undefined ||
-        (stringIsEmpty && levelMutations.includes(this.operators.EmptyInterpolatedStringToFilledReplacement.mutationOperator)) ||
-        (!stringIsEmpty && levelMutations.includes(this.operators.FilledInterpolatedStringToEmptyReplacement.mutationOperator))
-      ) {
-        yield stringIsEmpty
-          ? this.operators.EmptyInterpolatedStringToFilledReplacement.replacement
-          : this.operators.FilledInterpolatedStringToEmptyReplacement.replacement;
-      }
+
+      const { replacement, mutationOperator } = stringIsEmpty
+        ? this.operators.EmptyInterpolatedStringToFilledReplacement
+        : this.operators.FilledInterpolatedStringToEmptyReplacement;
+
+      yield [replacement, mutationOperator];
     }
     if (path.isStringLiteral() && isValidParent(path)) {
       const stringIsEmpty = path.node.value.length === 0;
-      if (
-        levelMutations === undefined ||
-        (stringIsEmpty && levelMutations.includes(this.operators.EmptyStringLiteralToFilledReplacement.mutationOperator)) ||
-        (!stringIsEmpty && levelMutations.includes(this.operators.FilledStringLiteralToEmptyReplacement.mutationOperator))
-      ) {
-        yield stringIsEmpty
-          ? this.operators.EmptyStringLiteralToFilledReplacement.replacement
-          : this.operators.FilledStringLiteralToEmptyReplacement.replacement;
-      }
-    }
-  },
 
-  numberOfMutants(path): number {
-    return path.isTemplateLiteral() || (path.isStringLiteral() && isValidParent(path)) ? 1 : 0;
+      const { replacement, mutationOperator } = stringIsEmpty
+        ? this.operators.EmptyStringLiteralToFilledReplacement
+        : this.operators.FilledStringLiteralToEmptyReplacement;
+
+      yield [replacement, mutationOperator];
+    }
   },
 };
 

@@ -34,7 +34,7 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
     max: { replacement: 'min', mutationOperator: 'MaxMethodCallNegation' },
   },
 
-  *mutate(path, levelMutations) {
+  *mutate(path) {
     // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
 
     if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
@@ -49,11 +49,6 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
     const mutation = this.operators[callee.property.name];
     if (mutation === undefined) {
       // Function is not known in `operators`, so no mutations
-      return;
-    }
-
-    if (levelMutations !== undefined && !levelMutations.includes(mutation.mutationOperator)) {
-      // Mutator is blocked by mutation level, so no replacementOperator
       return;
     }
 
@@ -67,39 +62,17 @@ export const methodExpressionMutator: NodeMutator<MethodExpression> = {
         ? types.memberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement as string), false, callee.optional)
         : types.optionalMemberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement as string), false, callee.optional);
     } else if (typeof mutation.replacement == 'object' && mutation.replacement == null) {
-      yield deepCloneNode(callee.object);
+      yield [deepCloneNode(callee.object), mutation.mutationOperator];
       return;
     }
 
     if (mutatedCallee != undefined) {
-      yield types.isCallExpression(path.node)
-        ? types.callExpression(mutatedCallee, nodeArguments)
-        : types.optionalCallExpression(mutatedCallee, nodeArguments, path.node.optional);
+      yield [
+        types.isCallExpression(path.node)
+          ? types.callExpression(mutatedCallee, nodeArguments)
+          : types.optionalCallExpression(mutatedCallee, nodeArguments, path.node.optional),
+        mutation.mutationOperator,
+      ];
     }
-  },
-
-  numberOfMutants(path): number {
-    // In case `operations` is undefined, any checks will short-circuit to true and allow the mutation
-    if (!(path.isCallExpression() || path.isOptionalCallExpression())) {
-      return 0;
-    }
-    const { callee } = path.node;
-    if (!(types.isMemberExpression(callee) || types.isOptionalMemberExpression(callee)) || !types.isIdentifier(callee.property)) {
-      return 0;
-    }
-    const mutation = this.operators[callee.property.name];
-    if (mutation === undefined) {
-      // Function is not known in `operators`, so no mutations
-      return 0;
-    }
-    let mutatedCallee = undefined;
-    if (mutation.replacement != null) {
-      mutatedCallee = types.isMemberExpression(callee)
-        ? types.memberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement as string), false, callee.optional)
-        : types.optionalMemberExpression(deepCloneNode(callee.object), types.identifier(mutation.replacement as string), false, callee.optional);
-    } else if (typeof mutation.replacement == 'object' && mutation.replacement == null) {
-      return 1;
-    }
-    return mutatedCallee !== undefined ? 1 : 0;
   },
 };

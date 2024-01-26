@@ -30,38 +30,17 @@ export const updateOperatorMutator: NodeMutator<UpdateOperator> = {
     },
   },
 
-  *mutate(path, levelMutations) {
+  *mutate(path) {
     if (path.isUpdateExpression()) {
-      if (levelMutations === undefined) {
-        const replacement = path.node.operator === '++' ? '--' : '++';
-        yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);
+      let operator;
+      if (path.node.operator === '++') {
+        operator = path.node.prefix ? this.operators.PrefixIncrementOperatorNegation : this.operators.PostfixIncrementOperatorNegation;
       } else {
-        let replacement = undefined;
-        if (path.node.prefix && path.node.operator == '++') {
-          replacement = getReplacement(levelMutations, this.operators.PrefixIncrementOperatorNegation.mutationOperator);
-        } else if (path.node.prefix && path.node.operator == '--') {
-          replacement = getReplacement(levelMutations, this.operators.PrefixDecrementOperatorNegation.mutationOperator);
-        } else if (!path.node.prefix && path.node.operator == '++') {
-          replacement = getReplacement(levelMutations, this.operators.PostfixIncrementOperatorNegation.mutationOperator);
-        } else if (!path.node.prefix && path.node.operator == '--') {
-          replacement = getReplacement(levelMutations, this.operators.PostfixDecrementOperatorNegation.mutationOperator);
-        }
-        if (replacement !== undefined) {
-          yield types.updateExpression(replacement, deepCloneNode(path.node.argument), path.node.prefix);
-        }
+        operator = path.node.prefix ? this.operators.PrefixDecrementOperatorNegation : this.operators.PostfixDecrementOperatorNegation;
       }
+
+      const { replacement, mutationOperator } = operator;
+      yield [types.updateExpression(replacement as '--' | '++', deepCloneNode(path.node.argument), path.node.prefix), mutationOperator];
     }
   },
-
-  numberOfMutants(path): number {
-    return path.isUpdateExpression() ? 1 : 0;
-  },
 };
-
-function getReplacement(levelMutations: string[], mutationName: string): '--' | '++' | undefined {
-  if (levelMutations.includes(mutationName)) {
-    const { replacement } = updateOperatorMutator.operators[mutationName];
-    return replacement;
-  }
-  return undefined;
-}

@@ -21,64 +21,23 @@ export const arrayDeclarationMutator: NodeMutator<ArrayDeclaration> = {
     ArrayConstructorItemsRemoval: { replacement: [], mutationOperator: 'ArrayConstructorItemsRemoval' },
   },
 
-  *mutate(path, levelMutations) {
+  *mutate(path) {
     // The check of the [] construct in code
-    if (path.isArrayExpression() && isArrayInLevel(path.node, levelMutations)) {
-      const replacement =
-        path.node.elements.length > 0 ? this.operators.ArrayLiteralItemsRemoval.replacement : this.operators.ArrayLiteralItemsFill.replacement;
-      yield replacement;
+    if (path.isArrayExpression()) {
+      const { replacement, mutationOperator } =
+        path.node.elements.length > 0 ? this.operators.ArrayLiteralItemsRemoval : this.operators.ArrayLiteralItemsFill;
+      yield [replacement, mutationOperator];
     }
     // Check for the new Array() construct in code
-    if (
-      (path.isCallExpression() || path.isNewExpression()) &&
-      types.isIdentifier(path.node.callee) &&
-      path.node.callee.name === 'Array' &&
-      isArrayConstructorInLevel(path.node, levelMutations)
-    ) {
-      const mutatedCallArgs: babel.types.Expression[] =
-        path.node.arguments.length > 0
-          ? this.operators.ArrayConstructorItemsRemoval.replacement
-          : this.operators.ArrayConstructorItemsFill.replacement;
+    if ((path.isCallExpression() || path.isNewExpression()) && types.isIdentifier(path.node.callee) && path.node.callee.name === 'Array') {
+      const { replacement, mutationOperator } =
+        path.node.arguments.length > 0 ? this.operators.ArrayConstructorItemsRemoval : this.operators.ArrayConstructorItemsFill;
 
-      const replacement = types.isNewExpression(path.node)
-        ? types.newExpression(deepCloneNode(path.node.callee), mutatedCallArgs)
-        : types.callExpression(deepCloneNode(path.node.callee), mutatedCallArgs);
-      yield replacement;
+      const nodeClone = types.isNewExpression(path.node)
+        ? types.newExpression(deepCloneNode(path.node.callee), replacement as babel.types.Expression[])
+        : types.callExpression(deepCloneNode(path.node.callee), replacement as babel.types.Expression[]);
+
+      yield [nodeClone, mutationOperator];
     }
-  },
-
-  numberOfMutants(path): number {
-    if (
-      path.isArrayExpression() ||
-      ((path.isCallExpression() || path.isNewExpression()) && types.isIdentifier(path.node.callee) && path.node.callee.name === 'Array')
-    ) {
-      return 1;
-    }
-
-    return 0;
   },
 };
-
-function isArrayInLevel(node: babel.types.ArrayExpression, levelMutations: string[] | undefined): boolean {
-  // No mutation level specified, so allow everything
-  if (levelMutations === undefined) {
-    return true;
-  }
-
-  return (
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayLiteralItemsRemoval.mutationOperator) && node.elements.length > 0) ||
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayLiteralItemsFill.mutationOperator) && node.elements.length === 0)
-  );
-}
-
-function isArrayConstructorInLevel(node: babel.types.CallExpression | babel.types.NewExpression, levelMutations: string[] | undefined): boolean {
-  // No mutation level specified, so allow everything
-  if (levelMutations === undefined) {
-    return true;
-  }
-
-  return (
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayConstructorItemsRemoval.mutationOperator) && node.arguments.length > 0) ||
-    (levelMutations.includes(arrayDeclarationMutator.operators.ArrayConstructorItemsFill.mutationOperator) && node.arguments.length === 0)
-  );
-}

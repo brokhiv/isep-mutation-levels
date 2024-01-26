@@ -27,32 +27,15 @@ export const assignmentOperatorMutator: NodeMutator<AssignmentOperator> = {
     '??=': { replacement: '&&=', mutationOperator: 'NullishCoalescingAssignmentToLogicalAndReplacement' },
   },
 
-  *mutate(path, levelMutations) {
-    if (
-      path.isAssignmentExpression() &&
-      isSupportedAssignmentOperator(path.node.operator) &&
-      isSupported(path.node) &&
-      isInMutationLevel(path.node, levelMutations)
-    ) {
-      const mutatedOperator = this.operators[path.node.operator].replacement;
-      const replacementOperator = deepCloneNode(path.node);
-      replacementOperator.operator = mutatedOperator;
-      yield replacementOperator;
+  *mutate(path) {
+    if (path.isAssignmentExpression() && isSupportedAssignmentOperator(path.node.operator) && isSupported(path.node)) {
+      const { replacement, mutationOperator } = this.operators[path.node.operator];
+      const nodeClone = deepCloneNode(path.node);
+      nodeClone.operator = replacement;
+      yield [nodeClone, mutationOperator];
     }
   },
-
-  numberOfMutants(path): number {
-    return path.isAssignmentExpression() && isSupportedAssignmentOperator(path.node.operator) && isSupported(path.node) ? 1 : 0;
-  },
 };
-
-function isInMutationLevel(node: types.AssignmentExpression, operations: string[] | undefined): boolean {
-  if (operations === undefined) {
-    return true;
-  }
-  const { mutationOperator: mutationName } = assignmentOperatorMutator.operators[node.operator];
-  return operations.some((op) => op === mutationName);
-}
 
 function isSupportedAssignmentOperator(operator: string): boolean {
   return Object.keys(assignmentOperatorMutator.operators).includes(operator);
