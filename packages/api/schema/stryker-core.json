@@ -224,7 +224,8 @@
           "default": [],
           "items": {
             "$ref": "#/definitions/MutationSpecification"
-          }
+          },
+          "minItems": 1
         },
         "excludedMutations": {
           "type": "array",

@@ -255,7 +255,10 @@ export const transformBabel: AstTransformer<ScriptFormat> = (
 
         if (nodeMutator) {
           updateFunc(runLevel[nodeMutator.name] as MutatorDefinition[], spec as MutatorDefinition);
+          continue;
         }
+
+        logger.warn(`Mutation operator "${spec}" not recognised. Did you make a typo?`);
       }
     }
   }
