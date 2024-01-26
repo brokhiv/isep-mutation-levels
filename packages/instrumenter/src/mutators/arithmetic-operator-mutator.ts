@@ -21,7 +21,7 @@ export const arithmeticOperatorMutator: NodeMutator<ArithmeticOperator> = {
     if (path.isBinaryExpression() && isSupported(path.node.operator, path.node)) {
       const { replacement, mutationOperator } = this.operators[path.node.operator];
       const nodeClone = deepCloneNode(path.node);
-      nodeClone.operator = replacement;
+      nodeClone.operator = replacement as types.BinaryExpression['operator'];
       yield [nodeClone, mutationOperator];
     }
   },

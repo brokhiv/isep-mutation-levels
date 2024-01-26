@@ -1,3 +1,4 @@
+import { Node } from '@babel/core';
 import {
   ArithmeticOperator,
   ArrayDeclaration,
@@ -21,7 +22,7 @@ import {
 export type NodeMutatorConfiguration<T> = Record<string, ReplacementConfiguration<T>>;
 
 interface ReplacementConfiguration<T> {
-  replacement?: any;
+  replacement?: Node | Node[] | boolean | string | null;
   mutationOperator: T;
 }
 

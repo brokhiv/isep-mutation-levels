@@ -1,4 +1,4 @@
-import babel from '@babel/core';
+import babel, { Node } from '@babel/core';
 
 import { ArrayDeclaration } from '@stryker-mutator/api/core';
 
@@ -26,7 +26,7 @@ export const arrayDeclarationMutator: NodeMutator<ArrayDeclaration> = {
     if (path.isArrayExpression()) {
       const { replacement, mutationOperator } =
         path.node.elements.length > 0 ? this.operators.ArrayLiteralItemsRemoval : this.operators.ArrayLiteralItemsFill;
-      yield [replacement, mutationOperator];
+      yield [replacement as Node, mutationOperator];
     }
     // Check for the new Array() construct in code
     if ((path.isCallExpression() || path.isNewExpression()) && types.isIdentifier(path.node.callee) && path.node.callee.name === 'Array') {

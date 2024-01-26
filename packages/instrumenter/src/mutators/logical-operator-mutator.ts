@@ -18,7 +18,7 @@ export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
       const { replacement, mutationOperator } = this.operators[path.node.operator];
 
       const nodeClone = deepCloneNode(path.node);
-      nodeClone.operator = replacement;
+      nodeClone.operator = replacement as babel.types.LogicalExpression['operator'];
       yield [nodeClone, mutationOperator];
     }
   },

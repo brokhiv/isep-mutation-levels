@@ -21,7 +21,7 @@ export const unaryOperatorMutator: NodeMutator<UnaryOperator> = {
     if (path.isUnaryExpression() && isSupported(path.node.operator) && path.node.prefix) {
       const { replacement, mutationOperator } = this.operators[path.node.operator];
 
-      const nodeClone = replacement.length
+      const nodeClone = (replacement as string).length
         ? types.unaryExpression(replacement as '-' | '+', deepCloneNode(path.node.argument))
         : deepCloneNode(path.node.argument);
 

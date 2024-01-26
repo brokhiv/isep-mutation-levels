@@ -31,7 +31,7 @@ export const assignmentOperatorMutator: NodeMutator<AssignmentOperator> = {
     if (path.isAssignmentExpression() && isSupportedAssignmentOperator(path.node.operator) && isSupported(path.node)) {
       const { replacement, mutationOperator } = this.operators[path.node.operator];
       const nodeClone = deepCloneNode(path.node);
-      nodeClone.operator = replacement;
+      nodeClone.operator = replacement as string;
       yield [nodeClone, mutationOperator];
     }
   },

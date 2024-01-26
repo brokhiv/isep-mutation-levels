@@ -1,4 +1,4 @@
-import babel, { type NodePath } from '@babel/core';
+import babel, { Node, type NodePath } from '@babel/core';
 
 import { StringLiteral } from '@stryker-mutator/api/core';
 
@@ -36,7 +36,7 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
         ? this.operators.EmptyInterpolatedStringToFilledReplacement
         : this.operators.FilledInterpolatedStringToEmptyReplacement;
 
-      yield [replacement, mutationOperator];
+      yield [replacement as Node, mutationOperator];
     }
     if (path.isStringLiteral() && isValidParent(path)) {
       const stringIsEmpty = path.node.value.length === 0;
@@ -45,7 +45,7 @@ export const stringLiteralMutator: NodeMutator<StringLiteral> = {
         ? this.operators.EmptyStringLiteralToFilledReplacement
         : this.operators.FilledStringLiteralToEmptyReplacement;
 
-      yield [replacement, mutationOperator];
+      yield [replacement as Node, mutationOperator];
     }
   },
 };

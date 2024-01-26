@@ -36,7 +36,7 @@ export const equalityOperatorMutator: NodeMutator<EqualityOperator> = {
 
       for (const mutableOperator of allMutations) {
         const nodeClone = t.cloneNode(path.node, true);
-        nodeClone.operator = mutableOperator.replacement;
+        nodeClone.operator = mutableOperator.replacement as babel.types.BinaryExpression['operator'];
         yield [nodeClone, mutableOperator.mutationOperator];
       }
     }

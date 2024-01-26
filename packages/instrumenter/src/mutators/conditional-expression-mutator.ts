@@ -1,4 +1,4 @@
-import babel, { type NodePath } from '@babel/core';
+import babel, { Node, type NodePath } from '@babel/core';
 
 import { ConditionalExpression } from '@stryker-mutator/api/core';
 
@@ -49,20 +49,20 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
     if (isTestOfLoop(path)) {
       if (isTestOfWhileLoop(path)) {
         const { replacement, mutationOperator } = this.operators.WhileLoopConditionToFalseReplacement;
-        yield [replacement, mutationOperator];
+        yield [replacement as Node, mutationOperator];
       }
 
       if (isTestOfDoWhileLoop(path)) {
         const { replacement, mutationOperator } = this.operators.DoWhileLoopConditionToFalseReplacement;
-        yield [replacement, mutationOperator];
+        yield [replacement as Node, mutationOperator];
       }
       if (isTestOfForLoop(path)) {
         const { replacement, mutationOperator } = this.operators.ForLoopConditionToFalseReplacement;
-        yield [replacement, mutationOperator];
+        yield [replacement as Node, mutationOperator];
       }
     } else if (isTestOfCondition(path)) {
-      yield [this.operators.IfConditionToTrueReplacement.replacement, this.operators.IfConditionToTrueReplacement.mutationOperator];
-      yield [this.operators.IfConditionToFalseReplacement.replacement, this.operators.IfConditionToFalseReplacement.mutationOperator];
+      yield [this.operators.IfConditionToTrueReplacement.replacement as Node, this.operators.IfConditionToTrueReplacement.mutationOperator];
+      yield [this.operators.IfConditionToFalseReplacement.replacement as Node, this.operators.IfConditionToFalseReplacement.mutationOperator];
     } else if (isBooleanExpression(path)) {
       if (path.parent?.type === 'LogicalExpression') {
         // For (x || y), do not generate the (true || y) mutation as it
@@ -70,7 +70,7 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
         // isTestOfCondition branch above
         if (path.parent.operator === '||') {
           const { replacement, mutationOperator } = this.operators.BooleanExpressionToFalseReplacement;
-          yield [replacement, mutationOperator];
+          yield [replacement as Node, mutationOperator];
           return;
         }
         // For (x && y), do not generate the (false && y) mutation as it
@@ -78,23 +78,29 @@ export const conditionalExpressionMutator: NodeMutator<ConditionalExpression> = 
         // isTestOfCondition branch above
         if (path.parent.operator === '&&') {
           const { replacement, mutationOperator } = this.operators.BooleanExpressionToTrueReplacement;
-          yield [replacement, mutationOperator];
+          yield [replacement as Node, mutationOperator];
           return;
         }
       }
-      yield [this.operators.BooleanExpressionToTrueReplacement.replacement, this.operators.BooleanExpressionToTrueReplacement.mutationOperator];
-      yield [this.operators.BooleanExpressionToFalseReplacement.replacement, this.operators.BooleanExpressionToFalseReplacement.mutationOperator];
+      yield [
+        this.operators.BooleanExpressionToTrueReplacement.replacement as Node,
+        this.operators.BooleanExpressionToTrueReplacement.mutationOperator,
+      ];
+      yield [
+        this.operators.BooleanExpressionToFalseReplacement.replacement as Node,
+        this.operators.BooleanExpressionToFalseReplacement.mutationOperator,
+      ];
     } else if (path.isForStatement() && !path.node.test) {
       const nodeClone = deepCloneNode(path.node);
       const { replacement, mutationOperator } = this.operators.ForLoopConditionToFalseReplacement;
-      nodeClone.test = replacement;
+      nodeClone.test = replacement as babel.types.Expression;
       yield [nodeClone, mutationOperator];
     } else if (path.isSwitchCase() && path.node.consequent.length > 0) {
       // if not a fallthrough case
       const nodeClone = deepCloneNode(path.node);
       const { replacement, mutationOperator } = this.operators.SwitchStatementBodyRemoval;
 
-      nodeClone.consequent = replacement;
+      nodeClone.consequent = replacement as babel.types.Statement[];
       yield [nodeClone, mutationOperator];
     }
   },
