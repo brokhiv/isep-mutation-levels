@@ -8,8 +8,8 @@ export const logicalOperatorMutator: NodeMutator<LogicalOperator> = {
   name: 'LogicalOperator',
 
   operators: {
-    '&&': { replacement: '||', mutationOperator: 'LogicalAndOperatorNegation' },
-    '||': { replacement: '&&', mutationOperator: 'LogicalOrOperatorNegation' },
+    '&&': { replacement: '||', mutationOperator: 'LogicalAndOperatorToLogicalOrReplacement' },
+    '||': { replacement: '&&', mutationOperator: 'LogicalOrOperatorToLogicalAndReplacement' },
     '??': { replacement: '&&', mutationOperator: 'NullishCoalescingOperatorToLogicalAndReplacement' },
   },
 

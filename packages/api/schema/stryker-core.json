@@ -363,11 +363,11 @@
           "description": "Replace ```a += b``` with ```a -= b```."
         },
         {
-          "const" : "BitwiseAndAssignmentNegation",
+          "const" : "BitwiseAndAssignmentToBitwiseOrReplacement",
           "description": "Replace ```a &= b``` with ```a |= b```."
         },
         {
-          "const" : "BitwiseOrAssignmentNegation",
+          "const" : "BitwiseOrAssignmentToBitwiseAndReplacement",
           "description": "Replace ```a |= b``` with ```a &= b```."
         },
         {
@@ -379,11 +379,11 @@
           "description": "Replace ```a <<= b``` with ```a >>= b```."
         },
         {
-          "const" : "LogicalAndAssignmentNegation",
+          "const" : "LogicalAndAssignmentToLogicalOrReplacement",
           "description": "Replace ```a &&= b``` with ```a ||= b```."
         },
         {
-          "const" : "LogicalOrAssignmentNegation",
+          "const" : "LogicalOrAssignmentToLogicalAndReplacement",
           "description": "Replace ```a ||= b``` with ```a &&= b```."
         },
         {
@@ -462,7 +462,7 @@
         },
         {
           "const" : "SwitchStatementBodyRemoval",
-          "description": "Replace ```switch(x) with switch()```."
+          "description": "Replace ```switch(x) { case 1: doSomething(); default: default(); } with switch(x) { case 1: default: default(); }```."
         },
         {
           "const" : "WhileLoopConditionToFalseReplacement",
@@ -527,11 +527,11 @@
       "title": "LogicalOperator",
       "anyOf": [
         {
-          "const" : "LogicalAndOperatorNegation",
+          "const" : "LogicalAndOperatorToLogicalOrReplacement",
           "description": "Replace ```a && b``` with ```a || b```."
         },
         {
-          "const" : "LogicalOrOperatorNegation",
+          "const" : "LogicalOrOperatorToLogicalAndReplacement",
           "description": "Replace ```a || b``` with ```a && b```."
         },
         {
@@ -552,7 +552,7 @@
           "description": "Replace ```endsWith()``` with ```startsWith()```."
         },
         {
-          "const": "EveryMethodCallNegation",
+          "const": "EveryMethodCallToSomeReplacement",
           "description": "Replace ```every()``` with ```some()```."
         },
         {
@@ -576,7 +576,7 @@
           "description": "Remove ```slice()``` call."
         },
         {
-          "const": "SomeMethodCallNegation",
+          "const": "SomeMethodCallToEveryReplacement",
           "description": "Replace ```some()``` with ```every()```."
         },
         {
@@ -674,7 +674,7 @@
       "title": "UnaryOperator",
       "anyOf": [
         {
-          "const": "UnaryBitwiseOrRemoval",
+          "const": "UnaryBitwiseNotRemoval",
           "description": "Remove ```~``` from ```~a```."
         },
         {

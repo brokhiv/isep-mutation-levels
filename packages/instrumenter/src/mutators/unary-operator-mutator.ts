@@ -14,7 +14,7 @@ export const unaryOperatorMutator: NodeMutator<UnaryOperator> = {
   operators: {
     '+': { replacement: '-', mutationOperator: 'UnaryPlusOperatorNegation' },
     '-': { replacement: '+', mutationOperator: 'UnaryMinOperatorNegation' },
-    '~': { replacement: '', mutationOperator: 'UnaryBitwiseOrRemoval' },
+    '~': { replacement: '', mutationOperator: 'UnaryBitwiseNotRemoval' },
   },
 
   *mutate(path) {
